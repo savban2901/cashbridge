@@ -1,0 +1,409 @@
+{
+  "users": [
+    {
+      "id": "USR-279",
+      "name": "Savban Kagzi",
+      "phone": "9924594787",
+      "password": "Savban@786",
+      "accNumber": "BEB-279366",
+      "accType": "SAVINGS",
+      "balance": 20000,
+      "address": "Ranitalav, Surat, Gujarat"
+    },
+    {
+      "id": "USR-323",
+      "name": "Usmangani Tantwala",
+      "phone": "9898110012",
+      "password": "Usman@786",
+      "accNumber": "BEB-594305",
+      "accType": "SAVINGS",
+      "balance": 20000,
+      "address": "203,MARIYA PALACE,SHAHPORE,SURAT"
+    },
+    {
+      "id": "USR-930",
+      "name": "Azim Dhamiya",
+      "phone": "9662955162",
+      "password": "Azim@786",
+      "accNumber": "BEB-780506",
+      "accType": "CURRENT",
+      "balance": 10000,
+      "address": "203,MARIYA PALACE,SHAHPORE,SURAT"
+    },
+    {
+      "id": "USR-691",
+      "name": "Tahir Pardiwala",
+      "phone": "9898756549",
+      "password": "Tahir@786",
+      "accNumber": "BEB-822299",
+      "accType": "CURRENT",
+      "balance": 0,
+      "address": "203,MARIYA PALACE,SHAHPORE,SURAT"
+    }
+  ],
+  "bankStaff": [
+    {
+      "id": "STAFF-01",
+      "username": "admin",
+      "password": "123",
+      "name": "Branch Officer (Surat)",
+      "phone": "9825012345",
+      "branch": "Surat Main Branch",
+      "role": "Senior Vault Dispatch Officer"
+    }
+  ],
+  "agents": [
+    {
+      "id": "AGT-01",
+      "username": "ramesh",
+      "phone": "9988776655",
+      "password": "123",
+      "name": "Ramesh Patel",
+      "vehicle": "GJ-05-AB-1234",
+      "status": "AVAILABLE"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-8795",
+      "userId": "USR-691",
+      "userName": "Tahir Pardiwala",
+      "userPhone": "9898756549",
+      "accNumber": "BEB-822299",
+      "accType": "CURRENT",
+      "amount": 10000,
+      "status": "DELIVERED",
+      "otp": "751049",
+      "wrongOtpAttempts": 0,
+      "vaultId": "VAULT-IoT-901",
+      "agentId": "AGT-01",
+      "agentName": "Ramesh Patel",
+      "agentPhone": "9988776655",
+      "agentVehicle": "GJ-05-AB-1234",
+      "currentLocation": "Delivered & Handed Over Successfully at Customer Destination.",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "203,MARIYA PALACE,SHAHPORE,SURAT",
+      "bankAddress": "BHARAT EXPRESS BANK, Central Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "24/09/2026, 12:46:36 pm",
+      "isoTime": "2026-09-24T07:19:35.300Z",
+      "dispatchedAt": 1790234251460,
+      "expiryEpoch": 1790237851460,
+      "proofPhoto": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADwAUADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=",
+      "deliveredAt": "24/09/2026, 12:49:35 pm"
+    },
+    {
+      "id": "ORD-7620",
+      "userId": "USR-930",
+      "userName": "Azim Dhamiya",
+      "userPhone": "9662955162",
+      "accNumber": "BEB-780506",
+      "accType": "CURRENT",
+      "amount": 10000,
+      "status": "TAMPERED",
+      "otp": "658663",
+      "wrongOtpAttempts": 0,
+      "vaultId": "VAULT-IoT-901",
+      "agentId": "AGT-01",
+      "agentName": "Ramesh Patel",
+      "agentPhone": "9988776655",
+      "agentVehicle": "GJ-05-AB-1234",
+      "currentLocation": "🚨 TAMPER BREACH DETECTED! Route Diversion / Physical Attack Alert!",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "203,MARIYA PALACE,SHAHPORE,SURAT",
+      "bankAddress": "BHARAT EXPRESS BANK, Central Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "24/09/2026, 12:40:49 pm",
+      "isoTime": "2026-09-24T07:10:49.862Z",
+      "dispatchedAt": 1790233899806,
+      "expiryEpoch": 1790237499806
+    },
+    {
+      "id": "ORD-8395",
+      "userId": "USR-279",
+      "userName": "Savban Kagzi",
+      "userPhone": "9924594787",
+      "accNumber": "BEB-279366",
+      "accType": "SAVINGS",
+      "amount": 15000,
+      "status": "PENDING",
+      "otp": null,
+      "wrongOtpAttempts": 0,
+      "vaultId": "VAULT-IoT-901",
+      "agentId": null,
+      "agentName": null,
+      "agentPhone": null,
+      "agentVehicle": null,
+      "currentLocation": "Waiting at Bank Vault Hub (Surat)",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "Ranitalav, Surat, Gujarat",
+      "bankAddress": "BHARAT EXPRESS BANK, Central Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "24/09/2026, 12:38:06 pm",
+      "isoTime": "2026-09-24T07:08:06.561Z",
+      "dispatchedAt": null,
+      "expiryEpoch": null
+    },
+    {
+      "id": "ORD-9087",
+      "userId": "USR-279",
+      "userName": "Savban Kagzi",
+      "userPhone": "9924594787",
+      "accNumber": "BEB-279366",
+      "accType": "SAVINGS",
+      "amount": 20000,
+      "status": "DELIVERED",
+      "otp": "323643",
+      "wrongOtpAttempts": 0,
+      "vaultId": "VAULT-IoT-901",
+      "agentId": "AGT-01",
+      "agentName": "Ramesh Patel",
+      "agentPhone": "9988776655",
+      "agentVehicle": "GJ-05-AB-1234",
+      "currentLocation": "Delivered & Handed Over Successfully at Customer Destination.",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "Ranitalav, Surat, Gujarat",
+      "bankAddress": "BHARAT EXPRESS BANK, Central Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "24/09/2026, 10:24:16 am",
+      "isoTime": "2026-09-24T04:56:04.726Z",
+      "dispatchedAt": 1790225698914,
+      "expiryEpoch": 1790229298914,
+      "proofPhoto": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADwAUADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=",
+      "deliveredAt": "24/09/2026, 10:26:04 am"
+    },
+    {
+      "id": "ORD-9308",
+      "userId": "USR-279",
+      "userName": "Savban Kagzi",
+      "userPhone": "9924594787",
+      "accNumber": "BEB-279366",
+      "accType": "SAVINGS",
+      "amount": 15000,
+      "status": "DELIVERED",
+      "otp": "392850",
+      "vaultId": "VAULT-IoT-901",
+      "agentId": "AGT-01",
+      "agentName": "Ramesh Patel",
+      "proofPhoto": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADwAUADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "Ranitalav, Surat, Gujarat",
+      "bankAddress": "BHARAT EXPRESS BANK, Ring Road Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "24/09/2026, 08:59:11 am",
+      "agentVehicle": "GJ-05-AB-1234",
+      "deliveredAt": "24/09/2026, 09:04:33 am"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TXN-3819",
+      "userId": "USR-691",
+      "orderId": "ORD-8795",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-8795)",
+      "amount": 10000,
+      "txType": "DEBIT",
+      "timestamp": "24/09/2026, 12:49:35 pm",
+      "isoTime": "2026-09-24T07:19:35.300Z",
+      "status": "SUCCESS (DEBITED ON SAFE HANDOVER)"
+    },
+    {
+      "id": "TXN-8420",
+      "userId": "USR-691",
+      "orderId": null,
+      "type": "OPENING_DEPOSIT",
+      "description": "Account Opening Initial Deposit (UPI QR)",
+      "amount": 10000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 12:45:34 pm",
+      "isoTime": "2026-09-24T07:15:34.603Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-6764",
+      "userId": "USR-930",
+      "orderId": "ORD-7620",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-7620)",
+      "amount": 10000,
+      "txType": "DEBIT",
+      "timestamp": "24/09/2026, 12:40:49 pm",
+      "isoTime": "2026-09-24T07:10:49.862Z",
+      "status": "FAILED (TAMPERED - FUNDS SAFE)"
+    },
+    {
+      "id": "TXN-9957",
+      "userId": "USR-930",
+      "orderId": null,
+      "type": "OPENING_DEPOSIT",
+      "description": "Account Opening Initial Deposit (UPI QR)",
+      "amount": 10000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 12:39:26 pm",
+      "isoTime": "2026-09-24T07:09:26.622Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-2101",
+      "userId": "USR-279",
+      "orderId": "ORD-8395",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-8395)",
+      "amount": 15000,
+      "txType": "DEBIT",
+      "timestamp": "24/09/2026, 12:38:06 pm",
+      "isoTime": "2026-09-24T07:08:06.561Z",
+      "status": "PENDING (VERIFYING FUNDS)"
+    },
+    {
+      "id": "TXN-1133",
+      "userId": "USR-323",
+      "orderId": null,
+      "type": "DEPOSIT",
+      "description": "Instant Account Deposit (UPI QR)",
+      "amount": 10000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 12:35:41 pm",
+      "isoTime": "2026-09-24T07:05:41.959Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-2379",
+      "userId": "USR-323",
+      "orderId": null,
+      "type": "OPENING_DEPOSIT",
+      "description": "Account Opening Initial Deposit (UPI QR)",
+      "amount": 10000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 12:35:07 pm",
+      "isoTime": "2026-09-24T07:05:07.972Z",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-9379",
+      "userId": "USR-279",
+      "orderId": "ORD-9087",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-9087)",
+      "amount": 20000,
+      "txType": "DEBIT",
+      "timestamp": "24/09/2026, 10:26:04 am",
+      "isoTime": "2026-09-24T04:56:04.726Z",
+      "status": "SUCCESS (DEBITED ON SAFE HANDOVER)"
+    },
+    {
+      "id": "TXN-4269",
+      "userId": "USR-279",
+      "orderId": null,
+      "type": "DEPOSIT",
+      "description": "Instant Account Deposit (UPI/Cash)",
+      "amount": 20000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 09:11:43 am",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-1300",
+      "userId": "USR-279",
+      "orderId": "ORD-9308",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-9308)",
+      "amount": 15000,
+      "txType": "DEBIT",
+      "timestamp": "24/09/2026, 08:59:11 am",
+      "status": "DELIVERED (SUCCESS)"
+    },
+    {
+      "id": "TXN-7403",
+      "userId": "USR-279",
+      "orderId": null,
+      "type": "OPENING_DEPOSIT",
+      "description": "Account Opening Deposit",
+      "amount": 35000,
+      "txType": "CREDIT",
+      "timestamp": "24/09/2026, 08:50:37 am",
+      "status": "SUCCESS"
+    }
+  ],
+  "userNotifications": {
+    "9924594787": [],
+    "9898110012": [
+      {
+        "to": "9898110012",
+        "message": "[BHARAT EXPRESS BANK] Your OTP for Account Opening registration is: 318612. Valid for 5 minutes.",
+        "timestamp": "24/09/2026, 12:34:18 pm"
+      }
+    ],
+    "9662955162": [
+      {
+        "to": "9662955162",
+        "message": "[CashBridge Dispatch] Agent Ramesh Patel (Phone: 9988776655, Vehicle: GJ-05-AB-1234) has collected your Vault! 1-Hour delivery countdown started. Unlock OTP: 658663.",
+        "timestamp": "24/09/2026, 12:41:39 pm"
+      },
+      {
+        "to": "9662955162",
+        "message": "[BHARAT EXPRESS BANK] Request Approved! Vault #VAULT-IoT-901 sealed at bank desk. Awaiting agent pick-up.",
+        "timestamp": "24/09/2026, 12:41:16 pm"
+      },
+      {
+        "to": "9662955162",
+        "message": "[BHARAT EXPRESS BANK] Your OTP for Account Opening registration is: 802186. Valid for 5 minutes.",
+        "timestamp": "24/09/2026, 12:38:57 pm"
+      }
+    ],
+    "9898756549": [
+      {
+        "to": "9898756549",
+        "message": "[BHARAT EXPRESS BANK] Cash of ₹10,000 successfully handed over by Ramesh Patel. ₹10,000 has been DEBITED from Acc BEB-822299. Available Balance: ₹0.",
+        "timestamp": "24/09/2026, 12:49:35 pm"
+      },
+      {
+        "to": "9898756549",
+        "message": "[CashBridge Dispatch] Agent Ramesh Patel (Phone: 9988776655, Vehicle: GJ-05-AB-1234) has collected your Vault! 1-Hour delivery countdown started. Unlock OTP: 751049.",
+        "timestamp": "24/09/2026, 12:47:31 pm"
+      },
+      {
+        "to": "9898756549",
+        "message": "[BHARAT EXPRESS BANK] Request Approved! Vault #VAULT-IoT-901 sealed at bank desk. Awaiting agent pick-up.",
+        "timestamp": "24/09/2026, 12:47:04 pm"
+      },
+      {
+        "to": "9898756549",
+        "message": "[BHARAT EXPRESS BANK] Your OTP for Account Opening registration is: 868295. Valid for 5 minutes.",
+        "timestamp": "24/09/2026, 12:45:17 pm"
+      },
+      {
+        "to": "9898756549",
+        "message": "[BHARAT EXPRESS BANK] Your OTP for Account Opening registration is: 972104. Valid for 5 minutes.",
+        "timestamp": "24/09/2026, 12:44:43 pm"
+      }
+    ]
+  },
+  "tempRegistrations": {},
+  "tempStaffRegistrations": {},
+  "tempAgentRegistrations": {},
+  "contactMessages": [],
+  "securityAlerts": [
+    {
+      "id": "POLICE-SOS-8453",
+      "orderId": "ORD-7620",
+      "breachType": "PHYSICAL ATTACK / SENSOR TAMPER",
+      "description": "Physical tampering or unauthorized chassis breach detected! Cash ink neutralized. Alert sent to Surat Police!",
+      "policeStation": "Surat Central Police Control Room (Dial 112)",
+      "coordinates": "21.1702, 72.8311",
+      "timestamp": "24/09/2026, 12:50:20 pm",
+      "isoTime": "2026-09-24T07:20:20.325Z"
+    }
+  ]
+}

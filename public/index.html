@@ -1,0 +1,2671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BHARAT EXPRESS BANK | CashBridge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #0a2540;
+      --secondary: #00d4b6;
+      --accent: #d4af37;
+      --danger: #ef4444;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 60px; overflow-x: hidden; }
+
+    .bank-header {
+      background: var(--primary); color: #fff; padding: 14px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: 12px;
+    }
+    .bank-brand { display: flex; align-items: center; gap: 10px; }
+    .brand-logo {
+      width: 38px; height: 38px; background: linear-gradient(135deg, var(--accent), #f59e0b);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 18px; color: #fff; flex-shrink: 0;
+    }
+    .role-nav { display: flex; background: rgba(255,255,255,0.12); padding: 4px; border-radius: 30px; gap: 4px; overflow-x: auto; max-width: 100%; }
+    .role-btn {
+      background: transparent; color: #cbd5e1; border: none; padding: 7px 14px;
+      border-radius: 20px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; white-space: nowrap;
+    }
+    .role-btn.active { background: var(--secondary); color: var(--primary); font-weight: 700; }
+
+    .subnav-bar {
+      background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 8px 18px;
+      display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      flex-wrap: wrap; gap: 10px;
+    }
+    .subnav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .subnav-btn {
+      background: none; border: none; padding: 7px 11px; font-weight: 600;
+      color: var(--muted); border-radius: 6px; cursor: pointer; font-size: 13px; white-space: nowrap;
+    }
+    .subnav-btn.active { background: #f1f5f9; color: var(--primary); font-weight: 700; }
+
+    .profile-menu-container { position: relative; margin-left: auto; }
+    .profile-trigger {
+      display: flex; align-items: center; gap: 6px; background: #f1f5f9;
+      border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 12px;
+    }
+    .profile-dropdown {
+      display: none; position: absolute; right: 0; top: 38px; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      width: 220px; z-index: 100; overflow: hidden;
+    }
+    .profile-dropdown.open { display: block; animation: dropdownFade 0.2s ease-out; }
+    @keyframes dropdownFade { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    .dropdown-item {
+      padding: 11px 14px; display: block; width: 100%; text-align: left;
+      border: none; background: none; font-size: 12.5px; color: var(--text); cursor: pointer; border-bottom: 1px solid #f1f5f9;
+    }
+    .dropdown-item:hover { background: #f8fafc; color: var(--primary); font-weight: 600; }
+
+    .container { max-width: 1100px; margin: 18px auto; padding: 0 14px; }
+    .section-view, .cpage-view, .bpage-view, .apage-view { display: none; }
+    .section-view.active, .cpage-view.active, .bpage-view.active, .apage-view.active { display: block; }
+
+    .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; margin-bottom: 18px; }
+    .card-title { font-size: 17px; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+    
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 18px; }
+
+    .stat-card {
+      background: #ffffff; border-radius: 10px; border: 1px solid #e2e8f0; padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .stat-val { font-size: 22px; font-weight: 800; color: var(--primary); margin-top: 4px; }
+
+    label { font-size: 12.5px; font-weight: 600; color: var(--muted); margin-bottom: 4px; display: block; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; margin-bottom: 12px; border-radius: 6px;
+      border: 1px solid #cbd5e1; font-size: 13.5px; outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+    .btn {
+      display: inline-block; width: 100%; padding: 11px; border: none; border-radius: 6px;
+      font-weight: 600; font-size: 13.5px; cursor: pointer; text-align: center; color: #fff; background: var(--primary); transition: 0.2s;
+    }
+    .btn:hover { opacity: 0.92; }
+    .btn-gold { background: linear-gradient(135deg, var(--accent), #eab308); color: #000; font-weight: 700; }
+    .btn-success { background: #10b981; }
+    .btn-danger { background: var(--danger); }
+    .btn-sm { width: auto; padding: 6px 12px; font-size: 12px; }
+
+    .acc-card {
+      background: linear-gradient(135deg, #0a2540 0%, #1e3a8a 100%);
+      color: #fff; border-radius: 14px; padding: 18px; margin-bottom: 18px;
+    }
+    .acc-number { font-family: monospace; font-size: 18px; letter-spacing: 1.5px; margin: 8px 0; color: #e2e8f0; }
+    .acc-balance { font-size: 28px; font-weight: 800; color: var(--secondary); }
+
+    .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; min-width: 580px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 12.5px; }
+    th { background: #f8fafc; color: var(--muted); font-weight: 600; }
+    
+    .badge { padding: 3px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 700; }
+    .badge-CREDIT { background: #d1fae5; color: #065f46; }
+    .badge-DEBIT { background: #fee2e2; color: #b91c1c; }
+    
+    .status-badge { padding: 4px 10px; border-radius: 14px; font-size: 10.5px; font-weight: 700; display: inline-block; white-space: nowrap; }
+    .status-SUCCESS { background: #d1fae5; color: #065f46; }
+    .status-PENDING { background: #fef3c7; color: #b45309; }
+    .status-FAILED { background: #fee2e2; color: #b91c1c; }
+    .status-INFO { background: #e0e7ff; color: #4338ca; }
+
+    .log-box {
+      background: #070e22; border-radius: 10px; padding: 14px; height: 260px;
+      overflow-y: auto; border: 1px solid #1e293b;
+    }
+    .sms-bubble {
+      background: #0f1c3f; border: 1px solid #1e3a8a; border-left: 4px solid var(--secondary);
+      border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; font-size: 13.5px; line-height: 1.5; color: #e2e8f0;
+    }
+    .sms-time { font-size: 11px; color: #38bdf8; font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .sms-otp-highlight {
+      display: inline-block; background: #f59e0b; color: #000; font-weight: 800;
+      padding: 2px 8px; border-radius: 6px; letter-spacing: 1.5px; font-size: 15px; margin: 0 4px;
+    }
+
+    .telemetry-card {
+      background: linear-gradient(135deg, #091e3a 0%, #1e3a8a 100%);
+      color: #fff; border-radius: 12px; padding: 16px; margin-bottom: 18px; border: 1px solid #38bdf8;
+    }
+    .timer-badge {
+      background: #dc2626; color: #fff; font-family: monospace; font-size: 15px;
+      font-weight: 800; padding: 5px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;
+    }
+
+    .upi-qr-card {
+      background: #f8fafc; border: 2px dashed #0284c7; border-radius: 12px;
+      padding: 16px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    .receipt-slip {
+      background: #fff; border: 2px dashed #0a2540; border-radius: 8px; padding: 16px;
+      font-family: monospace; color: #0f172a;
+    }
+
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; padding: 14px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; padding: 20px; max-width: 440px; width: 100%; max-height: 90vh; overflow-y: auto; }
+
+    /* MOBILE & TABLET RESPONSIVE TWEAKS */
+    @media (max-width: 768px) {
+      .bank-header { padding: 10px 14px; }
+      .brand-logo { width: 32px; height: 32px; font-size: 16px; }
+      .bank-header h2 { font-size: 14.5px !important; }
+      .bank-header p { font-size: 9.5px !important; }
+      .role-nav { width: 100%; justify-content: space-around; }
+      .role-btn { padding: 6px 10px; font-size: 11px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .subnav-bar { padding: 8px 12px; }
+      .subnav-links { width: 100%; overflow-x: auto; padding-bottom: 4px; }
+      .subnav-btn { font-size: 12px; padding: 6px 8px; }
+      .acc-balance { font-size: 24px; }
+      .acc-number { font-size: 15px; }
+      .card { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bank-header">
+    <div class="bank-brand">
+      <div class="brand-logo">B</div>
+      <div>
+        <h2 style="font-size: 16px; letter-spacing: 0.5px;">BHARAT EXPRESS BANK</h2>
+        <p style="font-size: 10.5px; color: var(--secondary);">CashBridge Autonomous Secure Delivery</p>
+      </div>
+    </div>
+
+    <div class="role-nav">
+      <button class="role-btn active" onclick="switchRole('userView')">👤 Customer</button>
+      <button class="role-btn" onclick="switchRole('bankView')">🏦 Bank Staff</button>
+      <button class="role-btn" onclick="switchRole('agentView')">🚚 Delivery Agent</button>
+    </div>
+  </header>
+
+  <!-- ==================== 1. CUSTOMER PORTAL ==================== -->
+  <div id="userView" class="section-view active">
+    <div class="subnav-bar" id="customerSubNav" style="display: none;">
+      <div class="subnav-links">
+        <button class="subnav-btn active" onclick="showCustomerPage('cHome')">🏠 Home</button>
+        <button class="subnav-btn" onclick="showCustomerPage('cRequest')">💸 Cash Request</button>
+        <button class="subnav-btn" onclick="showCustomerPage('cHistory')">📜 Statement</button>
+        <button class="subnav-btn" onclick="showCustomerPage('cContact')">📞 Helpdesk</button>
+      </div>
+
+      <div class="profile-menu-container">
+        <div class="profile-trigger" onclick="toggleDropdown('userProfileDropdown')">
+          <span>👤 <strong id="profileButtonName">User</strong></span> ▼
+        </div>
+        <div class="profile-dropdown" id="userProfileDropdown">
+          <button class="dropdown-item" onclick="openProfileModal()">👤 View Full Profile</button>
+          <button class="dropdown-item" onclick="openChangePasswordModal()">🔑 Change Password</button>
+          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('user')">🗑️ Close / Delete Account</button>
+          <button class="dropdown-item" style="color: #64748b;" onclick="userLogout()">🚪 Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="userAuthCard" class="card" style="max-width: 460px; margin: 20px auto;">
+        <h3 class="card-title">BHARAT EXPRESS BANK Sign-in</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button class="btn btn-sm" id="userLoginTabBtn" onclick="toggleUserAuth('login')">Sign In</button>
+          <button class="btn btn-sm btn-gold" id="userRegTabBtn" onclick="toggleUserAuth('reg')">Open New Account (2-Step)</button>
+        </div>
+
+        <div id="userLoginBox">
+          <label>Registered Phone Number</label>
+          <input type="text" id="uPhone" placeholder="Enter 10-digit mobile number">
+          <label>Password</label>
+          <input type="password" id="uPass" placeholder="Enter your password">
+          <button class="btn" onclick="userLogin()">Sign In to Bank Account</button>
+        </div>
+
+        <div id="userRegBox" style="display: none;">
+          <div id="regStep1">
+            <label>Full Legal Name</label>
+            <input type="text" id="rName" placeholder="e.g. Savban Kagzi">
+            <label>Mobile Number (For Verification OTP)</label>
+            <input type="text" id="rPhone" placeholder="10 Digit Number">
+            <label>Account Type</label>
+            <select id="rType">
+              <option value="SAVINGS">Savings Account (Limit: ₹20,000)</option>
+              <option value="CURRENT">Current Account (Limit: ₹1,00,000)</option>
+            </select>
+            <label>Initial Opening Deposit (₹)</label>
+            <input type="number" id="rDeposit" placeholder="Enter initial deposit (e.g. 5000)">
+            <label>Create Password</label>
+            <input type="password" id="rPass" placeholder="Create account password">
+            <label>Residential Address</label>
+            <input type="text" id="rAddress" placeholder="Enter residential address">
+            <button class="btn btn-gold" onclick="userSendRegOtp()">Next: Pay Opening Deposit & Verify OTP →</button>
+          </div>
+
+          <div id="regStep2" style="display: none;">
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">
+              Scan the UPI QR below to pay your initial opening deposit, then enter the OTP sent to your phone.
+            </p>
+
+            <div class="upi-qr-card" style="margin-bottom: 14px; padding: 12px;">
+              <span style="font-size: 11px; font-weight: 700; color: #0284c7;">SCAN TO PAY OPENING DEPOSIT</span>
+              <p style="font-size: 14px; font-weight: 800; color: #0a2540; margin: 4px 0;" id="regQrAmountDisplay">Amount: ₹0.00</p>
+              <div style="background: #fff; padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1; display: inline-block;">
+                <img id="regUpiQrImage" src="" alt="Registration UPI QR" width="130" height="130">
+              </div>
+              <span style="font-size: 11px; color: #64748b; margin-top: 4px;">GPay • PhonePe • Paytm • BHIM</span>
+            </div>
+
+            <label>6-Digit Registration OTP</label>
+            <input type="password" id="regOtpInput" placeholder="Enter 6-Digit OTP" maxlength="6">
+            <button class="btn btn-success" style="font-weight: 700;" onclick="userVerifyRegOtp()">
+              ✅ Done (Paid Opening Deposit & Open Account)
+            </button>
+            <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="backToRegStep1()">← Edit Details</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="userDashContent" style="display: none;">
+        <!-- Page 1: Home -->
+        <div id="cHome" class="cpage-view active">
+          <div class="acc-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span id="uCardType" style="background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 20px; font-size: 10px;">SAVINGS ACCOUNT</span>
+              <span style="font-size: 11.5px; color: #93c5fd;">Active Account</span>
+            </div>
+            <div class="acc-number" id="uCardAcc">BEB-700109</div>
+            <p style="font-size: 11.5px; color: #cbd5e1;">Available Ledger Balance</p>
+            <div class="acc-balance" id="uCardBalance">₹0.00</div>
+            <p style="font-size: 12.5px; margin-top: 6px;" id="uCardName">Card Holder</p>
+          </div>
+
+          <div id="customerLiveAgentTrackingBox"></div>
+
+          <!-- Instant Deposit with Live UPI QR -->
+          <div class="card">
+            <h3 class="card-title">⚡ Instant Account Deposit via UPI QR</h3>
+            <p style="color: var(--muted); font-size: 12.5px; margin-bottom: 14px;">
+              Enter deposit amount to generate an instant dynamic UPI QR code. Scan using any app (Google Pay, PhonePe, Paytm, BHIM) and confirm payment.
+            </p>
+
+            <div class="grid-2" style="align-items: stretch;">
+              <div style="display: flex; flex-direction: column; justify-content: center;">
+                <label>Deposit Amount (₹)</label>
+                <input type="number" id="depositAmt" placeholder="e.g. 5000" value="5000" oninput="generateUpiQrCode()" style="font-size: 15px; font-weight: 700;">
+
+                <div style="display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;">
+                  <button class="btn btn-sm" style="background: #e2e8f0; color: #1e293b;" onclick="setPresetDeposit(1000)">+₹1,000</button>
+                  <button class="btn btn-sm" style="background: #e2e8f0; color: #1e293b;" onclick="setPresetDeposit(5000)">+₹5,000</button>
+                  <button class="btn btn-sm" style="background: #e2e8f0; color: #1e293b;" onclick="setPresetDeposit(10000)">+₹10,000</button>
+                  <button class="btn btn-sm" style="background: #e2e8f0; color: #1e293b;" onclick="setPresetDeposit(25000)">+₹25,000</button>
+                </div>
+
+                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 10px; font-size: 12px; color: #166534;">
+                  <strong>🔒 Verified Virtual UPI ID:</strong> <code>bharatexpressbank@upi</code><br>
+                  <span style="color: #64748b;">Instant direct settlement to account ledger.</span>
+                </div>
+              </div>
+
+              <div class="upi-qr-card">
+                <span style="font-size: 10.5px; font-weight: 700; color: #0284c7; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">
+                  SCAN TO PAY VIA ANY UPI APP
+                </span>
+                <p style="font-size: 13.5px; font-weight: 800; color: #0a2540; margin-bottom: 6px;" id="qrAmountDisplay">
+                  Amount: ₹5,000.00
+                </p>
+
+                <div style="background: #ffffff; padding: 8px; border-radius: 8px; border: 1px solid #cbd5e1; display: inline-block;">
+                  <img id="upiQrImage" src="" alt="UPI Payment QR Code" width="140" height="140" style="display: block;">
+                </div>
+
+                <div style="display: flex; gap: 6px; justify-content: center; align-items: center; margin: 6px 0; font-size: 10.5px; font-weight: 600; color: #475569;">
+                  <span>GPay</span> • <span>PhonePe</span> • <span>Paytm</span> • <span>BHIM</span>
+                </div>
+
+                <button class="btn btn-success" style="margin-top: 4px; font-weight: 700;" onclick="userDeposit()">
+                  ✅ Done (I Have Paid - Credit Account)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notifications with Clear Button -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 class="card-title" style="margin-bottom:0;">📱 Live Bank SMS & Alerts</h3>
+                <span style="font-size: 11px; color: #10b981; font-weight: 700;">🟢 Private Telecom Inbox</span>
+              </div>
+              <button class="btn btn-sm" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:700;" onclick="userClearNotifications()">
+                🧹 Clear Notifications
+              </button>
+            </div>
+            
+            <div class="log-box" id="userSmsBox">
+              <div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">No notifications found in your inbox.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 2: Cash Request -->
+        <div id="cRequest" class="cpage-view">
+          <div class="card">
+            <h3 class="card-title">💸 Doorstep Cash Delivery Request</h3>
+            <p style="color: var(--muted); font-size: 13px; margin-bottom: 14px;">
+              Request cash delivered to your location inside an IoT tamper-resistant smart vault.
+            </p>
+            <label>Amount to Withdraw (₹)</label>
+            <input type="number" id="withdrawAmt" placeholder="e.g. 15000">
+            <p style="font-size: 11.5px; color: #0284c7; margin-bottom: 14px;">
+              * Note: Savings Account limit is ₹20,000 | Current Account limit is ₹1,00,000.
+            </p>
+            <button class="btn btn-gold" onclick="userRequestCash()">Submit Cash Request</button>
+          </div>
+        </div>
+
+        <!-- Page 3: Statement & History -->
+        <div id="cHistory" class="cpage-view">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 class="card-title" style="margin-bottom:2px;">📜 Statement & Transaction History</h3>
+                <p style="color: var(--muted); font-size: 12px;">Live chronological sequence (Latest first).</p>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-sm btn-gold" onclick="renderStatementTable()">🔄 Refresh</button>
+                <button class="btn btn-sm btn-success" onclick="downloadStatementPDF()">📥 Download PDF</button>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ref ID</th>
+                    <th>Date & Time</th>
+                    <th>Description</th>
+                    <th>Debit/Credit</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="userTxnTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page 4: Contact Bank -->
+        <div id="cContact" class="cpage-view">
+          <div class="grid-2">
+            <div class="card">
+              <h3 class="card-title">BHARAT EXPRESS BANK Helpdesk</h3>
+              <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>📍 Surat Main Branch:</strong></p>
+              <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 10px;">BHARAT EXPRESS BANK Tower, Ring Road, Surat, Gujarat - 395002</p>
+              <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>📞 24x7 Customer Care:</strong></p>
+              <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 10px;">+91 1800-200-BEB / +91 9876543210</p>
+              <p style="font-size: 12.5px; margin-bottom: 6px;"><strong>✉️ Email Support:</strong></p>
+              <p style="font-size: 12.5px; color: var(--muted);">support@bharatexpressbank.in</p>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">Send Inquiry to Branch</h3>
+              <label>Subject</label>
+              <input type="text" id="contactSubject" placeholder="e.g. Cash Delivery Inquiry">
+              <label>Your Message</label>
+              <textarea id="contactMessage" rows="3" placeholder="Enter message here..."></textarea>
+              <button class="btn" onclick="sendContactInquiry()">Send Message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. BANK INFRASTRUCTURE PORTAL ==================== -->
+  <div id="bankView" class="section-view">
+    <div class="subnav-bar" id="bankSubNav" style="display: none;">
+      <div class="subnav-links">
+        <button class="subnav-btn active" onclick="showBankPage('bDirectory')">👥 Customers</button>
+        <button class="subnav-btn" onclick="showBankPage('bRequests')">📦 Dispatch</button>
+        <button class="subnav-btn" onclick="showBankPage('bLedger')">💳 Ledger</button>
+        <button class="subnav-btn" onclick="showBankPage('bSecurity')">🚨 Police Desk</button>
+        <button class="subnav-btn" onclick="showBankPage('bAudit')">📑 Audit</button>
+      </div>
+
+      <div class="profile-menu-container">
+        <div class="profile-trigger" onclick="toggleDropdown('bankProfileDropdown')">
+          <span>👔 <strong id="bankStaffBadge">Officer</strong></span> ▼
+        </div>
+        <div class="profile-dropdown" id="bankProfileDropdown">
+          <button class="dropdown-item" onclick="openStaffProfileModal()">👔 View Officer Profile</button>
+          <button class="dropdown-item" onclick="openStaffPasswordModal()">🔑 Change Password</button>
+          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('bank')">🗑️ Delete Staff Account</button>
+          <button class="dropdown-item" style="color: #64748b;" onclick="bankLogout()">🚪 Sign Out Staff</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="bankAuthCard" class="card" style="max-width: 460px; margin: 20px auto;">
+        <h3 class="card-title">Bank Staff Infrastructure Gateway</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button class="btn btn-sm" id="staffLoginTabBtn" onclick="toggleStaffAuth('login')">Staff Login</button>
+          <button class="btn btn-sm btn-gold" id="staffRegTabBtn" onclick="toggleStaffAuth('reg')">Employee Onboarding (2-Step)</button>
+        </div>
+
+        <div id="staffLoginBox">
+          <label>Staff Username</label>
+          <input type="text" id="bUser" placeholder="Enter staff username">
+          <label>Password</label>
+          <input type="password" id="bPass" placeholder="Enter security password">
+          <button class="btn" onclick="bankLogin()">Authenticate Employee</button>
+        </div>
+
+        <div id="staffRegBox" style="display: none;">
+          <div id="staffRegStep1">
+            <label>Full Employee Legal Name</label>
+            <input type="text" id="srName" placeholder="e.g. Ramesh Chandra">
+            <label>Staff Username / ID</label>
+            <input type="text" id="srUser" placeholder="e.g. ramesh_officer">
+            <label>Staff Mobile Number (For Verification OTP)</label>
+            <input type="text" id="srPhone" placeholder="10 Digit Number">
+            <label>Designated Branch</label>
+            <input type="text" id="srBranch" placeholder="Enter branch (e.g. Surat Main Branch)">
+            <label>Designation / Role</label>
+            <select id="srRole">
+              <option value="Branch Operations Officer">Branch Operations Officer</option>
+              <option value="Senior Vault Dispatch Officer">Senior Vault Dispatch Officer</option>
+              <option value="Chief Branch Auditor">Chief Branch Auditor</option>
+            </select>
+            <label>Security Password</label>
+            <input type="password" id="srPass" placeholder="Create staff password">
+            <button class="btn btn-gold" onclick="staffSendRegOtp()">Send Staff Verification OTP</button>
+          </div>
+
+          <div id="staffRegStep2" style="display: none;">
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+              Enter the 6-digit staff authorization OTP sent to your registered mobile number.
+            </p>
+            <label>Staff 6-Digit OTP</label>
+            <input type="password" id="staffRegOtpInput" placeholder="Enter Staff OTP" maxlength="6">
+            <button class="btn btn-success" onclick="staffVerifyRegOtp()">Verify & Complete Employee Registration</button>
+            <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="backToStaffRegStep1()">← Edit Details</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="bankDashContent" style="display: none;">
+        <div id="bDirectory" class="bpage-view active">
+          <div class="grid-3">
+            <div class="stat-card">
+              <span style="font-size: 11px; color: var(--muted); font-weight: 600;">TOTAL REGISTERED CUSTOMERS</span>
+              <div class="stat-val" id="statTotalCustomers">0</div>
+            </div>
+            <div class="stat-card">
+              <span style="font-size: 11px; color: var(--muted); font-weight: 600;">TOTAL BANK DEPOSIT LEDGER</span>
+              <div class="stat-val" id="statTotalDeposits" style="color: #10b981;">₹0.00</div>
+            </div>
+            <div class="stat-card">
+              <span style="font-size: 11px; color: var(--muted); font-weight: 600;">ACTIVE VAULT REQUESTS</span>
+              <div class="stat-val" id="statActiveRequests" style="color: #d4af37;">0</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">👥 Active Customer Accounts Directory</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Customer Name</th>
+                    <th>Account Number</th>
+                    <th>Account Type</th>
+                    <th>Phone</th>
+                    <th>Current Balance</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody id="bankCustomerDirectoryTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="bRequests" class="bpage-view">
+          <div class="card">
+            <h3 class="card-title">📦 CashBridge Dispatch & Vault Custody Monitor</h3>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Vault Assigned</th>
+                    <th>Delivery Agent</th>
+                    <th>Live Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="bankOrdersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="bLedger" class="bpage-view">
+          <div class="grid-2">
+            <div class="card">
+              <h3 class="card-title">💳 Customer Ledger Adjustment Desk</h3>
+              <label>Select Registered Customer</label>
+              <select id="bankLedgerCustSelect" onchange="syncSelectedCustBalance()">
+                <option value="">-- Choose Customer --</option>
+              </select>
+
+              <label>Target Account Number</label>
+              <input type="text" id="bankAccNo" placeholder="Account No (e.g. BEB-700109)">
+
+              <label>Adjustment Type</label>
+              <select id="bankAdjType">
+                <option value="CREDIT">Credit (Increase Balance)</option>
+                <option value="DEBIT">Debit (Deduct Balance)</option>
+              </select>
+
+              <label>Amount (₹)</label>
+              <input type="number" id="bankAddAmt" placeholder="Enter amount">
+
+              <button class="btn btn-gold" onclick="bankAdjustBalance()">Execute Ledger Transaction</button>
+            </div>
+
+            <div class="card">
+              <h3 class="card-title">Live Account Ledger Preview</h3>
+              <div class="acc-card" style="margin-top: 10px;">
+                <span id="previewAccType" style="background: rgba(255,255,255,0.2); padding: 3px 8px; border-radius: 20px; font-size: 10px;">VERIFIED LEDGER</span>
+                <div class="acc-number" id="previewAccNo">BEB-XXXXXX</div>
+                <p style="font-size: 11px; color: #cbd5e1;">Available Balance</p>
+                <div class="acc-balance" id="previewAccBal">₹0.00</div>
+                <p style="font-size: 12px; margin-top: 6px;" id="previewAccHolder">Select a customer above</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POLICE & EMERGENCY SOS DISPATCH DESK -->
+        <div id="bSecurity" class="bpage-view">
+          <div class="card" style="border-top: 4px solid #ef4444;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <div>
+                <h3 class="card-title" style="color:#ef4444; margin-bottom:2px;">🚨 Surat Police Control Room (Dial 112) Feed</h3>
+                <p style="color:var(--muted); font-size:12px;">3-wrong attempt lockouts, 1-hour timeouts, and physical tamper breaches.</p>
+              </div>
+              <span class="status-badge status-FAILED">ARMED PROTOCOL</span>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>SOS ID</th>
+                    <th>Date & Time</th>
+                    <th>Vault Ref</th>
+                    <th>Incident</th>
+                    <th>Dispatched Authority</th>
+                    <th>Coordinates</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="bankPoliceAlertsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="bAudit" class="bpage-view">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+              <div>
+                <h3 class="card-title" style="margin-bottom: 2px;">📑 Branch Master Audit Log</h3>
+                <p style="color: var(--muted); font-size: 12px;">Full central record of all CashBridge requests.</p>
+              </div>
+              <button class="btn btn-sm btn-success" onclick="downloadBankMasterAuditPDF()">📥 Download Audit PDF</button>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date & Time</th>
+                    <th>Customer Name</th>
+                    <th>Amount (₹)</th>
+                    <th>Vault Assigned</th>
+                    <th>Delivery Agent</th>
+                    <th>Final Status</th>
+                  </tr>
+                </thead>
+                <tbody id="bankMasterAuditTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. DELIVERY AGENT PORTAL ==================== -->
+  <div id="agentView" class="section-view">
+    <div class="subnav-bar" id="agentSubNav" style="display: none;">
+      <div class="subnav-links">
+        <button class="subnav-btn active" onclick="showAgentPage('aRequests')">📦 Pick-Up Tasks</button>
+        <button class="subnav-btn" onclick="showAgentPage('aNavigation')">🗺️ GPS Routing</button>
+        <button class="subnav-btn" onclick="showAgentPage('aReports')">📜 Duty Report</button>
+        <button class="subnav-btn" onclick="showAgentPage('aVaultConsole')">🔐 Vault Keypad</button>
+      </div>
+
+      <div class="profile-menu-container">
+        <div class="profile-trigger" onclick="toggleDropdown('agentProfileDropdown')">
+          <span>🚚 <strong id="agentProfileBadge">Agent</strong></span> ▼
+        </div>
+        <div class="profile-dropdown" id="agentProfileDropdown">
+          <button class="dropdown-item" onclick="openAgentProfileModal()">🚚 View Agent Profile</button>
+          <button class="dropdown-item" onclick="openAgentPasswordModal()">🔑 Change Password</button>
+          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('agent')">🗑️ Delete Agent Account</button>
+          <button class="dropdown-item" style="color: #64748b;" onclick="agentLogout()">🚪 End Duty Shift</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div id="agentAuthCard" class="card" style="max-width: 460px; margin: 20px auto;">
+        <h3 class="card-title">Delivery Agent Logistics Gateway</h3>
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <button class="btn btn-sm" id="agentLoginTabBtn" onclick="toggleAgentAuth('login')">Agent Sign-In</button>
+          <button class="btn btn-sm btn-gold" id="agentRegTabBtn" onclick="toggleAgentAuth('reg')">Join as Delivery Agent (2-Step)</button>
+        </div>
+
+        <div id="agentLoginBox">
+          <label>Agent Mobile Number</label>
+          <input type="text" id="aPhone" value="9988776655">
+          <label>Password</label>
+          <input type="password" id="aPass" value="123">
+          <button class="btn" onclick="agentLogin()">Login to Agent Portal</button>
+        </div>
+
+        <div id="agentRegBox" style="display: none;">
+          <div id="agentRegStep1">
+            <label>Agent Full Name</label>
+            <input type="text" id="arName" placeholder="e.g. Ramesh Patel">
+            <label>Registered Mobile Number (For Verification OTP)</label>
+            <input type="text" id="arPhone" placeholder="10 Digit Number">
+            <label>Assigned Vehicle Reg Number</label>
+            <input type="text" id="arVehicle" placeholder="e.g. GJ-05-AB-1234">
+            <label>Security Password</label>
+            <input type="password" id="arPass" placeholder="Create security password">
+            <button class="btn btn-gold" onclick="agentSendRegOtp()">Send Agent Verification OTP</button>
+          </div>
+
+          <div id="agentRegStep2" style="display: none;">
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+              Enter the 6-digit security OTP sent to your mobile phone.
+            </p>
+            <label>6-Digit Security OTP</label>
+            <input type="password" id="agentRegOtpInput" placeholder="Enter OTP" maxlength="6">
+            <button class="btn btn-success" onclick="agentVerifyRegOtp()">Verify & Complete Agent Registration</button>
+            <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="backToAgentRegStep1()">← Edit Details</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="agentDashContent" style="display: none;">
+        <div id="aRequests" class="apage-view active">
+          <div class="card" id="agentTaskBox">
+            <p style="color: var(--muted);">No active delivery assigned.</p>
+          </div>
+
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h3 class="card-title" style="margin-bottom: 0;">📋 Agent Mini-Statement (Recent Tasks)</h3>
+              <button class="btn btn-sm btn-gold" onclick="refreshState()">🔄 Refresh Log</button>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order Ref</th>
+                    <th>Date & Time</th>
+                    <th>Customer Name</th>
+                    <th>Cash Loaded</th>
+                    <th>Delivery Status</th>
+                    <th>GPS Coords</th>
+                  </tr>
+                </thead>
+                <tbody id="agentMiniStatementTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="aNavigation" class="apage-view">
+          <div class="grid-2">
+            <div class="card" style="border-top: 4px solid var(--primary);">
+              <h3 class="card-title">🏦 Origin Pick-Up: Bank Vault Desk</h3>
+              <p style="font-size: 12.5px; margin-bottom: 4px;"><strong>Facility:</strong> BHARAT EXPRESS BANK, Central Branch</p>
+              <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 12px;">Ring Road Hub, Surat, Gujarat - 395002</p>
+              <a href="https://maps.google.com/?q=21.1895,72.8258" target="_blank" class="btn btn-sm btn-gold" style="display: inline-block; text-decoration: none;">
+                🗺️ Navigate to Bank
+              </a>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--secondary);">
+              <h3 class="card-title">📍 Drop Destination: Customer Doorstep</h3>
+              <div id="agentNavCustCard">
+                <p style="color: var(--muted); font-size: 12.5px;">No active transit order. Pick up an order from the Requests tab first.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="aReports" class="apage-view">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div>
+                <h3 class="card-title" style="margin-bottom: 2px;">📜 Completed Deliveries Audit</h3>
+                <p style="color: var(--muted); font-size: 12px;">Official delivery verification log with photographic proof.</p>
+              </div>
+              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty PDF</button>
+            </div>
+
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Delivered Time</th>
+                    <th>Customer Name</th>
+                    <th>Cash</th>
+                    <th>Vault Unit</th>
+                    <th>Proof</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="agentCompletedOrdersTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="aVaultConsole" class="apage-view">
+          <div class="grid-2">
+            <div class="card" style="border: 2px dashed #0284c7; background: #f0f9ff;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <h3 class="card-title" style="color: #0369a1; margin:0;">🔐 Smart Vault Keypad</h3>
+                <span id="agentWrongAttemptsBadge" style="font-size:11px; font-weight:700; color:#dc2626;">Attempts: 3/3</span>
+              </div>
+              <p style="font-size: 12.5px; color: #0284c7; margin-bottom: 10px;">
+                Enter customer OTP. <strong>Warning: 3 consecutive wrong attempts will trigger emergency police dispatch.</strong>
+              </p>
+              <div style="display: flex; gap: 6px;">
+                <input type="password" id="vaultOtpKeypad" placeholder="Enter Customer OTP" maxlength="6" style="margin: 0;">
+                <button class="btn btn-gold btn-sm" onclick="agentUnlockVault()">Unlock</button>
+              </div>
+
+              <div style="margin-top: 16px; border-top: 1px dashed #bae6fd; padding-top: 12px;">
+                <button class="btn btn-danger" onclick="triggerBreachAlarm()">🚨 Emergency: Report Attack / Breach</button>
+              </div>
+            </div>
+
+            <div class="card" id="cameraBox">
+              <h3 class="card-title">📸 Handover Photographic Proof</h3>
+              <video id="webcam" width="100%" height="200" autoplay style="background:#000; border-radius:8px; object-fit:cover;"></video>
+              <canvas id="canvas" style="display:none;"></canvas>
+              <button class="btn btn-success" style="margin-top: 10px;" onclick="agentCaptureProof()">📸 Capture Photo & Close Delivery</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIGITAL TRANSACTION RECEIPT MODAL -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="modal-box">
+      <div class="receipt-slip" id="receiptSlipContent"></div>
+      <div style="display: flex; gap: 8px; margin-top: 14px;">
+        <button class="btn btn-sm btn-gold" onclick="window.print()">🖨️ Print Receipt</button>
+        <button class="btn btn-sm" style="background: #e2e8f0; color: #0f172a;" onclick="closeModal('receiptModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Profile Modal -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">👤 Customer Profile Details</h3>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Full Name:</strong> <span id="mName"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Account Number:</strong> <span id="mAcc"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Account Type:</strong> <span id="mType"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Registered Mobile:</strong> <span id="mPhone"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Address:</strong> <span id="mAddress"></span></p>
+      <p style="margin-bottom: 14px; font-size: 13px;"><strong>Current Ledger Balance:</strong> <span id="mBalance" style="color: #10b981; font-weight: bold;"></span></p>
+      <button class="btn btn-sm" onclick="closeModal('profileModal')">Close</button>
+    </div>
+  </div>
+
+  <!-- Customer Password Modal -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">🔑 Change Account Password</h3>
+      <label>Current Password</label>
+      <input type="password" id="currPass">
+      <label>New Password</label>
+      <input type="password" id="newPass">
+      <button class="btn btn-gold" onclick="submitPasswordChange()">Update Password</button>
+      <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="closeModal('passwordModal')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Staff Profile Modal -->
+  <div class="modal-overlay" id="staffProfileModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">👔 Bank Officer Profile</h3>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Officer Name:</strong> <span id="smName"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Staff Username:</strong> <span id="smUser"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Branch:</strong> <span id="smBranch"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Designation / Role:</strong> <span id="smRole"></span></p>
+      <p style="margin-bottom: 14px; font-size: 13px;"><strong>Official Phone:</strong> <span id="smPhone"></span></p>
+      <button class="btn btn-sm" onclick="closeModal('staffProfileModal')">Close</button>
+    </div>
+  </div>
+
+  <!-- Staff Password Modal -->
+  <div class="modal-overlay" id="staffPasswordModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">🔑 Change Employee Security Password</h3>
+      <label>Current Password</label>
+      <input type="password" id="scurrPass">
+      <label>New Password</label>
+      <input type="password" id="snewPass">
+      <button class="btn btn-gold" onclick="submitStaffPasswordChange()">Update Employee Password</button>
+      <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="closeModal('staffPasswordModal')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Agent Profile Modal -->
+  <div class="modal-overlay" id="agentProfileModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">🚚 Delivery Agent Profile</h3>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Agent Name:</strong> <span id="amName"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Agent ID:</strong> <span id="amId"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Assigned Vehicle:</strong> <span id="amVehicle" style="font-family:monospace; font-weight:700;"></span></p>
+      <p style="margin-bottom: 6px; font-size: 13px;"><strong>Registered Mobile:</strong> <span id="amPhone"></span></p>
+      <p style="margin-bottom: 14px; font-size: 13px;"><strong>Duty Status:</strong> <span class="badge badge-CREDIT">ACTIVE / ON DUTY</span></p>
+      <button class="btn btn-sm" onclick="closeModal('agentProfileModal')">Close</button>
+    </div>
+  </div>
+
+  <!-- Agent Password Modal -->
+  <div class="modal-overlay" id="agentPasswordModal">
+    <div class="modal-box">
+      <h3 style="margin-bottom: 14px; color: var(--primary);">🔑 Change Agent Portal Password</h3>
+      <label>Current Password</label>
+      <input type="password" id="acurrPass">
+      <label>New Password</label>
+      <input type="password" id="anewPass">
+      <button class="btn btn-gold" onclick="submitAgentPasswordChange()">Update Agent Password</button>
+      <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="closeModal('agentPasswordModal')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal-overlay" id="deleteAccountModal">
+    <div class="modal-box" style="border-top: 4px solid #ef4444;">
+      <h3 style="margin-bottom: 10px; color: #ef4444;">⚠️ Permanent Account Deletion</h3>
+      <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 12px;" id="delModalWarning">
+        Are you sure you want to delete your account? This action cannot be undone.
+      </p>
+      <label>Enter Account Password to Confirm</label>
+      <input type="password" id="delAccountPassword" placeholder="Enter your current password">
+      <button class="btn btn-danger" onclick="confirmDeleteAccount()">Yes, Delete My Account Permanently</button>
+      <button class="btn btn-sm" style="margin-top: 10px; background: transparent; color: var(--muted);" onclick="closeModal('deleteAccountModal')">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // Audio Soundbox Engine
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      },
+      playSuccessSound() {
+        try {
+          this.init();
+          const now = this.ctx.currentTime;
+          const osc1 = this.ctx.createOscillator();
+          const osc2 = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(523.25, now);
+          osc1.frequency.setValueAtTime(659.25, now + 0.12);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(783.99, now + 0.24);
+          osc2.frequency.setValueAtTime(1046.50, now + 0.36);
+
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc1.start(now);
+          osc1.stop(now + 0.24);
+          osc2.start(now + 0.24);
+          osc2.stop(now + 0.7);
+        } catch(e){}
+      },
+      playNotificationSound() {
+        try {
+          this.init();
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(440, now + 0.3);
+
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } catch(e){}
+      },
+      playPoliceSirenSound() {
+        try {
+          this.init();
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+
+          osc.type = 'sawtooth';
+          for (let i = 0; i < 4; i++) {
+            osc.frequency.setValueAtTime(950, now + (i * 0.4));
+            osc.frequency.linearRampToValueAtTime(600, now + (i * 0.4) + 0.2);
+            osc.frequency.linearRampToValueAtTime(950, now + (i * 0.4) + 0.4);
+          }
+
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 1.8);
+        } catch(e){}
+      }
+    };
+
+    let globalState = { users: [], bankStaff: [], agents: [], orders: [], transactions: [], securityAlerts: [], userNotifications: {} };
+    let loggedUser = null;
+    let loggedBank = null;
+    let loggedAgent = null;
+    let cameraStream = null;
+    let currentStatementData = [];
+    let deleteTargetRole = null;
+    let countdownInterval = null;
+
+    const savedUser = sessionStorage.getItem('cashbridge_user');
+    if (savedUser) { try { loggedUser = JSON.parse(savedUser); } catch(e){} }
+    const savedStaff = sessionStorage.getItem('cashbridge_staff');
+    if (savedStaff) { try { loggedBank = JSON.parse(savedStaff); } catch(e){} }
+    const savedAgent = sessionStorage.getItem('cashbridge_agent');
+    if (savedAgent) { try { loggedAgent = JSON.parse(savedAgent); } catch(e){} }
+
+    // DYNAMIC PROTOCOL FOR CLOUD HOSTING (HTTP -> WS | HTTPS -> WSS)
+    const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${wsProtocol}//${location.host}`);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === 'SMS_NOTIFICATION') {
+        if (loggedUser && String(loggedUser.phone).trim() === String(data.payload.to).trim()) {
+          renderIncomingSms(data.payload);
+          AudioEngine.playNotificationSound();
+        }
+      } else if (data.type === 'SECURITY_ALARM') {
+        AudioEngine.playPoliceSirenSound();
+        alert(`🚨 EMERGENCY POLICE SOS TRIGGERED!\nIncident: ${data.payload.breachType}\nAuthority Dispatched: ${data.payload.policeStation}\nLocation: ${data.payload.coordinates}\n\n${data.payload.description}`);
+      }
+      refreshState();
+    };
+
+    function renderIncomingSms(payload) {
+      const box = document.getElementById('userSmsBox');
+      if (!box) return;
+
+      if (box.innerHTML.includes('No messages received') || box.innerHTML.includes('Waiting for incoming SMS') || box.innerHTML.includes('No notifications found')) {
+        box.innerHTML = '';
+      }
+
+      let msgText = payload.message || '';
+      msgText = msgText.replace(/(\b\d{6}\b)/g, '<span class="sms-otp-highlight">$1</span>');
+      const timeString = payload.timestamp || new Date().toLocaleTimeString('en-IN');
+
+      const bubbleHTML = `
+        <div class="sms-bubble">
+          <div class="sms-time">
+            <span>📩 SMS Gateway (+91 ${payload.to})</span>
+            <span style="margin-left: auto; color: #94a3b8; font-weight: normal;">${timeString}</span>
+          </div>
+          <div>${msgText}</div>
+        </div>
+      `;
+
+      box.innerHTML = bubbleHTML + box.innerHTML;
+    }
+
+    function renderUserNotifications() {
+      const box = document.getElementById('userSmsBox');
+      if (!box) return;
+
+      if (!loggedUser) {
+        box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">Sign in to view your private SMS notifications.</div>';
+        return;
+      }
+
+      const userPhone = String(loggedUser.phone).trim();
+      const notifs = (globalState.userNotifications && globalState.userNotifications[userPhone]) || [];
+
+      if (notifs.length === 0) {
+        box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">No notifications found in your inbox.</div>';
+        return;
+      }
+
+      box.innerHTML = notifs.map(n => {
+        let msg = n.message || '';
+        msg = msg.replace(/(\b\d{6}\b)/g, '<span class="sms-otp-highlight">$1</span>');
+        return `
+          <div class="sms-bubble">
+            <div class="sms-time">
+              <span>📩 SMS Gateway (+91 ${n.to || userPhone})</span>
+              <span style="margin-left: auto; color: #94a3b8; font-weight: normal;">${n.timestamp || ''}</span>
+            </div>
+            <div>${msg}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function userClearNotifications() {
+      if (!loggedUser) return alert('Please login first!');
+
+      const activeOrder = (globalState.orders || []).find(o => 
+        String(o.userId).trim() === String(loggedUser.id).trim() && 
+        ['PENDING', 'ACCEPTED_BY_BANK', 'IN_TRANSIT', 'VAULT_OPENED'].includes(o.status)
+      );
+
+      if (activeOrder) {
+        return alert(`⚠️ Security Restriction:\nYour Cash Delivery Order (#${activeOrder.id}) is currently active!\nVault Unlock OTP and Delivery Agent telemetry cannot be cleared until the cash is safely delivered and verified via photographic proof.`);
+      }
+
+      if (!confirm('Are you sure you want to clear all SMS alerts and notifications from your inbox?')) return;
+
+      try {
+        const res = await fetch('/api/user/clear-notifications', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            userId: loggedUser.id, 
+            phone: loggedUser.phone 
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.error || 'Unable to clear notifications.');
+        } else {
+          alert(data.message || 'All notifications have been successfully cleared from your private inbox.');
+          
+          const userPhone = String(loggedUser.phone).trim();
+          if (globalState.userNotifications && globalState.userNotifications[userPhone]) {
+            globalState.userNotifications[userPhone] = [];
+          }
+          
+          const box = document.getElementById('userSmsBox');
+          if (box) {
+            box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">No notifications found in your inbox.</div>';
+          }
+
+          await refreshState();
+        }
+      } catch (err) {
+        alert('Server communication error.');
+      }
+    }
+
+    function generateUpiQrCode() {
+      const amtInput = document.getElementById('depositAmt');
+      let val = parseFloat(amtInput.value) || 0;
+      if (val < 0) val = 0;
+
+      document.getElementById('qrAmountDisplay').innerText = `Amount: ₹${val.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      const upiUri = `upi://pay?pa=bharatexpressbank@upi&pn=Bharat+Express+Bank&am=${val.toFixed(2)}&cu=INR&tn=Account+Deposit`;
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}&margin=1`;
+      document.getElementById('upiQrImage').src = qrApiUrl;
+    }
+
+    function setPresetDeposit(amt) {
+      document.getElementById('depositAmt').value = amt;
+      generateUpiQrCode();
+    }
+
+    function startVault1HourCountdown(expiryEpoch) {
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      const updateTimerDisplay = () => {
+        const timerElement = document.getElementById('vaultCountdownDisplay');
+        if (!timerElement) return;
+
+        const distance = expiryEpoch - Date.now();
+        if (distance <= 0) {
+          timerElement.innerText = "00:00 (EXPIRED)";
+          clearInterval(countdownInterval);
+          return;
+        }
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timerElement.innerText = `⏱️ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      };
+
+      updateTimerDisplay();
+      countdownInterval = setInterval(updateTimerDisplay, 1000);
+    }
+
+    function renderCustomerLiveTracking() {
+      const trackerContainer = document.getElementById('customerLiveAgentTrackingBox');
+      if (!trackerContainer || !loggedUser) return;
+
+      const activeOrder = (globalState.orders || []).find(o => 
+        String(o.userId).trim() === String(loggedUser.id).trim() && 
+        ['ACCEPTED_BY_BANK', 'IN_TRANSIT', 'VAULT_OPENED', 'AUTO_FROZEN', 'TAMPERED'].includes(o.status)
+      );
+
+      if (!activeOrder) {
+        trackerContainer.innerHTML = '';
+        if (countdownInterval) clearInterval(countdownInterval);
+        return;
+      }
+
+      if (activeOrder.status === 'AUTO_FROZEN') {
+        trackerContainer.innerHTML = `
+          <div class="telemetry-card" style="background:#450a0a; border-color:#dc2626;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3 style="font-size:15px; color:#f87171;">🚨 1-Hour Anti-Hijack Lock: Vault Auto-Frozen</h3>
+                <p style="font-size:12px; color:#fecaca; margin-top:2px;">1-hour delivery window exceeded. Dynamic OTP self-destructed. Surat Police Control Room notified.</p>
+              </div>
+              <span class="status-badge status-FAILED">AUTO_FROZEN</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (activeOrder.status === 'TAMPERED') {
+        trackerContainer.innerHTML = `
+          <div class="telemetry-card" style="background:#450a0a; border-color:#dc2626;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3 style="font-size:15px; color:#f87171;">🚨 SECURITY BREACH LOCKOUT: Police Dispatched</h3>
+                <p style="font-size:12px; color:#fecaca; margin-top:2px;">Tamper sensors or 3 incorrect PIN entries triggered a lockdown. Your money is 100% safe.</p>
+              </div>
+              <span class="status-badge status-FAILED">LOCKDOWN TRIGGERED</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      if (activeOrder.status === 'ACCEPTED_BY_BANK') {
+        if (countdownInterval) clearInterval(countdownInterval);
+        trackerContainer.innerHTML = `
+          <div class="telemetry-card" style="background:#1e293b; border-color:#64748b;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <div>
+                <h3 style="font-size:15px; color:#f59e0b;">⏳ Bank Approved: Vault #${activeOrder.vaultId} Ready</h3>
+                <p style="font-size:12px; color:#cbd5e1; margin-top:2px;">
+                  Waiting at Central Bank Desk. <strong>1-Hour Timer will begin when Delivery Agent accepts and picks up the vault.</strong>
+                </p>
+              </div>
+              <span class="status-badge status-PENDING">WAITING AGENT</span>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      trackerContainer.innerHTML = `
+        <div class="telemetry-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap:wrap; gap:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3 style="font-size: 15px; color: var(--secondary);">🚚 Live Delivery: ${activeOrder.id}</h3>
+              <span class="timer-badge" id="vaultCountdownDisplay">⏱️ 60:00</span>
+            </div>
+            <span class="status-badge status-INFO">AGENT EN ROUTE</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px;">
+            <div>
+              <span style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Delivery Agent Name</span>
+              <p style="font-size: 14px; font-weight: 700; color: #fff; margin-top: 2px;">${activeOrder.agentName || 'Agent In-Custody'}</p>
+            </div>
+            <div>
+              <span style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Agent Contact Phone</span>
+              <p style="font-size: 14px; font-weight: 700; color: #38bdf8; margin-top: 2px;">📞 ${activeOrder.agentPhone ? '+91 ' + activeOrder.agentPhone : 'Pending'}</p>
+            </div>
+            <div>
+              <span style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Vehicle Reg Number</span>
+              <p style="font-size: 14px; font-weight: 700; font-family: monospace; color: #f59e0b; margin-top: 2px;">🛵 ${activeOrder.agentVehicle || 'GJ-05-AB-1234'}</p>
+            </div>
+            <div>
+              <span style="font-size: 10.5px; color: #94a3b8; text-transform: uppercase;">Cash Amount Sealed</span>
+              <p style="font-size: 14px; font-weight: 700; color: #10b981; margin-top: 2px;">₹${parseFloat(activeOrder.amount).toLocaleString('en-IN')}</p>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div>
+              <p style="font-size: 12px; color: #cbd5e1;">
+                <strong>📍 Location:</strong> <span style="color:#00d4b6;">${activeOrder.currentLocation || 'En Route'}</span>
+              </p>
+            </div>
+            <a href="https://maps.google.com/?q=${activeOrder.lat},${activeOrder.lng}" target="_blank" class="btn btn-sm btn-gold" style="width:auto; text-decoration:none; padding: 5px 12px;">
+              🗺️ Open GPS Map
+            </a>
+          </div>
+        </div>
+      `;
+
+      if (activeOrder.expiryEpoch) {
+        startVault1HourCountdown(activeOrder.expiryEpoch);
+      }
+    }
+
+    function switchRole(roleId) {
+      document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(roleId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function showCustomerPage(pageId) {
+      document.querySelectorAll('.cpage-view').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('#customerSubNav .subnav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      event.target.classList.add('active');
+      if (pageId === 'cHistory') renderStatementTable();
+    }
+
+    function showBankPage(pageId) {
+      document.querySelectorAll('.bpage-view').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('#bankSubNav .subnav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function showAgentPage(pageId) {
+      document.querySelectorAll('.apage-view').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('#agentSubNav .subnav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      event.target.classList.add('active');
+      if (pageId === 'aVaultConsole') startCamera();
+    }
+
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    window.onclick = function(e) {
+      if (!e.target.closest('.profile-menu-container')) {
+        document.querySelectorAll('.profile-dropdown').forEach(d => d.classList.remove('open'));
+      }
+    };
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+
+    function formatDateTimeString(val) {
+      if (!val) return new Date().toLocaleDateString('en-IN') + ' ' + new Date().toLocaleTimeString('en-IN');
+      if (val.includes('/') || val.includes('-')) return val;
+      return new Date().toLocaleDateString('en-IN') + ', ' + val;
+    }
+
+    async function refreshState() {
+      try {
+        const res = await fetch('/api/state');
+        globalState = await res.json();
+
+        if (loggedUser) {
+          const fresh = (globalState.users || []).find(u => String(u.id).trim() === String(loggedUser.id).trim());
+          if (fresh) {
+            loggedUser = fresh;
+            sessionStorage.setItem('cashbridge_user', JSON.stringify(loggedUser));
+            renderUserDash();
+          } else {
+            userLogout();
+          }
+        }
+        if (loggedBank) {
+          const freshStaff = (globalState.bankStaff || []).find(s => String(s.id).trim() === String(loggedBank.id).trim());
+          if (freshStaff) {
+            loggedBank = freshStaff;
+            sessionStorage.setItem('cashbridge_staff', JSON.stringify(loggedBank));
+            renderBankDash();
+          } else {
+            bankLogout();
+          }
+        }
+        if (loggedAgent) {
+          const freshAgent = (globalState.agents || []).find(a => String(a.id).trim() === String(loggedAgent.id).trim());
+          if (freshAgent) {
+            loggedAgent = freshAgent;
+            sessionStorage.setItem('cashbridge_agent', JSON.stringify(loggedAgent));
+            renderAgentDash();
+          } else {
+            agentLogout();
+          }
+        }
+      } catch(err) {
+        console.error('State refresh error:', err);
+      }
+    }
+
+    function openDeleteModal(role) {
+      deleteTargetRole = role;
+      document.querySelectorAll('.profile-dropdown').forEach(d => d.classList.remove('open'));
+      document.getElementById('delAccountPassword').value = '';
+
+      const warnText = document.getElementById('delModalWarning');
+      if (role === 'user') warnText.innerText = 'Are you sure you want to close your Bank Account? All balance and ledger links will be closed permanently.';
+      else if (role === 'bank') warnText.innerText = 'Are you sure you want to delete your Bank Staff account? You will lose officer infrastructure desk access.';
+      else if (role === 'agent') warnText.innerText = 'Are you sure you want to deregister as a Delivery Agent? You will be removed from the fleet network.';
+
+      document.getElementById('deleteAccountModal').classList.add('open');
+    }
+
+    async function confirmDeleteAccount() {
+      const password = document.getElementById('delAccountPassword').value;
+      if (!password) return alert('Please enter your password to confirm deletion.');
+
+      let url = '';
+      let payload = {};
+
+      if (deleteTargetRole === 'user') {
+        if (!loggedUser) return;
+        url = '/api/user/delete-account';
+        payload = { userId: loggedUser.id, password };
+      } else if (deleteTargetRole === 'bank') {
+        if (!loggedBank) return;
+        url = '/api/bank/delete-account';
+        payload = { staffId: loggedBank.id, password };
+      } else if (deleteTargetRole === 'agent') {
+        if (!loggedAgent) return;
+        url = '/api/agent/delete-account';
+        payload = { agentId: loggedAgent.id, password };
+      }
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.error);
+        } else {
+          alert(data.message);
+          closeModal('deleteAccountModal');
+
+          if (deleteTargetRole === 'user') {
+            loggedUser = null;
+            sessionStorage.removeItem('cashbridge_user');
+            userLogout();
+          } else if (deleteTargetRole === 'bank') {
+            loggedBank = null;
+            sessionStorage.removeItem('cashbridge_staff');
+            bankLogout();
+          } else if (deleteTargetRole === 'agent') {
+            loggedAgent = null;
+            sessionStorage.removeItem('cashbridge_agent');
+            agentLogout();
+          }
+
+          await refreshState();
+        }
+      } catch (err) {
+        alert('Server communication error during account deletion.');
+      }
+    }
+
+    function toggleUserAuth(type) {
+      document.getElementById('userLoginBox').style.display = type === 'login' ? 'block' : 'none';
+      document.getElementById('userRegBox').style.display = type === 'reg' ? 'block' : 'none';
+      if (type === 'login') {
+        document.getElementById('regStep1').style.display = 'block';
+        document.getElementById('regStep2').style.display = 'none';
+      }
+    }
+
+    async function userLogin() {
+      const phone = document.getElementById('uPhone').value;
+      const password = document.getElementById('uPass').value;
+      const res = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, password })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+      loggedUser = data.user;
+      sessionStorage.setItem('cashbridge_user', JSON.stringify(loggedUser));
+      document.getElementById('userAuthCard').style.display = 'none';
+      document.getElementById('customerSubNav').style.display = 'flex';
+      document.getElementById('userDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    let tempRegPhone = '';
+    async function userSendRegOtp() {
+      const payload = {
+        name: document.getElementById('rName').value,
+        phone: document.getElementById('rPhone').value,
+        accType: document.getElementById('rType').value,
+        initialDeposit: document.getElementById('rDeposit').value,
+        password: document.getElementById('rPass').value,
+        address: document.getElementById('rAddress').value
+      };
+      const res = await fetch('/api/user/send-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      tempRegPhone = payload.phone;
+      alert(`OTP sent to ${payload.phone}! (Demo OTP: ${data.demoOtp})`);
+
+      const depVal = parseFloat(payload.initialDeposit) || 0;
+      document.getElementById('regQrAmountDisplay').innerText = `Amount: ₹${depVal.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      const regUpiUri = `upi://pay?pa=bharatexpressbank@upi&pn=Bharat+Express+Bank&am=${depVal.toFixed(2)}&cu=INR&tn=Opening+Deposit`;
+      document.getElementById('regUpiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(regUpiUri)}&margin=1`;
+
+      document.getElementById('regStep1').style.display = 'none';
+      document.getElementById('regStep2').style.display = 'block';
+    }
+
+    function backToRegStep1() {
+      document.getElementById('regStep1').style.display = 'block';
+      document.getElementById('regStep2').style.display = 'none';
+    }
+
+    async function userVerifyRegOtp() {
+      const otp = document.getElementById('regOtpInput').value;
+      const res = await fetch('/api/user/verify-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: tempRegPhone, otp })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      AudioEngine.playSuccessSound();
+      alert('🎉 Opening deposit paid via UPI! Your Account has been opened under BHARAT EXPRESS BANK.');
+      loggedUser = data.user;
+      sessionStorage.setItem('cashbridge_user', JSON.stringify(loggedUser));
+      
+      backToRegStep1();
+      document.getElementById('rName').value = '';
+      document.getElementById('rPhone').value = '';
+      document.getElementById('regOtpInput').value = '';
+
+      document.getElementById('userAuthCard').style.display = 'none';
+      document.getElementById('customerSubNav').style.display = 'flex';
+      document.getElementById('userDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    function renderUserDash() {
+      if (!loggedUser) return;
+      document.getElementById('profileButtonName').innerText = (loggedUser.name || 'User').split(' ')[0];
+      document.getElementById('uCardName').innerText = loggedUser.name;
+      document.getElementById('uCardAcc').innerText = loggedUser.accNumber;
+      document.getElementById('uCardType').innerText = loggedUser.accType + ' ACCOUNT';
+
+      const numBalance = parseFloat(loggedUser.balance || 0);
+      document.getElementById('uCardBalance').innerText = '₹' + numBalance.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      generateUpiQrCode();
+      renderCustomerLiveTracking();
+      renderStatementTable();
+      renderUserNotifications();
+    }
+
+    async function renderStatementTable() {
+      if (!loggedUser) return;
+      const tbody = document.getElementById('userTxnTable');
+      if (!tbody) return;
+
+      const myUserId = String(loggedUser.id).trim();
+      const txns = (globalState.transactions || []).filter(t => String(t.userId).trim() === myUserId);
+      const userOrders = (globalState.orders || []).filter(o => String(o.userId).trim() === myUserId);
+
+      let unifiedList = [];
+
+      userOrders.forEach(o => {
+        let displayStatus = o.status;
+        let badgeClass = 'status-INFO';
+
+        if (o.status === 'DELIVERED') {
+          displayStatus = 'COMPLETED (DELIVERED)';
+          badgeClass = 'status-SUCCESS';
+        } else if (o.status === 'TAMPERED') {
+          displayStatus = 'FAILED (SECURITY BREACH)';
+          badgeClass = 'status-FAILED';
+        } else if (o.status === 'AUTO_FROZEN') {
+          displayStatus = 'FAILED (1-HOUR EXPIRED)';
+          badgeClass = 'status-FAILED';
+        } else if (o.status === 'PENDING') {
+          displayStatus = 'PENDING APPROVAL';
+          badgeClass = 'status-PENDING';
+        } else if (o.status === 'ACCEPTED_BY_BANK') {
+          displayStatus = 'APPROVED (DISPATCHED)';
+          badgeClass = 'status-INFO';
+        } else if (o.status === 'IN_TRANSIT') {
+          displayStatus = 'IN TRANSIT (VAULT WITH AGENT)';
+          badgeClass = 'status-INFO';
+        } else if (o.status === 'VAULT_OPENED') {
+          displayStatus = 'VAULT UNLOCKED';
+          badgeClass = 'status-INFO';
+        }
+
+        unifiedList.push({
+          refId: o.id,
+          timestamp: formatDateTimeString(o.deliveredAt || o.timestamp),
+          rawTime: new Date(o.isoTime || Date.now()).getTime(),
+          description: `Doorstep Cash Request (${o.vaultId || 'IoT Vault'})`,
+          txType: 'DEBIT',
+          amount: o.amount,
+          displayStatus: displayStatus,
+          badgeClass: badgeClass,
+          details: {
+            vaultId: o.vaultId || 'VAULT-IoT-901',
+            agent: o.agentName || 'Dispatched Vault Unit',
+            address: o.deliveryAddress
+          }
+        });
+      });
+
+      txns.forEach(t => {
+        if (!t.orderId) {
+          unifiedList.push({
+            refId: t.id,
+            timestamp: formatDateTimeString(t.timestamp),
+            rawTime: new Date(t.isoTime || Date.now()).getTime(),
+            description: t.description,
+            txType: t.txType || 'CREDIT',
+            amount: t.amount,
+            displayStatus: t.status || 'SUCCESS',
+            badgeClass: (t.status === 'SUCCESS' ? 'status-SUCCESS' : 'status-INFO'),
+            details: {
+              vaultId: 'N/A (Digital UPI Desk)',
+              agent: 'Central UPI Gateway',
+              address: 'Online Electronic Ledger'
+            }
+          });
+        }
+      });
+
+      unifiedList.sort((a, b) => b.rawTime - a.rawTime);
+      currentStatementData = unifiedList;
+
+      if (unifiedList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color:var(--muted)">No transactions recorded</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = unifiedList.map((item, idx) => `
+        <tr>
+          <td><strong>${item.refId}</strong></td>
+          <td><span style="font-weight: 500; color: #1e293b;">${item.timestamp}</span></td>
+          <td>${item.description}</td>
+          <td><span class="badge badge-${item.txType}">${item.txType}</span></td>
+          <td style="font-weight:700;">₹${parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+          <td><span class="status-badge ${item.badgeClass}">${item.displayStatus}</span></td>
+          <td>
+            <button class="btn btn-sm" style="background:#0284c7; color:#fff;" onclick="viewReceipt(${idx})">🧾 Receipt</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function viewReceipt(index) {
+      const item = currentStatementData[index];
+      if (!item || !loggedUser) return;
+
+      const content = `
+        <div style="text-align:center; border-bottom:1px dashed #cbd5e1; padding-bottom:10px; margin-bottom:10px;">
+          <h3 style="color:#0a2540; font-size:15px; margin-bottom:2px;">BHARAT EXPRESS BANK</h3>
+          <p style="font-size:11px; color:#64748b;">Surat Main Branch | Digital Customer Receipt</p>
+        </div>
+        <p style="font-size:11.5px; margin-bottom:4px;"><strong>TXN REF NO :</strong> ${item.refId}</p>
+        <p style="font-size:11.5px; margin-bottom:4px;"><strong>DATE & TIME :</strong> ${item.timestamp}</p>
+        <p style="font-size:11.5px; margin-bottom:4px;"><strong>ACCOUNT NO  :</strong> ${loggedUser.accNumber}</p>
+        <p style="font-size:11.5px; margin-bottom:4px;"><strong>CARD HOLDER :</strong> ${loggedUser.name.toUpperCase()}</p>
+        <p style="font-size:11.5px; margin-bottom:4px;"><strong>NARRATION   :</strong> ${item.description}</p>
+        <div style="border-top:1px dashed #cbd5e1; border-bottom:1px dashed #cbd5e1; padding:8px 0; margin:10px 0;">
+          <div style="display:flex; justify-content:space-between; font-size:13.5px; font-weight:800;">
+            <span>TOTAL AMOUNT:</span>
+            <span style="color:${item.txType === 'CREDIT' ? '#10b981' : '#b91c1c'};">Rs. ${parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
+          </div>
+          <p style="font-size:10.5px; color:#64748b; margin-top:3px;">ENTRY: [${item.txType}] | STATUS: ${item.displayStatus}</p>
+        </div>
+        <div style="text-align:center; font-size:9.5px; color:#64748b;">
+          * Electronically verified by CashBridge System.
+        </div>
+      `;
+
+      document.getElementById('receiptSlipContent').innerHTML = content;
+      document.getElementById('receiptModal').classList.add('open');
+    }
+
+    function downloadStatementPDF() {
+      if (!loggedUser) return alert('Please login to download statement.');
+      if (!currentStatementData || currentStatementData.length === 0) return alert('No transactions recorded.');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+
+      doc.setFillColor(10, 37, 64);
+      doc.rect(0, 0, 210, 36, 'F');
+
+      doc.setTextColor(212, 175, 55);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('BHARAT EXPRESS BANK', 14, 16);
+
+      doc.setTextColor(0, 212, 182);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text('CashBridge Autonomous Doorstep Banking & Digital Logistics', 14, 23);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(8);
+      doc.text('Surat Main Branch, Ring Road, Gujarat - 395002 | IFSC: BEB000789', 14, 29);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.text('OFFICIAL ACCOUNT STATEMENT', 200, 16, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(203, 213, 225);
+      doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
+
+      doc.setDrawColor(203, 213, 225);
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(14, 42, 182, 34, 3, 3, 'FD');
+
+      doc.setTextColor(30, 41, 59);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text(`Account Holder: ${loggedUser.name.toUpperCase()}`, 18, 50);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(`Account Number : ${loggedUser.accNumber}`, 18, 57);
+      doc.text(`Account Scheme : ${loggedUser.accType} ACCOUNT`, 18, 64);
+      doc.text(`Registered Mobile : +91 ${loggedUser.phone}`, 18, 71);
+
+      doc.text(`Registered Address: ${loggedUser.address || 'Surat, Gujarat'}`, 110, 50);
+      doc.text(`Branch Code       : SURAT-01`, 110, 57);
+      doc.text(`Statement Period  : ALL TRANSACTIONS TO DATE (CHRONOLOGICAL)`, 110, 64);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(16, 185, 129);
+      doc.text(`Available Balance : Rs. ${parseFloat(loggedUser.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`, 110, 71);
+
+      const tableRows = currentStatementData.map(item => [
+        item.refId,
+        item.timestamp,
+        item.description,
+        item.txType,
+        'Rs. ' + parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
+        item.displayStatus
+      ]);
+
+      doc.autoTable({
+        startY: 82,
+        head: [['Ref ID', 'Date & Time', 'Transaction Narration', 'Type', 'Amount', 'Final Status']],
+        body: tableRows,
+        theme: 'striped',
+        headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
+        bodyStyles: { fontSize: 8, textColor: [30, 41, 59] },
+        columnStyles: {
+          0: { cellWidth: 24, fontStyle: 'bold' },
+          1: { cellWidth: 32 },
+          2: { cellWidth: 50 },
+          3: { cellWidth: 16 },
+          4: { cellWidth: 26, fontStyle: 'bold', halign: 'right' },
+          5: { cellWidth: 34 }
+        },
+        margin: { left: 14, right: 14 }
+      });
+
+      const finalY = doc.lastAutoTable.finalY + 14;
+      doc.setDrawColor(226, 232, 240);
+      doc.line(14, finalY, 196, finalY);
+
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text('* This is a system-generated electronic bank statement secured by BHARAT EXPRESS BANK.', 14, finalY + 7);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(10, 37, 64);
+      doc.text('BHARAT EXPRESS BANK - AUTHORIZED ELECTRONIC SEAL', 200, finalY + 7, { align: 'right' });
+
+      doc.save(`BEB_Statement_${loggedUser.accNumber}_${Date.now()}.pdf`);
+    }
+
+    function userLogout() {
+      loggedUser = null;
+      sessionStorage.removeItem('cashbridge_user');
+      document.getElementById('userProfileDropdown').classList.remove('open');
+      document.getElementById('customerSubNav').style.display = 'none';
+      document.getElementById('userDashContent').style.display = 'none';
+      
+      toggleUserAuth('login');
+      backToRegStep1();
+      document.getElementById('regOtpInput').value = '';
+      
+      const box = document.getElementById('userSmsBox');
+      if (box) box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">Sign in to view your private SMS notifications.</div>';
+
+      document.getElementById('userAuthCard').style.display = 'block';
+    }
+
+    function openProfileModal() {
+      document.getElementById('userProfileDropdown').classList.remove('open');
+      document.getElementById('mName').innerText = loggedUser.name;
+      document.getElementById('mAcc').innerText = loggedUser.accNumber;
+      document.getElementById('mType').innerText = loggedUser.accType;
+      document.getElementById('mPhone').innerText = loggedUser.phone;
+      document.getElementById('mAddress').innerText = loggedUser.address;
+      document.getElementById('mBalance').innerText = '₹' + parseFloat(loggedUser.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2});
+      document.getElementById('profileModal').classList.add('open');
+    }
+
+    function openChangePasswordModal() {
+      document.getElementById('userProfileDropdown').classList.remove('open');
+      document.getElementById('currPass').value = '';
+      document.getElementById('newPass').value = '';
+      document.getElementById('passwordModal').classList.add('open');
+    }
+
+    async function submitPasswordChange() {
+      const oldPassword = document.getElementById('currPass').value;
+      const newPassword = document.getElementById('newPass').value;
+      const res = await fetch('/api/user/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedUser.id, oldPassword, newPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert(data.message);
+        closeModal('passwordModal');
+      }
+    }
+
+    async function userDeposit() {
+      const amount = document.getElementById('depositAmt').value;
+      const val = parseFloat(amount);
+      if (!val || val <= 0) return alert('Please enter a valid deposit amount!');
+
+      const res = await fetch('/api/user/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedUser.id, amount: val })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        AudioEngine.playSuccessSound();
+        alert(`🎉 Payment of ₹${val.toLocaleString('en-IN')} Received Successfully via UPI QR! Account credited.`);
+        await refreshState();
+      }
+    }
+
+    async function userRequestCash() {
+      const amount = document.getElementById('withdrawAmt').value;
+      const res = await fetch('/api/user/request-cash', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedUser.id, amount, lat: 21.1702, lng: 72.8311 })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert('Cash request submitted to BHARAT EXPRESS BANK desk!');
+        document.getElementById('withdrawAmt').value = '';
+        showCustomerPage('cHistory');
+        await refreshState();
+      }
+    }
+
+    async function sendContactInquiry() {
+      const subject = document.getElementById('contactSubject').value;
+      const message = document.getElementById('contactMessage').value;
+      if (!subject || !message) return alert('Please enter both subject and message.');
+
+      const res = await fetch('/api/user/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: loggedUser.name, phone: loggedUser.phone, subject, message })
+      });
+      const data = await res.json();
+      alert(data.message);
+      document.getElementById('contactSubject').value = '';
+      document.getElementById('contactMessage').value = '';
+    }
+
+    function toggleStaffAuth(type) {
+      document.getElementById('staffLoginBox').style.display = type === 'login' ? 'block' : 'none';
+      document.getElementById('staffRegBox').style.display = type === 'reg' ? 'block' : 'none';
+      if (type === 'login') {
+        document.getElementById('staffRegStep1').style.display = 'block';
+        document.getElementById('staffRegStep2').style.display = 'none';
+      }
+    }
+
+    async function bankLogin() {
+      const username = document.getElementById('bUser').value;
+      const password = document.getElementById('bPass').value;
+      const res = await fetch('/api/bank/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+      loggedBank = data.staff;
+      sessionStorage.setItem('cashbridge_staff', JSON.stringify(loggedBank));
+      document.getElementById('bankAuthCard').style.display = 'none';
+      document.getElementById('bankSubNav').style.display = 'flex';
+      document.getElementById('bankDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    let tempStaffRegPhone = '';
+    async function staffSendRegOtp() {
+      const payload = {
+        name: document.getElementById('srName').value,
+        username: document.getElementById('srUser').value,
+        phone: document.getElementById('srPhone').value,
+        branch: document.getElementById('srBranch').value,
+        role: document.getElementById('srRole').value,
+        password: document.getElementById('srPass').value
+      };
+      const res = await fetch('/api/bank/send-staff-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      tempStaffRegPhone = payload.phone;
+      alert(`Staff OTP sent to ${payload.phone}! (Demo OTP: ${data.demoOtp})`);
+      document.getElementById('staffRegStep1').style.display = 'none';
+      document.getElementById('staffRegStep2').style.display = 'block';
+    }
+
+    function backToStaffRegStep1() {
+      document.getElementById('staffRegStep1').style.display = 'block';
+      document.getElementById('staffRegStep2').style.display = 'none';
+    }
+
+    async function staffVerifyRegOtp() {
+      const otp = document.getElementById('staffRegOtpInput').value;
+      const res = await fetch('/api/bank/verify-staff-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: tempStaffRegPhone, otp })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      alert('Staff Authorized and Onboarded successfully!');
+      loggedBank = data.staff;
+      sessionStorage.setItem('cashbridge_staff', JSON.stringify(loggedBank));
+      
+      backToStaffRegStep1();
+      document.getElementById('srName').value = '';
+      document.getElementById('srUser').value = '';
+      document.getElementById('srPhone').value = '';
+      document.getElementById('staffRegOtpInput').value = '';
+
+      document.getElementById('bankAuthCard').style.display = 'none';
+      document.getElementById('bankSubNav').style.display = 'flex';
+      document.getElementById('bankDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    function bankLogout() {
+      loggedBank = null;
+      sessionStorage.removeItem('cashbridge_staff');
+      document.getElementById('bankProfileDropdown').classList.remove('open');
+      document.getElementById('bankSubNav').style.display = 'none';
+      document.getElementById('bankDashContent').style.display = 'none';
+      
+      toggleStaffAuth('login');
+      backToStaffRegStep1();
+      document.getElementById('staffRegOtpInput').value = '';
+
+      document.getElementById('bankAuthCard').style.display = 'block';
+    }
+
+    function openStaffProfileModal() {
+      document.getElementById('bankProfileDropdown').classList.remove('open');
+      document.getElementById('smName').innerText = loggedBank.name;
+      document.getElementById('smUser').innerText = loggedBank.username;
+      document.getElementById('smBranch').innerText = loggedBank.branch || 'Surat Main Branch';
+      document.getElementById('smRole').innerText = loggedBank.role || 'Branch Officer';
+      document.getElementById('smPhone').innerText = loggedBank.phone || '+91 9825012345';
+      document.getElementById('staffProfileModal').classList.add('open');
+    }
+
+    function openStaffPasswordModal() {
+      document.getElementById('bankProfileDropdown').classList.remove('open');
+      document.getElementById('scurrPass').value = '';
+      document.getElementById('snewPass').value = '';
+      document.getElementById('staffPasswordModal').classList.add('open');
+    }
+
+    async function submitStaffPasswordChange() {
+      const oldPassword = document.getElementById('scurrPass').value;
+      const newPassword = document.getElementById('snewPass').value;
+      const res = await fetch('/api/bank/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ staffId: loggedBank.id, oldPassword, newPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert(data.message);
+        closeModal('staffPasswordModal');
+      }
+    }
+
+    function renderBankDash() {
+      if (!loggedBank) return;
+      document.getElementById('bankStaffBadge').innerText = (loggedBank.name || 'Officer').split(' ')[0];
+
+      const users = globalState.users || [];
+      const orders = globalState.orders || [];
+      const alerts = globalState.securityAlerts || [];
+
+      document.getElementById('statTotalCustomers').innerText = users.length;
+      const totalDeposits = users.reduce((sum, u) => sum + parseFloat(u.balance || 0), 0);
+      document.getElementById('statTotalDeposits').innerText = '₹' + totalDeposits.toLocaleString('en-IN', {minimumFractionDigits: 2});
+      const activeOrdersCount = orders.filter(o => ['PENDING', 'ACCEPTED_BY_BANK', 'IN_TRANSIT', 'VAULT_OPENED'].includes(o.status)).length;
+      document.getElementById('statActiveRequests').innerText = activeOrdersCount;
+
+      const dirTbody = document.getElementById('bankCustomerDirectoryTable');
+      dirTbody.innerHTML = users.map(u => `
+        <tr>
+          <td><strong>${u.name}</strong></td>
+          <td><span style="font-family:monospace; font-weight:600; color:var(--primary);">${u.accNumber}</span></td>
+          <td><span class="badge ${u.accType === 'SAVINGS' ? 'badge-CREDIT' : 'badge-DEBIT'}">${u.accType}</span></td>
+          <td>+91 ${u.phone}</td>
+          <td style="font-weight:700; color:#10b981;">₹${parseFloat(u.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+          <td>${u.address || 'Surat, Gujarat'}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="6" style="text-align:center;">No registered customers found</td></tr>';
+
+      const orderTbody = document.getElementById('bankOrdersTable');
+      orderTbody.innerHTML = orders.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.userName}<br><span style="font-size:11px; color:var(--muted)">+91 ${o.userPhone}</span></td>
+          <td style="font-weight:700;">₹${parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+          <td><span style="font-family:monospace; font-weight:bold; color:var(--primary);">${o.vaultId || 'VAULT-IoT-901'}</span></td>
+          <td>
+            ${o.agentName ? `
+              <div style="font-size:11.5px;">
+                <strong>🛵 ${o.agentName}</strong><br>
+                <span style="color:#0284c7;">📞 +91 ${o.agentPhone || 'N/A'}</span><br>
+                <span style="font-family:monospace; color:var(--muted);">${o.agentVehicle || ''}</span>
+              </div>
+            ` : '<span style="color:#b45309; font-size:11.5px; font-weight:600;">⚠️ In Bank Vault</span>'}
+          </td>
+          <td>
+            <span class="status-badge ${o.status === 'DELIVERED' ? 'status-SUCCESS' : (o.status === 'TAMPERED' ? 'status-FAILED' : (o.status === 'AUTO_FROZEN' ? 'status-FAILED' : 'status-INFO'))}">${o.status}</span>
+            <div style="font-size:11px; color:#475569; margin-top:2px;">${o.currentLocation || 'At Bank Desk'}</div>
+          </td>
+          <td>
+            ${o.status === 'PENDING' ? `
+              <button class="btn btn-sm btn-gold" onclick="bankApprove('${o.id}')">Approve & Load Vault</button>
+            ` : `<span style="font-size:11.5px; color:var(--muted)">OTP: <strong>${o.otp || 'N/A'}</strong></span>`}
+          </td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="text-align:center; padding:15px;">No cash dispatch requests</td></tr>';
+
+      const policeTbody = document.getElementById('bankPoliceAlertsTable');
+      policeTbody.innerHTML = alerts.map(a => `
+        <tr style="background:#fff1f2;">
+          <td><strong style="color:#b91c1c;">${a.id}</strong></td>
+          <td>${a.timestamp}</td>
+          <td><strong>${a.orderId}</strong></td>
+          <td><span class="badge" style="background:#dc2626; color:#fff;">${a.breachType}</span></td>
+          <td><strong>🚔 ${a.policeStation}</strong></td>
+          <td style="font-family:monospace;">${a.coordinates}</td>
+          <td style="color:#991b1b; font-size:11.5px;">${a.description}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="text-align:center; padding:16px; color:var(--muted);">All circuits normal. No security breaches recorded.</td></tr>';
+
+      const select = document.getElementById('bankLedgerCustSelect');
+      const prevVal = select.value;
+      select.innerHTML = '<option value="">-- Choose Customer --</option>' + users.map(u => `
+        <option value="${u.accNumber}" ${prevVal === u.accNumber ? 'selected' : ''}>${u.name} (${u.accNumber}) - ₹${parseFloat(u.balance || 0).toLocaleString('en-IN')}</option>
+      `).join('');
+
+      syncSelectedCustBalance();
+
+      const auditTbody = document.getElementById('bankMasterAuditTable');
+      auditTbody.innerHTML = orders.map(o => {
+        let badgeClass = 'status-INFO';
+        if (o.status === 'DELIVERED') badgeClass = 'status-SUCCESS';
+        else if (o.status === 'TAMPERED' || o.status === 'AUTO_FROZEN') badgeClass = 'status-FAILED';
+        else if (o.status === 'PENDING') badgeClass = 'status-PENDING';
+
+        return `
+          <tr>
+            <td><strong>${o.id}</strong></td>
+            <td>${formatDateTimeString(o.timestamp)}</td>
+            <td>${o.userName}</td>
+            <td style="font-weight:700;">₹${parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+            <td>${o.vaultId || 'VAULT-IoT-901'}</td>
+            <td>${o.agentName ? `${o.agentName} (${o.agentVehicle || ''})` : 'Pending Pick-up'}</td>
+            <td><span class="status-badge ${badgeClass}">${o.status}</span></td>
+          </tr>
+        `;
+      }).join('') || '<tr><td colspan="7" style="text-align:center; padding: 16px;">No audit orders recorded</td></tr>';
+    }
+
+    function syncSelectedCustBalance() {
+      const accNo = document.getElementById('bankLedgerCustSelect').value;
+      const user = (globalState.users || []).find(u => u.accNumber === accNo);
+      if (user) {
+        document.getElementById('bankAccNo').value = user.accNumber;
+        document.getElementById('previewAccHolder').innerText = user.name.toUpperCase();
+        document.getElementById('previewAccNo').innerText = user.accNumber;
+        document.getElementById('previewAccType').innerText = user.accType + ' ACCOUNT';
+        document.getElementById('previewAccBal').innerText = '₹' + parseFloat(user.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2});
+      } else {
+        document.getElementById('previewAccHolder').innerText = 'Select a customer above';
+        document.getElementById('previewAccNo').innerText = 'BEB-XXXXXX';
+        document.getElementById('previewAccBal').innerText = '₹0.00';
+      }
+    }
+
+    async function bankApprove(orderId) {
+      const res = await fetch('/api/bank/approve-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert(`Approved! Vault sealed at bank. Timer will start when delivery agent accepts task.`);
+        await refreshState();
+      }
+    }
+
+    async function bankAdjustBalance() {
+      const accNumber = document.getElementById('bankAccNo').value;
+      const amount = document.getElementById('bankAddAmt').value;
+      const adjustmentType = document.getElementById('bankAdjType').value;
+      const res = await fetch('/api/bank/adjust-balance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accNumber, amount, adjustmentType })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert(`Balance successfully updated for ${accNumber}!`);
+        document.getElementById('bankAddAmt').value = '';
+        await refreshState();
+      }
+    }
+
+    function downloadBankMasterAuditPDF() {
+      const orders = globalState.orders || [];
+      if (orders.length === 0) return alert('No orders recorded to generate audit report.');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+
+      doc.setFillColor(10, 37, 64);
+      doc.rect(0, 0, 210, 36, 'F');
+
+      doc.setTextColor(212, 175, 55);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('BHARAT EXPRESS BANK', 14, 15);
+
+      doc.setTextColor(0, 212, 182);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text('CashBridge Central Operations & Vault Logistics Audit Control', 14, 22);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(8);
+      doc.text(`Branch: Surat Main Branch (Ring Road) | Auditing Officer: ${loggedBank ? loggedBank.name : 'Officer'}`, 14, 29);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('BRANCH MASTER AUDIT REPORT', 200, 16, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(203, 213, 225);
+      doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
+
+      const tableRows = orders.map(o => [
+        o.id,
+        formatDateTimeString(o.timestamp),
+        o.userName,
+        o.accType,
+        'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
+        o.vaultId || 'VAULT-IoT-901',
+        o.agentName ? `${o.agentName} (${o.agentVehicle || ''})` : 'Unassigned',
+        o.status
+      ]);
+
+      doc.autoTable({
+        startY: 44,
+        head: [['Order ID', 'Date & Time', 'Customer', 'Type', 'Amount', 'Vault ID', 'Agent In Custody', 'Final Status']],
+        body: tableRows,
+        theme: 'striped',
+        headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
+        bodyStyles: { fontSize: 7.5, textColor: [30, 41, 59] },
+        columnStyles: {
+          0: { cellWidth: 20, fontStyle: 'bold' },
+          1: { cellWidth: 28 },
+          2: { cellWidth: 28 },
+          3: { cellWidth: 16 },
+          4: { cellWidth: 22, halign: 'right', fontStyle: 'bold' },
+          5: { cellWidth: 20 },
+          6: { cellWidth: 26 },
+          7: { cellWidth: 22 }
+        },
+        margin: { left: 14, right: 14 }
+      });
+
+      const finalY = doc.lastAutoTable.finalY + 14;
+      doc.setDrawColor(226, 232, 240);
+      doc.line(14, finalY, 196, finalY);
+
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text('* Official internal audit statement generated under regulatory supervision of BHARAT EXPRESS BANK.', 14, finalY + 6);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(10, 37, 64);
+      doc.text('AUTHORIZED BRANCH CHIEF MANAGER STAMP', 200, finalY + 6, { align: 'right' });
+
+      doc.save(`BEB_Branch_Master_Audit_${Date.now()}.pdf`);
+    }
+
+    function toggleAgentAuth(type) {
+      document.getElementById('agentLoginBox').style.display = type === 'login' ? 'block' : 'none';
+      document.getElementById('agentRegBox').style.display = type === 'reg' ? 'block' : 'none';
+      if (type === 'login') {
+        document.getElementById('agentRegStep1').style.display = 'block';
+        document.getElementById('agentRegStep2').style.display = 'none';
+      }
+    }
+
+    async function agentLogin() {
+      const phone = document.getElementById('aPhone').value;
+      const password = document.getElementById('aPass').value;
+      const res = await fetch('/api/agent/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, password })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+      loggedAgent = data.agent;
+      sessionStorage.setItem('cashbridge_agent', JSON.stringify(loggedAgent));
+      document.getElementById('agentAuthCard').style.display = 'none';
+      document.getElementById('agentSubNav').style.display = 'flex';
+      document.getElementById('agentDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    let tempAgentRegPhone = '';
+    async function agentSendRegOtp() {
+      const payload = {
+        name: document.getElementById('arName').value,
+        phone: document.getElementById('arPhone').value,
+        vehicle: document.getElementById('arVehicle').value,
+        password: document.getElementById('arPass').value
+      };
+      const res = await fetch('/api/agent/send-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      tempAgentRegPhone = payload.phone;
+      alert(`Agent OTP sent to ${payload.phone}! (Demo OTP: ${data.demoOtp})`);
+      document.getElementById('agentRegStep1').style.display = 'none';
+      document.getElementById('agentRegStep2').style.display = 'block';
+    }
+
+    function backToAgentRegStep1() {
+      document.getElementById('agentRegStep1').style.display = 'block';
+      document.getElementById('agentRegStep2').style.display = 'none';
+    }
+
+    async function agentVerifyRegOtp() {
+      const otp = document.getElementById('agentRegOtpInput').value;
+      const res = await fetch('/api/agent/verify-reg-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: tempAgentRegPhone, otp })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      alert('Delivery Agent successfully authorized and onboarded!');
+      loggedAgent = data.agent;
+      sessionStorage.setItem('cashbridge_agent', JSON.stringify(loggedAgent));
+      
+      backToAgentRegStep1();
+      document.getElementById('arName').value = '';
+      document.getElementById('arPhone').value = '';
+      document.getElementById('arVehicle').value = '';
+      document.getElementById('agentRegOtpInput').value = '';
+
+      document.getElementById('agentAuthCard').style.display = 'none';
+      document.getElementById('agentSubNav').style.display = 'flex';
+      document.getElementById('agentDashContent').style.display = 'block';
+      refreshState();
+    }
+
+    function agentLogout() {
+      loggedAgent = null;
+      sessionStorage.removeItem('cashbridge_agent');
+      document.getElementById('agentProfileDropdown').classList.remove('open');
+      document.getElementById('agentSubNav').style.display = 'none';
+      document.getElementById('agentDashContent').style.display = 'none';
+      
+      toggleAgentAuth('login');
+      backToAgentRegStep1();
+      document.getElementById('agentRegOtpInput').value = '';
+
+      document.getElementById('agentAuthCard').style.display = 'block';
+      if (cameraStream) cameraStream.getTracks().forEach(t => t.stop());
+    }
+
+    function openAgentProfileModal() {
+      document.getElementById('agentProfileDropdown').classList.remove('open');
+      document.getElementById('amName').innerText = loggedAgent.name;
+      document.getElementById('amId').innerText = loggedAgent.id;
+      document.getElementById('amVehicle').innerText = loggedAgent.vehicle || 'GJ-05-AB-1234';
+      document.getElementById('amPhone').innerText = '+91 ' + loggedAgent.phone;
+      document.getElementById('agentProfileModal').classList.add('open');
+    }
+
+    function openAgentPasswordModal() {
+      document.getElementById('agentProfileDropdown').classList.remove('open');
+      document.getElementById('acurrPass').value = '';
+      document.getElementById('anewPass').value = '';
+      document.getElementById('agentPasswordModal').classList.add('open');
+    }
+
+    async function submitAgentPasswordChange() {
+      const oldPassword = document.getElementById('acurrPass').value;
+      const newPassword = document.getElementById('anewPass').value;
+      const res = await fetch('/api/agent/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentId: loggedAgent.id, oldPassword, newPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        alert(data.message);
+        closeModal('agentPasswordModal');
+      }
+    }
+
+    function renderAgentDash() {
+      if (!loggedAgent) return;
+      document.getElementById('agentProfileBadge').innerText = (loggedAgent.name || 'Agent').split(' ')[0];
+
+      const orders = globalState.orders || [];
+      const assigned = orders.find(o => 
+        (o.status === 'ACCEPTED_BY_BANK') || 
+        (String(o.agentId) === String(loggedAgent.id) && ['IN_TRANSIT', 'VAULT_OPENED'].includes(o.status))
+      );
+
+      const taskBox = document.getElementById('agentTaskBox');
+      const navCustCard = document.getElementById('agentNavCustCard');
+      const attemptsBadge = document.getElementById('agentWrongAttemptsBadge');
+
+      if (!assigned) {
+        taskBox.innerHTML = `
+          <h3 class="card-title">📦 Active Task Dispatch Status</h3>
+          <p style="color: var(--muted); font-size:12.5px;">No active delivery assigned right now. When the Bank approves an order, it will appear here for you to accept.</p>
+        `;
+        navCustCard.innerHTML = `<p style="color: var(--muted); font-size: 12.5px;">No active order in transit. Accept a request to view customer live location.</p>`;
+        if (attemptsBadge) attemptsBadge.innerText = 'Attempts Remaining: 3/3';
+      } else {
+        const remaining = 3 - (assigned.wrongOtpAttempts || 0);
+        if (attemptsBadge) {
+          attemptsBadge.innerText = `Attempts Remaining: ${remaining}/3`;
+          attemptsBadge.style.color = remaining <= 1 ? '#dc2626' : '#f59e0b';
+        }
+
+        taskBox.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 2px;">Transit: ${assigned.id}</h3>
+              <p style="font-size: 12.5px;">Customer: <strong>${assigned.userName}</strong> (+91 ${assigned.userPhone})</p>
+              <p style="font-size: 12px; color: var(--muted);">Drop: ${assigned.deliveryAddress}</p>
+              <p style="font-size: 12.5px; color: #10b981; font-weight: 700; margin-top: 2px;">Cash to Handover: ₹${parseFloat(assigned.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</p>
+              <p style="font-size: 12px; margin-top: 2px;">Vault ID: <strong style="color:var(--primary);">${assigned.vaultId || 'VAULT-IoT-901'}</strong></p>
+            </div>
+            <div>
+              <span class="status-badge status-INFO">${assigned.status}</span>
+            </div>
+          </div>
+          <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
+            ${assigned.status === 'ACCEPTED_BY_BANK' ? `
+              <button class="btn btn-gold btn-sm" onclick="agentAcceptOrder('${assigned.id}')">Accept Task & Pick Up Vault</button>
+            ` : `
+              <button class="btn btn-sm btn-success" onclick="showAgentPage('aVaultConsole')">Proceed to Handover Console →</button>
+            `}
+            <a href="https://maps.google.com/?q=${assigned.lat},${assigned.lng}" target="_blank" class="btn btn-sm" style="background:#4338ca; text-decoration: none;">
+              🗺️ Open GPS to Customer
+            </a>
+          </div>
+        `;
+
+        navCustCard.innerHTML = `
+          <p style="font-size: 12.5px; margin-bottom: 4px;"><strong>Customer:</strong> ${assigned.userName} (+91 ${assigned.userPhone})</p>
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 6px;"><strong>Address:</strong> ${assigned.deliveryAddress}</p>
+          <p style="font-size: 11.5px; font-family: monospace; color: #0284c7; margin-bottom: 10px;">GPS: ${assigned.lat}, ${assigned.lng}</p>
+          <a href="https://maps.google.com/?q=${assigned.lat},${assigned.lng}" target="_blank" class="btn btn-sm btn-gold" style="display: inline-block; text-decoration: none;">
+            🗺️ Start Google Maps Navigation
+          </a>
+        `;
+      }
+
+      const miniTbody = document.getElementById('agentMiniStatementTable');
+      const recentOrders = orders.slice(0, 8);
+      miniTbody.innerHTML = recentOrders.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${formatDateTimeString(o.timestamp)}</td>
+          <td>${o.userName}</td>
+          <td style="font-weight:700;">₹${parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+          <td><span class="status-badge ${o.status === 'DELIVERED' ? 'status-SUCCESS' : (o.status === 'TAMPERED' ? 'status-FAILED' : 'status-INFO')}">${o.status}</span></td>
+          <td style="font-family:monospace; font-size:11px;">${o.lat}, ${o.lng}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="6" style="text-align:center; padding: 12px;">No recent pickup or drop orders</td></tr>';
+
+      const compTbody = document.getElementById('agentCompletedOrdersTable');
+      const deliveredOrders = orders.filter(o => o.status === 'DELIVERED');
+      compTbody.innerHTML = deliveredOrders.map(o => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${formatDateTimeString(o.deliveredAt || o.timestamp)}</td>
+          <td>${o.userName}</td>
+          <td style="font-weight:700; color:#10b981;">₹${parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
+          <td>${o.vaultId || 'VAULT-IoT-901'}</td>
+          <td>
+            ${o.proofPhoto ? `<img src="${o.proofPhoto}" width="44" height="32" style="border-radius:4px; object-fit:cover; border:1px solid #cbd5e1;" alt="Proof">` : '<span style="color:var(--muted); font-size:11px;">Archived</span>'}
+          </td>
+          <td><span class="status-badge status-SUCCESS">DELIVERED</span></td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" style="text-align:center; padding: 16px;">No completed delivery orders yet</td></tr>';
+    }
+
+    async function agentAcceptOrder(orderId) {
+      const res = await fetch('/api/agent/accept-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, agentId: loggedAgent.id })
+      });
+      const data = await res.json();
+      if (!res.ok) return alert(data.error);
+
+      alert('Vault collected from bank! 1-Hour Anti-Hijack Timer is now officially STARTED.');
+      await refreshState();
+      showAgentPage('aNavigation');
+    }
+
+    async function agentUnlockVault() {
+      const enteredOtp = document.getElementById('vaultOtpKeypad').value;
+      const order = (globalState.orders || []).find(o => ['IN_TRANSIT', 'ACCEPTED_BY_BANK'].includes(o.status));
+      if (!order) return alert('No active vault currently in transit!');
+
+      const res = await fetch('/api/vault/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id, enteredOtp })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 403) {
+          AudioEngine.playPoliceSirenSound();
+        }
+        alert(data.error);
+        await refreshState();
+      } else {
+        alert(data.message);
+        document.getElementById('vaultOtpKeypad').value = '';
+        await refreshState();
+      }
+    }
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+        cameraStream = s;
+        document.getElementById('webcam').srcObject = s;
+      }).catch(() => console.log('Camera unavailable'));
+    }
+
+    async function agentCaptureProof() {
+      const order = (globalState.orders || []).find(o => o.status === 'VAULT_OPENED');
+      if (!order) return alert('Vault must be opened with customer OTP first!');
+
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('canvas');
+      canvas.width = video.videoWidth || 320;
+      canvas.height = video.videoHeight || 240;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      const photoBase64 = canvas.toDataURL('image/jpeg');
+
+      await fetch('/api/agent/complete-delivery', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order.id, photoBase64 })
+      });
+      AudioEngine.playSuccessSound();
+      alert('Photo proof recorded! Cash delivery successfully completed and customer account debited.');
+      if (cameraStream) cameraStream.getTracks().forEach(t => t.stop());
+      await refreshState();
+      showAgentPage('aReports');
+    }
+
+    async function triggerBreachAlarm() {
+      const order = (globalState.orders || []).find(o => ['IN_TRANSIT', 'VAULT_OPENED', 'ACCEPTED_BY_BANK'].includes(o.status));
+      if (!confirm('⚠️ CONFIRM EMERGENCY SOS: Trigger Physical Breach / Tamper Alarm and Alert Surat Police?')) return;
+
+      await fetch('/api/vault/tamper', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: order ? order.id : 'V-101' })
+      });
+      AudioEngine.playPoliceSirenSound();
+      await refreshState();
+    }
+
+    function downloadAgentDutyPDF() {
+      const delivered = (globalState.orders || []).filter(o => o.status === 'DELIVERED');
+      if (delivered.length === 0) return alert('No completed deliveries available.');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'mm', 'a4');
+
+      doc.setFillColor(10, 37, 64);
+      doc.rect(0, 0, 210, 36, 'F');
+
+      doc.setTextColor(212, 175, 55);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('BHARAT EXPRESS BANK', 14, 16);
+
+      doc.setTextColor(0, 212, 182);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text('CashBridge Field Operations & Vault Transit Duty Statement', 14, 23);
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(8);
+      doc.text(`Agent Name: ${loggedAgent ? loggedAgent.name : 'Agent'} | Vehicle: ${loggedAgent ? loggedAgent.vehicle : 'GJ-05-AB-1234'}`, 14, 29);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('AGENT DUTY & DISPATCH LOG', 200, 16, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(203, 213, 225);
+      doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
+
+      const tableRows = delivered.map(o => [
+        o.id,
+        formatDateTimeString(o.deliveredAt || o.timestamp),
+        o.userName,
+        'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
+        o.vaultId || 'VAULT-IoT-901',
+        'COMPLETED (DELIVERED)'
+      ]);
+
+      doc.autoTable({
+        startY: 44,
+        head: [['Order Ref', 'Delivery Time', 'Customer Name', 'Delivered Cash', 'Vault ID', 'Verification Status']],
+        body: tableRows,
+        theme: 'striped',
+        headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
+        bodyStyles: { fontSize: 8, textColor: [30, 41, 59] },
+        columnStyles: {
+          0: { cellWidth: 26, fontStyle: 'bold' },
+          1: { cellWidth: 38 },
+          2: { cellWidth: 38 },
+          3: { cellWidth: 28, halign: 'right', fontStyle: 'bold' },
+          4: { cellWidth: 24 },
+          5: { cellWidth: 34 }
+        },
+        margin: { left: 14, right: 14 }
+      });
+
+      const finalY = doc.lastAutoTable.finalY + 14;
+      doc.setDrawColor(226, 232, 240);
+      doc.line(14, finalY, 196, finalY);
+
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(100, 116, 139);
+      doc.text('* Verified electronic field handover certificate recorded via CashBridge Telemetry.', 14, finalY + 6);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(10, 37, 64);
+      doc.text('BHARAT EXPRESS BANK LOGISTICS SEAL', 200, finalY + 6, { align: 'right' });
+
+      doc.save(`BEB_Agent_Duty_Report_${Date.now()}.pdf`);
+    }
+
+    if (loggedUser) {
+      document.getElementById('userAuthCard').style.display = 'none';
+      document.getElementById('customerSubNav').style.display = 'flex';
+      document.getElementById('userDashContent').style.display = 'block';
+    }
+    if (loggedBank) {
+      document.getElementById('bankAuthCard').style.display = 'none';
+      document.getElementById('bankSubNav').style.display = 'flex';
+      document.getElementById('bankDashContent').style.display = 'block';
+    }
+    if (loggedAgent) {
+      document.getElementById('agentAuthCard').style.display = 'none';
+      document.getElementById('agentSubNav').style.display = 'flex';
+      document.getElementById('agentDashContent').style.display = 'block';
+    }
+
+    refreshState();
+  </script>
+</body>
+</html>

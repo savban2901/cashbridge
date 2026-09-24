@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": "USR-101",
+      "name": "Savban Kagzi",
+      "phone": "9876543210",
+      "password": "123",
+      "accNumber": "BEB-700109",
+      "accType": "SAVINGS",
+      "balance": 20000,
+      "address": "Ring Road, Surat, Gujarat"
+    },
+    {
+      "id": "USR-871",
+      "name": "Usmangani Tantwala",
+      "phone": "7990561102",
+      "password": "Usman@786",
+      "accNumber": "BEB-902127",
+      "accType": "CURRENT",
+      "balance": 10000,
+      "address": "Render, Surat, Gujarat"
+    }
+  ],
+  "bankStaff": [
+    {
+      "id": "STAFF-01",
+      "username": "admin",
+      "password": "123",
+      "name": "Branch Officer (Surat)",
+      "phone": "9825012345",
+      "branch": "Surat Main Branch",
+      "role": "Senior Vault Dispatch Officer"
+    }
+  ],
+  "agents": [
+    {
+      "id": "AGT-01",
+      "username": "ramesh",
+      "phone": "9988776655",
+      "password": "123",
+      "name": "Ramesh Patel",
+      "vehicle": "GJ-05-AB-1234",
+      "status": "AVAILABLE"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-7446",
+      "userId": "USR-101",
+      "userName": "Savban Kagzi",
+      "userPhone": "9876543210",
+      "accNumber": "BEB-700109",
+      "accType": "SAVINGS",
+      "amount": 15000,
+      "status": "DELIVERED",
+      "otp": "894971",
+      "vaultId": "VAULT-IoT-901",
+      "agentId": "AGT-01",
+      "agentName": "Ramesh Patel",
+      "proofPhoto": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCADwAUADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=",
+      "lat": 21.1702,
+      "lng": 72.8311,
+      "deliveryAddress": "Ring Road, Surat, Gujarat",
+      "bankAddress": "BHARAT EXPRESS BANK, Ring Road Branch, Surat",
+      "bankLat": 21.1895,
+      "bankLng": 72.8258,
+      "timestamp": "23/09/2026, 11:10:01 pm",
+      "agentVehicle": "GJ-05-AB-1234",
+      "deliveredAt": "23/09/2026, 11:11:28 pm"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TXN-2023",
+      "userId": "USR-871",
+      "orderId": null,
+      "type": "OPENING_DEPOSIT",
+      "description": "Account Opening Deposit",
+      "amount": 10000,
+      "txType": "CREDIT",
+      "timestamp": "23/09/2026, 11:13:49 pm",
+      "status": "SUCCESS"
+    },
+    {
+      "id": "TXN-1685",
+      "userId": "USR-101",
+      "orderId": "ORD-7446",
+      "type": "CASHBRIDGE_REQUEST",
+      "description": "Doorstep Cash Request (ORD-7446)",
+      "amount": 15000,
+      "txType": "DEBIT",
+      "timestamp": "23/09/2026, 11:10:01 pm",
+      "status": "DELIVERED (SUCCESS)"
+    },
+    {
+      "id": "TXN-9011",
+      "userId": "USR-101",
+      "orderId": null,
+      "type": "ACCOUNT_OPENING",
+      "description": "Account Opening Initial Deposit",
+      "amount": 35000,
+      "txType": "CREDIT",
+      "timestamp": "23/09/2026, 10:00:00 am",
+      "status": "SUCCESS"
+    }
+  ],
+  "tempRegistrations": {},
+  "tempStaffRegistrations": {},
+  "tempAgentRegistrations": {},
+  "contactMessages": []
+}
