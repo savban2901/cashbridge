@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CashBridge System Architecture Diagram</title>
+  <style>
+    @page { size: A4 landscape; margin: 8mm; }
+    body {
+      margin: 0;
+      padding: 10px;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    svg {
+      width: 100%;
+      max-width: 1200px;
+      height: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      background: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#0f172a" />
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#dc2626" />
+    </marker>
+    <marker id="arrowTeal" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#0284c7" />
+    </marker>
+  </defs>
+
+  <!-- BORDER FRAME -->
+  <rect x="15" y="15" width="1170" height="820" rx="12" fill="#ffffff" stroke="#0f172a" stroke-width="2.5"/>
+
+  <!-- ==================== HEADER SECTION ==================== -->
+  <rect x="15" y="15" width="1170" height="65" rx="12" fill="#0a2540"/>
+  <rect x="35" y="27" width="40" height="40" rx="8" fill="#d4af37"/>
+  <text x="55" y="54" font-size="22" font-weight="900" fill="#000" text-anchor="middle">B</text>
+  <text x="90" y="44" font-size="20" font-weight="800" fill="#ffffff" letter-spacing="0.5">BHARAT EXPRESS BANK — CASHBRIDGE</text>
+  <text x="90" y="63" font-size="12" font-weight="500" fill="#00d4b6">Autonomous Doorstep Banking & Multi-Tier Threat Mitigation System Architecture</text>
+  
+  <rect x="960" y="28" width="205" height="38" rx="6" fill="#ffffff"/>
+  <text x="1062" y="45" font-size="11" font-weight="800" fill="#0a2540" text-anchor="middle">RBI REGULATORY CAP</text>
+  <text x="1062" y="59" font-size="12" font-weight="900" fill="#dc2626" text-anchor="middle">FLAT ₹25,000 LIMIT</text>
+
+  <!-- ==================== LAYER 1: CLIENT PORTALS ==================== -->
+  <text x="35" y="105" font-size="13" font-weight="800" fill="#475569" letter-spacing="1">TIER 1: MULTI-PORTAL INTERFACE (RESPONSIVE / WEB)</text>
+
+  <!-- Customer Portal Box -->
+  <g transform="translate(35, 115)">
+    <rect width="360" height="150" rx="10" fill="#f8fafc" stroke="#0284c7" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="32" rx="10" fill="#0284c7"/>
+    <text x="15" y="21" font-size="13" font-weight="800" fill="#ffffff">👤 CUSTOMER PORTAL</text>
+    <text x="15" y="52" font-size="11.5" font-weight="700" fill="#0f172a">• Instant Dynamic UPI QR Deposit Desk</text>
+    <text x="15" y="72" font-size="11.5" font-weight="700" fill="#0f172a">• Cash Request Interface (Capped at ₹25k)</text>
+    <text x="15" y="92" font-size="11.5" font-weight="700" fill="#0f172a">• Real-Time 1-Hour Anti-Hijack Timer Display</text>
+    <text x="15" y="112" font-size="11.5" font-weight="700" fill="#0f172a">• Dynamic SMS & Handover OTP Display</text>
+    <text x="15" y="132" font-size="11.5" font-weight="700" fill="#0f172a">• Chronological Statement & Digital Receipts</text>
+  </g>
+
+  <!-- Bank Desk Box -->
+  <g transform="translate(420, 115)">
+    <rect width="360" height="150" rx="10" fill="#f8fafc" stroke="#d97706" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="32" rx="10" fill="#d97706"/>
+    <text x="15" y="21" font-size="13" font-weight="800" fill="#ffffff">🏦 BANK INTELLIGENCE & AUDIT DESK</text>
+    <text x="15" y="52" font-size="11.5" font-weight="700" fill="#0f172a">• Customer Master Directory & Reserve Monitoring</text>
+    <text x="15" y="72" font-size="11.5" font-weight="700" fill="#0f172a">• AI Clearance Dispatch Monitor</text>
+    <text x="15" y="92" font-size="11.5" font-weight="700" fill="#0f172a">• Vault Custody & Vehicle Tracking Desk</text>
+    <text x="15" y="112" font-size="11.5" font-weight="700" fill="#0f172a">• Emergency SOS & Police Dispatch Board</text>
+    <text x="15" y="132" font-size="11.5" font-weight="700" fill="#0f172a">• Master Audit PDF Export (jsPDF)</text>
+  </g>
+
+  <!-- Delivery Agent Box -->
+  <g transform="translate(805, 115)">
+    <rect width="360" height="150" rx="10" fill="#f8fafc" stroke="#059669" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="32" rx="10" fill="#059669"/>
+    <text x="15" y="21" font-size="13" font-weight="800" fill="#ffffff">🚚 DELIVERY AGENT FLEET CONSOLE</text>
+    <text x="15" y="52" font-size="11.5" font-weight="700" fill="#0f172a">• Task Pickup Acceptance (Starts 1-Hr Timer)</text>
+    <text x="15" y="72" font-size="11.5" font-weight="700" fill="#0f172a">• Turn-by-Turn GPS Google Maps Navigation</text>
+    <text x="15" y="92" font-size="11.5" font-weight="700" fill="#0f172a">• IoT Smart Vault Keypad Console</text>
+    <text x="15" y="112" font-size="11.5" font-weight="700" fill="#0f172a">• 3-Attempt Wrong PIN Lockout Detector</text>
+    <text x="15" y="132" font-size="11.5" font-weight="700" fill="#0f172a">• Webcam Real-time Photo Proof Capture</text>
+  </g>
+
+  <!-- ==================== CONNECTOR LINES ==================== -->
+  <line x1="215" y1="265" x2="215" y2="330" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="225" y="300" font-size="10.5" font-weight="700" fill="#0284c7">Withdrawal Request</text>
+
+  <line x1="600" y1="265" x2="600" y2="330" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="610" y="300" font-size="10.5" font-weight="700" fill="#d97706">Vault Dispatch / Audit</text>
+
+  <line x1="985" y1="265" x2="985" y2="330" stroke="#0f172a" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="995" y="300" font-size="10.5" font-weight="700" fill="#059669">Handover / Telemetry</text>
+
+  <!-- ==================== LAYER 2: CORE SERVER & AI ==================== -->
+  <text x="35" y="325" font-size="13" font-weight="800" fill="#475569" letter-spacing="1">TIER 2: CENTRAL BACKEND ENGINE (NODE.JS + WSS + PERMANENT STORAGE)</text>
+
+  <g transform="translate(35, 335)">
+    <rect width="1130" height="235" rx="10" fill="#f1f5f9" stroke="#0f172a" stroke-width="2"/>
+    
+    <!-- Left: Server Core -->
+    <g transform="translate(25, 20)">
+      <rect width="360" height="195" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+      <rect x="0" y="0" width="360" height="30" rx="8" fill="#0a2540"/>
+      <text x="15" y="20" font-size="12" font-weight="800" fill="#ffffff">EXPRESS & WEBSOCKET ENGINE</text>
+      <text x="15" y="52" font-size="11" font-weight="600" fill="#334155">• Port Binding: 0.0.0.0 (process.env.PORT)</text>
+      <text x="15" y="72" font-size="11" font-weight="600" fill="#334155">• Auto Protocol: HTTP/WS (Local) &amp; HTTPS/WSS (Cloud)</text>
+      <text x="15" y="92" font-size="11" font-weight="600" fill="#334155">• User-Scoped Private Telecom SMS Push</text>
+      <text x="15" y="112" font-size="11" font-weight="600" fill="#334155">• Real-time State Synchronization Across Terminals</text>
+      <text x="15" y="132" font-size="11" font-weight="600" fill="#334155">• Ledger Hold / Release Verification Rules</text>
+      <text x="15" y="152" font-size="11" font-weight="600" fill="#334155">• 100% Free Cloud Deployment on Render.com</text>
+      <rect x="15" y="165" width="330" height="20" rx="4" fill="#e0f2fe"/>
+      <text x="180" y="179" font-size="10" font-weight="800" fill="#0369a1" text-anchor="middle">ACTIVE BROADCAST ROUTE: /api/state</text>
+    </g>
+
+    <!-- Center: AI Clearance Engine -->
+    <g transform="translate(415, 20)">
+      <rect width="360" height="195" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+      <rect x="0" y="0" width="360" height="30" rx="8" fill="#2563eb"/>
+      <text x="15" y="20" font-size="12" font-weight="800" fill="#ffffff">🧠 AI AUTONOMOUS CLEARANCE ENGINE</text>
+      <text x="15" y="52" font-size="11" font-weight="700" fill="#1e293b">• RBI Ceiling Rule: Strict &le; ₹25,000 Enforcement</text>
+      <text x="15" y="72" font-size="11" font-weight="700" fill="#1e293b">• Solvency Check: Customer Ledger Balance Verification</text>
+      <text x="15" y="92" font-size="11" font-weight="700" fill="#1e293b">• Geofence Drift: Surat Metropolitan (21.17N, 72.83E)</text>
+      <text x="15" y="112" font-size="11" font-weight="700" fill="#1e293b">• KYC &amp; Identity Confidence Validation (Score: 0-100)</text>
+      <text x="15" y="132" font-size="11" font-weight="700" fill="#1e293b">• Anti-Money Laundering (AML) Velocity Check</text>
+      <rect x="15" y="150" width="330" height="35" rx="4" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+      <text x="180" y="165" font-size="11" font-weight="800" fill="#065f46" text-anchor="middle">SCORE &ge; 60: AUTONOMOUS APPROVAL</text>
+      <text x="180" y="178" font-size="9.5" font-weight="600" fill="#047857" text-anchor="middle">Smart Vault Auto-Sealed at Bank Desk</text>
+    </g>
+
+    <!-- Right: Permanent JSON Storage -->
+    <g transform="translate(805, 20)">
+      <rect width="300" height="195" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+      <rect x="0" y="0" width="300" height="30" rx="8" fill="#d97706"/>
+      <text x="15" y="20" font-size="12" font-weight="800" fill="#ffffff">💾 PERMANENT STORAGE ENGINE</text>
+      <text x="15" y="52" font-size="11" font-weight="700" fill="#b45309">File: bharat_express_db.json</text>
+      <text x="15" y="75" font-size="11" font-weight="600" fill="#334155">• Atomic Sync (fs.writeFileSync)</text>
+      <text x="15" y="95" font-size="11" font-weight="600" fill="#334155">• Customers &amp; Staff Credentials</text>
+      <text x="15" y="115" font-size="11" font-weight="600" fill="#334155">• Vault Orders &amp; Handover Logs</text>
+      <text x="15" y="135" font-size="11" font-weight="600" fill="#334155">• Complete Transaction History</text>
+      <text x="15" y="155" font-size="11" font-weight="600" fill="#334155">• Police SOS &amp; Alarm Incident Logs</text>
+      <rect x="15" y="168" width="270" height="18" rx="4" fill="#fef3c7"/>
+      <text x="150" y="181" font-size="9.5" font-weight="800" fill="#92400e" text-anchor="middle">Zero Data Loss on Server Restart</text>
+    </g>
+  </g>
+
+  <!-- ==================== CONNECTOR TO DEFENSE LAYER ==================== -->
+  <line x1="600" y1="570" x2="600" y2="610" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowRed)"/>
+  <text x="610" y="595" font-size="11" font-weight="800" fill="#dc2626">Threat Detection &amp; Police Dispatch Trigger</text>
+
+  <!-- ==================== LAYER 3: THREAT MITIGATION ==================== -->
+  <text x="35" y="605" font-size="13" font-weight="800" fill="#dc2626" letter-spacing="1">TIER 3: DEFENSE ENGINE &amp; POLICE INTEGRATION (DIAL 112)</text>
+
+  <g transform="translate(35, 615)">
+    <rect width="1130" height="205" rx="10" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+    
+    <!-- Security Box 1: 1-Hour Timer -->
+    <g transform="translate(25, 20)">
+      <rect width="345" height="165" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+      <rect x="0" y="0" width="345" height="28" rx="8" fill="#dc2626"/>
+      <text x="15" y="19" font-size="11.5" font-weight="800" fill="#ffffff">⏱️ 1-HOUR ANTI-HIJACK TIMER</text>
+      <text x="15" y="48" font-size="11" font-weight="700" fill="#1e293b">• Trigger: Agent accepts vault pickup at bank</text>
+      <text x="15" y="68" font-size="11" font-weight="600" fill="#475569">• Live Ticking Countdown on Customer Screen</text>
+      <text x="15" y="88" font-size="11" font-weight="600" fill="#475569">• Window: Exactly 60 Minutes (3,600,000 ms)</text>
+      <text x="15" y="108" font-size="11" font-weight="700" fill="#b91c1c">• Timeout Action: AUTO-FREEZE &amp; DESTROY OTP</text>
+      <text x="15" y="128" font-size="11" font-weight="600" fill="#475569">• Cash Neutralization Ink Deployed</text>
+      <rect x="15" y="138" width="315" height="18" rx="4" fill="#fee2e2"/>
+      <text x="172" y="151" font-size="9.5" font-weight="800" fill="#991b1b" text-anchor="middle">CUSTOMER LEDGER 100% PROTECTED</text>
+    </g>
+
+    <!-- Security Box 2: 3-Attempt Lockout -->
+    <g transform="translate(390, 20)">
+      <rect width="350" height="165" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+      <rect x="0" y="0" width="350" height="28" rx="8" fill="#dc2626"/>
+      <text x="15" y="19" font-size="11.5" font-weight="800" fill="#ffffff">🔐 3-WRONG ATTEMPTS PIN LOCKOUT</text>
+      <text x="15" y="48" font-size="11" font-weight="700" fill="#1e293b">• Keypad Monitored: Attempts tracked server-side</text>
+      <text x="15" y="68" font-size="11" font-weight="600" fill="#475569">• Attempt 1: Warning (2 attempts remaining)</text>
+      <text x="15" y="88" font-size="11" font-weight="600" fill="#475569">• Attempt 2: High Alert (1 attempt remaining)</text>
+      <text x="15" y="108" font-size="11" font-weight="700" fill="#b91c1c">• Attempt 3: PERMANENT VAULT LOCKDOWN</text>
+      <text x="15" y="128" font-size="11" font-weight="600" fill="#475569">• Dynamic OTP instantly invalidated</text>
+      <rect x="15" y="138" width="320" height="18" rx="4" fill="#fee2e2"/>
+      <text x="175" y="151" font-size="9.5" font-weight="800" fill="#991b1b" text-anchor="middle">PREVENTS BRUTE-FORCE THEFT</text>
+    </g>
+
+    <!-- Security Box 3: Police SOS -->
+    <g transform="translate(760, 20)">
+      <rect width="345" height="165" rx="8" fill="#ffffff" stroke="#ef4444" stroke-width="1.5"/>
+      <rect x="0" y="0" width="345" height="28" rx="8" fill="#dc2626"/>
+      <text x="15" y="19" font-size="11.5" font-weight="800" fill="#ffffff">🚨 SURAT POLICE (DIAL 112) DISPATCH</text>
+      <text x="15" y="48" font-size="11" font-weight="700" fill="#1e293b">• Trigger: Physical chassis breach / SOS button</text>
+      <text x="15" y="68" font-size="11" font-weight="600" fill="#475569">• Dual-Tone Continuous Siren Triggered</text>
+      <text x="15" y="88" font-size="11" font-weight="600" fill="#475569">• Live GPS Coordinates Dispatched to Police</text>
+      <text x="15" y="108" font-size="11" font-weight="700" fill="#b91c1c">• Emergency SOS Broadcast to Bank Desk</text>
+      <text x="15" y="128" font-size="11" font-weight="600" fill="#475569">• Real-Time Logging in Security Alerts Table</text>
+      <rect x="15" y="138" width="315" height="18" rx="4" fill="#fee2e2"/>
+      <text x="172" y="151" font-size="9.5" font-weight="800" fill="#991b1b" text-anchor="middle">SURAT CENTRAL POLICE DESK LINKED</text>
+    </g>
+  </g>
+
+</svg>
+
+</body>
+</html>
