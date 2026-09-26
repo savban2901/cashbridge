@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>BHARAT EXPRESS BANK | CashBridge Autonomous Gateway</title>
+  <title>BHARAT EXPRESS BANK | CashBridge</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -26,33 +26,23 @@
     body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
     /* ==========================================================================
-       CINEMATIC WELCOME & ROLE SELECTION HERO SCREEN
+       CLEAN HERO ENTRY SCREEN
        ========================================================================== */
     #heroIntroScreen {
       position: fixed; inset: 0; z-index: 9999;
       background: radial-gradient(circle at 50% 20%, #0d2847 0%, #050c18 100%);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 24px; text-align: center; color: #fff;
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
     #heroIntroScreen.hidden {
-      opacity: 0; pointer-events: none; transform: scale(1.04);
-    }
-    .hero-glow-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0, 212, 182, 0.12); border: 1px solid rgba(0, 212, 182, 0.4);
-      padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 700;
-      color: var(--secondary); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;
+      opacity: 0; pointer-events: none; transform: scale(1.03);
     }
     .hero-title {
-      font-size: clamp(28px, 6vw, 54px); font-weight: 800; line-height: 1.15;
+      font-size: clamp(32px, 6vw, 56px); font-weight: 800; line-height: 1.15;
       background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
-    }
-    .hero-typing {
-      font-family: 'JetBrains Mono', monospace; font-size: clamp(13px, 2.5vw, 17px);
-      color: #94a3b8; margin-bottom: 36px; min-height: 24px;
+      margin-bottom: 30px;
     }
     .portal-cards-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -90,12 +80,16 @@
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 18px; color: #000;
     }
-    .app-nav { display: flex; background: rgba(255,255,255,0.08); padding: 4px; border-radius: 30px; gap: 4px; }
-    .nav-btn {
-      background: transparent; color: #94a3b8; border: none; padding: 6px 14px;
-      border-radius: 20px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; white-space: nowrap;
+    .header-role-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; color: #fff;
     }
-    .nav-btn.active { background: var(--secondary); color: var(--primary); font-weight: 700; }
+    .switch-portal-btn {
+      background: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer;
+      transition: 0.2s;
+    }
+    .switch-portal-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
 
     /* SUB-NAV BAR */
     .subnav-bar {
@@ -224,8 +218,6 @@
 
     @media (max-width: 768px) {
       .app-header { padding: 10px 14px; }
-      .app-nav { width: 100%; justify-content: space-between; }
-      .nav-btn { padding: 5px 10px; font-size: 11px; }
       .grid-2 { grid-template-columns: 1fr; }
       .card { padding: 16px; }
     }
@@ -233,59 +225,57 @@
 </head>
 <body>
 
-  <!-- ==================== CINEMATIC WELCOME SCREEN ==================== -->
+  <!-- ==================== CLEAN HERO ROLE SELECTOR ==================== -->
   <div id="heroIntroScreen">
-    <div class="hero-glow-badge">⚡ RBI Compliance Verified // Autonomous Core 2.0</div>
     <h1 class="hero-title">Welcome to CashBridge</h1>
-    <div class="hero-typing" id="heroTypingText"></div>
 
     <div class="portal-cards-grid">
-      <!-- 1. Customer -->
+      <!-- 1. Customer Card -->
       <div class="portal-card" onclick="selectRoleFromHero('userView')">
         <div class="portal-card-icon" style="background: rgba(0, 212, 182, 0.15); color: var(--secondary);">👤</div>
         <div>
-          <h3 style="font-size: 17px; font-weight: 700; color: #fff;">Customer Portal</h3>
-          <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Request Cash (Up to ₹25,000), Live IoT Telemetry & UPI QR Deposit</p>
+          <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Customer Portal</h3>
+          <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Request Cash (Up to ₹25,000), Live IoT Telemetry & UPI QR Deposit</p>
         </div>
-        <span style="font-size: 12px; font-weight: 700; color: var(--secondary); margin-top: auto;">Open Portal →</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: var(--secondary); margin-top: auto;">Open Portal →</span>
       </div>
 
-      <!-- 2. Bank Staff -->
+      <!-- 2. Bank Staff Card -->
       <div class="portal-card" onclick="selectRoleFromHero('bankView')">
         <div class="portal-card-icon" style="background: rgba(212, 175, 55, 0.15); color: var(--accent);">🏦</div>
         <div>
-          <h3 style="font-size: 17px; font-weight: 700; color: #fff;">Bank Intelligence Desk</h3>
-          <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">AI Clearance Engine, Surat Police (Dial 112) Dispatch & Audit</p>
+          <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Bank Intelligence Desk</h3>
+          <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">AI Clearance Engine, Surat Police (Dial 112) Dispatch & Audit</p>
         </div>
-        <span style="font-size: 12px; font-weight: 700; color: var(--accent); margin-top: auto;">Open Portal →</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: auto;">Open Portal →</span>
       </div>
 
-      <!-- 3. Delivery Agent -->
+      <!-- 3. Delivery Agent Card -->
       <div class="portal-card" onclick="selectRoleFromHero('agentView')">
         <div class="portal-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">🚚</div>
         <div>
-          <h3 style="font-size: 17px; font-weight: 700; color: #fff;">Tactical Agent Fleet</h3>
-          <p style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Smart Vault Hardware Keypad, GPS Route & Camera Proof</p>
+          <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Tactical Agent Fleet</h3>
+          <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Smart Vault Hardware Keypad, GPS Route & Camera Proof</p>
         </div>
-        <span style="font-size: 12px; font-weight: 700; color: #38bdf8; margin-top: auto;">Open Portal →</span>
+        <span style="font-size: 12.5px; font-weight: 700; color: #38bdf8; margin-top: auto;">Open Portal →</span>
       </div>
     </div>
   </div>
 
   <!-- MAIN APP HEADER -->
   <header class="app-header">
-    <div class="brand-group" onclick="showHeroScreen()" style="cursor: pointer;" title="Back to Role Selector">
+    <div class="brand-group">
       <div class="brand-mark">B</div>
       <div>
         <h2 style="font-size: 15px; letter-spacing: 0.5px;">BHARAT EXPRESS BANK</h2>
-        <p style="font-size: 10px; color: var(--secondary);">CashBridge Autonomous Vault Gateway</p>
+        <p style="font-size: 10px; color: var(--secondary);" id="activePortalSubTitle">CashBridge Customer Gateway</p>
       </div>
     </div>
 
-    <div class="app-nav">
-      <button class="nav-btn active" id="btnRoleUser" onclick="switchRole('userView')">👤 Customer</button>
-      <button class="nav-btn" id="btnRoleBank" onclick="switchRole('bankView')">🏦 Bank Staff</button>
-      <button class="nav-btn" id="btnRoleAgent" onclick="switchRole('agentView')">🚚 Agent</button>
+    <!-- Active Role Indicator + Switch Portal Button (No other role tabs) -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="header-role-badge" id="activeRoleLabel">👤 Customer Mode</div>
+      <button class="switch-portal-btn" onclick="showHeroScreen()">⇄ Switch Portal</button>
     </div>
   </header>
 
@@ -396,7 +386,7 @@
             </p>
 
             <div class="grid-2" style="align-items: stretch;">
-              <div style="display: flex; flex-direction: column; justify-content: center;">
+              <div style="display: flex; direction: column; justify-content: center;">
                 <label>Deposit Amount (₹)</label>
                 <input type="number" id="depositAmt" placeholder="e.g. 5000" value="5000" oninput="generateUpiQrCode()" style="font-size: 15px; font-weight: 700;">
 
@@ -819,7 +809,7 @@
                 <h3 class="card-title" style="margin-bottom: 2px;">📜 Completed Deliveries Audit</h3>
                 <p style="color: var(--muted); font-size: 12px;">Official delivery verification log with photographic proof.</p>
               </div>
-              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty PDF</button>
+              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty Report</button>
             </div>
 
             <div class="table-container">
@@ -885,50 +875,35 @@
   </div>
 
   <script>
-    // CINEMATIC TYPING ANIMATION SCRIPT
-    const typingPhrases = [
-      "Securing Doorstep Vaults with IoT Telemetry...",
-      "Autonomous AI Clearance Engine Armed & Active...",
-      "RBI Mandate Compliant (₹25,000 Delivery Limit)...",
-      "Surat Central Police Control Room (Dial 112) Linked."
-    ];
-    let phraseIdx = 0;
-    let charIdx = 0;
-    let isDeleting = false;
-
-    function typeHeroEffect() {
-      const target = document.getElementById("heroTypingText");
-      if (!target) return;
-      const currentPhrase = typingPhrases[phraseIdx];
-
-      if (isDeleting) {
-        target.innerText = currentPhrase.substring(0, charIdx - 1);
-        charIdx--;
-      } else {
-        target.innerText = currentPhrase.substring(0, charIdx + 1);
-        charIdx++;
-      }
-
-      let speed = isDeleting ? 30 : 60;
-      if (!isDeleting && charIdx === currentPhrase.length) {
-        speed = 1800;
-        isDeleting = true;
-      } else if (isDeleting && charIdx === 0) {
-        isDeleting = false;
-        phraseIdx = (phraseIdx + 1) % typingPhrases.length;
-        speed = 400;
-      }
-      setTimeout(typeHeroEffect, speed);
-    }
-    typeHeroEffect();
+    // Role Configuration Metadata
+    const roleMeta = {
+      userView: { label: '👤 Customer Portal', subTitle: 'CashBridge Customer Gateway' },
+      bankView: { label: '🏦 Bank Staff Desk', subTitle: 'Central AI Clearance & Police Dispatch' },
+      agentView: { label: '🚚 Tactical Agent Console', subTitle: 'Field Logistics & Smart Vault Handover' }
+    };
 
     function selectRoleFromHero(roleViewId) {
       document.getElementById('heroIntroScreen').classList.add('hidden');
-      switchRole(roleViewId);
+      activatePortal(roleViewId);
     }
 
     function showHeroScreen() {
       document.getElementById('heroIntroScreen').classList.remove('hidden');
+    }
+
+    function activatePortal(roleId) {
+      // Hide all section views
+      document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
+
+      // Show ONLY the chosen portal
+      const target = document.getElementById(roleId);
+      if (target) target.classList.add('active');
+
+      // Update Header Text to the current active portal
+      if (roleMeta[roleId]) {
+        document.getElementById('activeRoleLabel').innerText = roleMeta[roleId].label;
+        document.getElementById('activePortalSubTitle').innerText = roleMeta[roleId].subTitle;
+      }
     }
 
     // Audio Soundbox Engine
@@ -1295,18 +1270,6 @@
       if (activeOrder.expiryEpoch) {
         startVault1HourCountdown(activeOrder.expiryEpoch);
       }
-    }
-
-    function switchRole(roleId) {
-      document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      
-      const targetSection = document.getElementById(roleId);
-      if (targetSection) targetSection.classList.add('active');
-
-      if (roleId === 'userView') document.getElementById('btnRoleUser').classList.add('active');
-      if (roleId === 'bankView') document.getElementById('btnRoleBank').classList.add('active');
-      if (roleId === 'agentView') document.getElementById('btnRoleAgent').classList.add('active');
     }
 
     function showCustomerPage(pageId) {
@@ -2044,22 +2007,22 @@
       await refreshState();
     }
 
-    function downloadAgentDutyPDF() {
-      alert('Duty log downloaded.');
-    }
-
     // Auto load state
     if (loggedUser) {
+      document.getElementById('heroIntroScreen').classList.add('hidden');
+      activatePortal('userView');
       document.getElementById('userAuthCard').style.display = 'none';
       document.getElementById('customerSubNav').style.display = 'flex';
       document.getElementById('userDashContent').style.display = 'block';
-    }
-    if (loggedBank) {
+    } else if (loggedBank) {
+      document.getElementById('heroIntroScreen').classList.add('hidden');
+      activatePortal('bankView');
       document.getElementById('bankAuthCard').style.display = 'none';
       document.getElementById('bankSubNav').style.display = 'flex';
       document.getElementById('bankDashContent').style.display = 'block';
-    }
-    if (loggedAgent) {
+    } else if (loggedAgent) {
+      document.getElementById('heroIntroScreen').classList.add('hidden');
+      activatePortal('agentView');
       document.getElementById('agentAuthCard').style.display = 'none';
       document.getElementById('agentSubNav').style.display = 'flex';
       document.getElementById('agentDashContent').style.display = 'block';
