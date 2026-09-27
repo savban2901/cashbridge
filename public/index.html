@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>BHARAT EXPRESS BANK | CashBridge</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -25,32 +25,30 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
     body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-    /* ==========================================================================
-       CLEAN HERO ENTRY SCREEN
-       ========================================================================== */
+    /* HERO ROLE SELECTOR */
     #heroIntroScreen {
       position: fixed; inset: 0; z-index: 9999;
       background: radial-gradient(circle at 50% 20%, #0d2847 0%, #050c18 100%);
       display: flex; flex-direction: column; justify-content: center; align-items: center;
       padding: 24px; text-align: center; color: #fff;
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
     #heroIntroScreen.hidden {
-      opacity: 0; pointer-events: none; transform: scale(1.03);
+      opacity: 0; pointer-events: none; transform: scale(1.02);
     }
     .hero-title {
-      font-size: clamp(32px, 6vw, 56px); font-weight: 800; line-height: 1.15;
+      font-size: clamp(34px, 6vw, 56px); font-weight: 800; line-height: 1.15;
       background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 30px;
+      margin-bottom: 34px;
     }
     .portal-cards-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px; width: 100%; max-width: 900px;
     }
     .portal-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       border-radius: 16px; padding: 26px 20px; cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,15 +57,15 @@
     .portal-card:hover {
       transform: translateY(-6px);
       border-color: var(--secondary);
-      box-shadow: 0 16px 32px rgba(0, 212, 182, 0.15);
-      background: rgba(255, 255, 255, 0.07);
+      box-shadow: 0 16px 32px rgba(0, 212, 182, 0.18);
+      background: rgba(255, 255, 255, 0.08);
     }
     .portal-card-icon {
       width: 48px; height: 48px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center; font-size: 24px;
     }
 
-    /* TOP APPLICATION BAR */
+    /* APP HEADER */
     .app-header {
       background: var(--primary); color: #fff; padding: 12px 20px;
       display: flex; justify-content: space-between; align-items: center;
@@ -80,12 +78,8 @@
       border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 18px; color: #000;
     }
-    .header-role-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 12px; font-weight: 700; color: #fff;
-    }
     .switch-portal-btn {
-      background: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.25);
       padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer;
       transition: 0.2s;
     }
@@ -225,12 +219,12 @@
 </head>
 <body>
 
-  <!-- ==================== CLEAN HERO ROLE SELECTOR ==================== -->
+  <!-- HERO ROLE SELECTOR -->
   <div id="heroIntroScreen">
     <h1 class="hero-title">Welcome to CashBridge</h1>
 
     <div class="portal-cards-grid">
-      <!-- 1. Customer Card -->
+      <!-- 1. Customer -->
       <div class="portal-card" onclick="selectRoleFromHero('userView')">
         <div class="portal-card-icon" style="background: rgba(0, 212, 182, 0.15); color: var(--secondary);">👤</div>
         <div>
@@ -240,7 +234,7 @@
         <span style="font-size: 12.5px; font-weight: 700; color: var(--secondary); margin-top: auto;">Open Portal →</span>
       </div>
 
-      <!-- 2. Bank Staff Card -->
+      <!-- 2. Bank Staff -->
       <div class="portal-card" onclick="selectRoleFromHero('bankView')">
         <div class="portal-card-icon" style="background: rgba(212, 175, 55, 0.15); color: var(--accent);">🏦</div>
         <div>
@@ -250,19 +244,19 @@
         <span style="font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: auto;">Open Portal →</span>
       </div>
 
-      <!-- 3. Delivery Agent Card -->
+      <!-- 3. Delivery Agent -->
       <div class="portal-card" onclick="selectRoleFromHero('agentView')">
         <div class="portal-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">🚚</div>
         <div>
           <h3 style="font-size: 18px; font-weight: 700; color: #fff;">Tactical Agent Fleet</h3>
-          <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Smart Vault Hardware Keypad, GPS Route & Camera Proof</p>
+          <p style="font-size: 12.5px; color: #94a3b8; margin-top: 4px;">Smart Vault Keypad, GPS Route & Photographic Handover Proof</p>
         </div>
         <span style="font-size: 12.5px; font-weight: 700; color: #38bdf8; margin-top: auto;">Open Portal →</span>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP HEADER -->
+  <!-- APP HEADER -->
   <header class="app-header">
     <div class="brand-group">
       <div class="brand-mark">B</div>
@@ -272,9 +266,9 @@
       </div>
     </div>
 
-    <!-- Active Role Indicator + Switch Portal Button (No other role tabs) -->
+    <!-- Clean Portal Badge + Switch Button -->
     <div style="display: flex; align-items: center; gap: 10px;">
-      <div class="header-role-badge" id="activeRoleLabel">👤 Customer Mode</div>
+      <div style="font-size: 12px; font-weight: 700; color: #fff;" id="activeRoleLabel">👤 Customer Mode</div>
       <button class="switch-portal-btn" onclick="showHeroScreen()">⇄ Switch Portal</button>
     </div>
   </header>
@@ -295,9 +289,7 @@
         </div>
         <div class="profile-dropdown" id="userProfileDropdown">
           <button class="dropdown-item" onclick="openProfileModal()">👤 View Full Profile</button>
-          <button class="dropdown-item" onclick="openChangePasswordModal()">🔑 Change Password</button>
-          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('user')">🗑️ Close Account</button>
-          <button class="dropdown-item" style="color: #64748b;" onclick="userLogout()">🚪 Sign Out</button>
+          <button class="dropdown-item" onclick="userLogout()">🚪 Sign Out</button>
         </div>
       </div>
     </div>
@@ -386,7 +378,7 @@
             </p>
 
             <div class="grid-2" style="align-items: stretch;">
-              <div style="display: flex; direction: column; justify-content: center;">
+              <div style="display: flex; flex-direction: column; justify-content: center;">
                 <label>Deposit Amount (₹)</label>
                 <input type="number" id="depositAmt" placeholder="e.g. 5000" value="5000" oninput="generateUpiQrCode()" style="font-size: 15px; font-weight: 700;">
 
@@ -444,7 +436,7 @@
           </div>
         </div>
 
-        <!-- Page 2: Cash Request (STRICT RBI CAP: ₹25,000) -->
+        <!-- Page 2: Cash Request (STRICT CAP: ₹25,000) -->
         <div id="cRequest" class="cpage-view">
           <div class="card">
             <h3 class="card-title">💸 Doorstep Cash Delivery (AI Autonomous Clearance)</h3>
@@ -455,7 +447,7 @@
             <input type="number" id="withdrawAmt" placeholder="Enter amount (Max: ₹25,000)" max="25000">
             <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
               <p style="font-size: 12px; color: #1e40af; font-weight: 600;">
-                🛡️ RBI Doorstep Banking Norms: Both Savings and Current accounts have a flat ceiling limit of <strong>₹25,000/-</strong> per request.
+                🛡️ Flat ceiling limit: <strong>₹25,000/-</strong> per request for all accounts.
               </p>
             </div>
             <button class="btn btn-gold" onclick="userRequestCash()">Submit Cash Request</button>
@@ -472,7 +464,7 @@
               </div>
               <div style="display: flex; gap: 6px;">
                 <button class="btn btn-sm btn-gold" onclick="renderStatementTable()">🔄 Refresh</button>
-                <button class="btn btn-sm btn-success" onclick="downloadStatementPDF()">📥 Download PDF</button>
+                <button class="btn btn-sm btn-success" onclick="downloadStatementPDF()">📥 Download Statement (PDF)</button>
               </div>
             </div>
 
@@ -539,8 +531,6 @@
         </div>
         <div class="profile-dropdown" id="bankProfileDropdown">
           <button class="dropdown-item" onclick="openStaffProfileModal()">👔 View Officer Profile</button>
-          <button class="dropdown-item" onclick="openStaffPasswordModal()">🔑 Change Password</button>
-          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('bank')">🗑️ Delete Staff Account</button>
           <button class="dropdown-item" style="color: #64748b;" onclick="bankLogout()">🚪 Sign Out Staff</button>
         </div>
       </div>
@@ -653,13 +643,12 @@
           </div>
         </div>
 
-        <!-- POLICE & EMERGENCY SOS DISPATCH DESK -->
         <div id="bSecurity" class="bpage-view">
           <div class="card" style="border-top: 4px solid #ef4444;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
               <div>
                 <h3 class="card-title" style="color:#ef4444; margin-bottom:2px;">🚨 Surat Police Control Room (Dial 112) Feed</h3>
-                <p style="color:var(--muted); font-size:12px;">Real-time feed showing 3-wrong attempt lockouts, 1-hour timeouts, and physical tamper breaches.</p>
+                <p style="color:var(--muted); font-size:12px;">3-wrong attempt lockouts, 1-hour timeouts, and physical tamper breaches.</p>
               </div>
               <span class="status-badge status-FAILED">ARMED PROTOCOL</span>
             </div>
@@ -690,7 +679,7 @@
                 <h3 class="card-title" style="margin-bottom: 2px;">📑 Branch Master Audit Log</h3>
                 <p style="color: var(--muted); font-size: 12px;">Full central record of all CashBridge requests.</p>
               </div>
-              <button class="btn btn-sm btn-success" onclick="downloadBankMasterAuditPDF()">📥 Download Audit PDF</button>
+              <button class="btn btn-sm btn-success" onclick="downloadBankMasterAuditPDF()">📥 Download Branch Audit PDF</button>
             </div>
 
             <div class="table-container">
@@ -731,8 +720,6 @@
         </div>
         <div class="profile-dropdown" id="agentProfileDropdown">
           <button class="dropdown-item" onclick="openAgentProfileModal()">🚚 View Agent Profile</button>
-          <button class="dropdown-item" onclick="openAgentPasswordModal()">🔑 Change Password</button>
-          <button class="dropdown-item" style="color: #ef4444;" onclick="openDeleteModal('agent')">🗑️ Delete Agent Account</button>
           <button class="dropdown-item" style="color: #64748b;" onclick="agentLogout()">🚪 End Duty Shift</button>
         </div>
       </div>
@@ -809,7 +796,7 @@
                 <h3 class="card-title" style="margin-bottom: 2px;">📜 Completed Deliveries Audit</h3>
                 <p style="color: var(--muted); font-size: 12px;">Official delivery verification log with photographic proof.</p>
               </div>
-              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty Report</button>
+              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty PDF</button>
             </div>
 
             <div class="table-container">
@@ -863,7 +850,7 @@
     </div>
   </div>
 
-  <!-- DIGITAL RECEIPT MODAL -->
+  <!-- DIGITAL RECEIPT MODAL (Fixed: Instant display) -->
   <div class="modal-overlay" id="receiptModal">
     <div class="modal-box">
       <div class="receipt-slip" id="receiptSlipContent"></div>
@@ -875,7 +862,6 @@
   </div>
 
   <script>
-    // Role Configuration Metadata
     const roleMeta = {
       userView: { label: '👤 Customer Portal', subTitle: 'CashBridge Customer Gateway' },
       bankView: { label: '🏦 Bank Staff Desk', subTitle: 'Central AI Clearance & Police Dispatch' },
@@ -892,21 +878,16 @@
     }
 
     function activatePortal(roleId) {
-      // Hide all section views
       document.querySelectorAll('.section-view').forEach(v => v.classList.remove('active'));
-
-      // Show ONLY the chosen portal
       const target = document.getElementById(roleId);
       if (target) target.classList.add('active');
 
-      // Update Header Text to the current active portal
       if (roleMeta[roleId]) {
         document.getElementById('activeRoleLabel').innerText = roleMeta[roleId].label;
         document.getElementById('activePortalSubTitle').innerText = roleMeta[roleId].subTitle;
       }
     }
 
-    // Audio Soundbox Engine
     const AudioEngine = {
       ctx: null,
       init() {
@@ -919,29 +900,15 @@
         try {
           this.init();
           const now = this.ctx.currentTime;
-          const osc1 = this.ctx.createOscillator();
-          const osc2 = this.ctx.createOscillator();
+          const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-
-          osc1.type = 'sine';
-          osc1.frequency.setValueAtTime(523.25, now);
-          osc1.frequency.setValueAtTime(659.25, now + 0.12);
-
-          osc2.type = 'triangle';
-          osc2.frequency.setValueAtTime(783.99, now + 0.24);
-          osc2.frequency.setValueAtTime(1046.50, now + 0.36);
-
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880, now + 0.15);
           gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
-
-          osc1.connect(gain);
-          osc2.connect(gain);
-          gain.connect(this.ctx.destination);
-
-          osc1.start(now);
-          osc1.stop(now + 0.24);
-          osc2.start(now + 0.24);
-          osc2.stop(now + 0.7);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now); osc.stop(now + 0.6);
         } catch(e){}
       },
       playNotificationSound() {
@@ -950,19 +917,13 @@
           const now = this.ctx.currentTime;
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-
           osc.type = 'sine';
           osc.frequency.setValueAtTime(880, now);
           osc.frequency.exponentialRampToValueAtTime(440, now + 0.3);
-
           gain.gain.setValueAtTime(0.15, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-
-          osc.start(now);
-          osc.stop(now + 0.3);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now); osc.stop(now + 0.3);
         } catch(e){}
       },
       playPoliceSirenSound() {
@@ -971,22 +932,16 @@
           const now = this.ctx.currentTime;
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-
           osc.type = 'sawtooth';
           for (let i = 0; i < 4; i++) {
             osc.frequency.setValueAtTime(950, now + (i * 0.4));
             osc.frequency.linearRampToValueAtTime(600, now + (i * 0.4) + 0.2);
             osc.frequency.linearRampToValueAtTime(950, now + (i * 0.4) + 0.4);
           }
-
           gain.gain.setValueAtTime(0.3, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-
-          osc.start(now);
-          osc.stop(now + 1.8);
+          osc.connect(gain); gain.connect(this.ctx.destination);
+          osc.start(now); osc.stop(now + 1.8);
         } catch(e){}
       }
     };
@@ -997,7 +952,6 @@
     let loggedAgent = null;
     let cameraStream = null;
     let currentStatementData = [];
-    let deleteTargetRole = null;
     let countdownInterval = null;
 
     const savedUser = sessionStorage.getItem('cashbridge_user');
@@ -1007,7 +961,6 @@
     const savedAgent = sessionStorage.getItem('cashbridge_agent');
     if (savedAgent) { try { loggedAgent = JSON.parse(savedAgent); } catch(e){} }
 
-    // RENDER SECURE WEBSOCKET ADAPTATION (WSS ON HTTPS / WS ON HTTP)
     const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${wsProtocol}//${location.host}`);
 
@@ -1028,10 +981,7 @@
     function renderIncomingSms(payload) {
       const box = document.getElementById('userSmsBox');
       if (!box) return;
-
-      if (box.innerHTML.includes('No messages received') || box.innerHTML.includes('Waiting for incoming SMS') || box.innerHTML.includes('No notifications found')) {
-        box.innerHTML = '';
-      }
+      if (box.innerHTML.includes('No notifications found')) box.innerHTML = '';
 
       let msgText = payload.message || '';
       msgText = msgText.replace(/(\b\d{6}\b)/g, '<span class="sms-otp-highlight">$1</span>');
@@ -1046,7 +996,6 @@
           <div>${msgText}</div>
         </div>
       `;
-
       box.innerHTML = bubbleHTML + box.innerHTML;
     }
 
@@ -1091,10 +1040,10 @@
       );
 
       if (activeOrder) {
-        return alert(`⚠️ Security Restriction:\nYour Cash Delivery Order (#${activeOrder.id}) is currently active!\nVault Unlock OTP and Delivery Agent telemetry cannot be cleared until the cash is safely delivered and verified via photographic proof.`);
+        return alert(`⚠️ Security Restriction:\nYour Cash Delivery Order (#${activeOrder.id}) is active!\nVault Unlock OTP cannot be cleared until cash is delivered.`);
       }
 
-      if (!confirm('Are you sure you want to clear all SMS alerts and notifications from your inbox?')) return;
+      if (!confirm('Are you sure you want to clear all SMS alerts from your inbox?')) return;
 
       try {
         const res = await fetch('/api/user/clear-notifications', {
@@ -1107,15 +1056,13 @@
         if (!res.ok) {
           alert(data.error || 'Unable to clear notifications.');
         } else {
-          alert(data.message || 'All notifications have been successfully cleared from your private inbox.');
+          alert('All notifications have been successfully cleared.');
           const userPhone = String(loggedUser.phone).trim();
           if (globalState.userNotifications && globalState.userNotifications[userPhone]) {
             globalState.userNotifications[userPhone] = [];
           }
           const box = document.getElementById('userSmsBox');
-          if (box) {
-            box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">No notifications found in your inbox.</div>';
-          }
+          if (box) box.innerHTML = '<div style="color: #64748b; font-size: 13px; text-align: center; margin-top: 100px;">No notifications found in your inbox.</div>';
           await refreshState();
         }
       } catch (err) {
@@ -1130,8 +1077,7 @@
 
       document.getElementById('qrAmountDisplay').innerText = `Amount: ₹${val.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
       const upiUri = `upi://pay?pa=bharatexpressbank@upi&pn=Bharat+Express+Bank&am=${val.toFixed(2)}&cu=INR&tn=Account+Deposit`;
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}&margin=1`;
-      document.getElementById('upiQrImage').src = qrApiUrl;
+      document.getElementById('upiQrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUri)}&margin=1`;
     }
 
     function setPresetDeposit(amt) {
@@ -1180,12 +1126,9 @@
       if (activeOrder.status === 'AUTO_FROZEN') {
         trackerContainer.innerHTML = `
           <div class="telemetry-card" style="background:#450a0a; border-color:#dc2626;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h3 style="font-size:15px; color:#f87171;">🚨 1-Hour Anti-Hijack Lock: Vault Auto-Frozen</h3>
-                <p style="font-size:12px; color:#fecaca; margin-top:2px;">1-hour window exceeded. Dynamic OTP self-destructed. Surat Police Control Room notified.</p>
-              </div>
-              <span class="status-badge status-FAILED">AUTO_FROZEN</span>
+            <div>
+              <h3 style="font-size:15px; color:#f87171;">🚨 1-Hour Anti-Hijack Lock: Vault Auto-Frozen</h3>
+              <p style="font-size:12px; color:#fecaca; margin-top:2px;">Window exceeded. OTP self-destructed. Surat Police Control Room notified.</p>
             </div>
           </div>
         `;
@@ -1195,12 +1138,9 @@
       if (activeOrder.status === 'TAMPERED') {
         trackerContainer.innerHTML = `
           <div class="telemetry-card" style="background:#450a0a; border-color:#dc2626;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h3 style="font-size:15px; color:#f87171;">🚨 SECURITY BREACH LOCKOUT: Police Dispatched</h3>
-                <p style="font-size:12px; color:#fecaca; margin-top:2px;">Tamper sensors or 3 incorrect PIN entries triggered a lockdown. Your money is 100% safe.</p>
-              </div>
-              <span class="status-badge status-FAILED">LOCKDOWN TRIGGERED</span>
+            <div>
+              <h3 style="font-size:15px; color:#f87171;">🚨 SECURITY BREACH LOCKOUT: Police Dispatched</h3>
+              <p style="font-size:12px; color:#fecaca; margin-top:2px;">Tamper sensors or 3 incorrect PIN entries triggered a lockdown. Your funds are safe.</p>
             </div>
           </div>
         `;
@@ -1213,9 +1153,9 @@
           <div class="telemetry-card" style="background:#1e293b; border-color:#64748b;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
               <div>
-                <h3 style="font-size:15px; color:#f59e0b;">⏳ AI Cleared & Approved: Vault #${activeOrder.vaultId} Ready</h3>
+                <h3 style="font-size:15px; color:#f59e0b;">⏳ AI Approved: Vault #${activeOrder.vaultId} Ready</h3>
                 <p style="font-size:12px; color:#cbd5e1; margin-top:2px;">
-                  Waiting at Central Bank Desk. <strong>1-Hour Timer will begin when Delivery Agent accepts and picks up the vault.</strong>
+                  Sealed at Central Bank Desk. 1-Hour Timer begins upon delivery agent pickup.
                 </p>
               </div>
               <span class="status-badge status-PENDING">WAITING AGENT</span>
@@ -1267,9 +1207,7 @@
         </div>
       `;
 
-      if (activeOrder.expiryEpoch) {
-        startVault1HourCountdown(activeOrder.expiryEpoch);
-      }
+      if (activeOrder.expiryEpoch) startVault1HourCountdown(activeOrder.expiryEpoch);
     }
 
     function showCustomerPage(pageId) {
@@ -1496,7 +1434,7 @@
           refId: o.id,
           timestamp: formatDateTimeString(o.deliveredAt || o.timestamp),
           rawTime: new Date(o.isoTime || Date.now()).getTime(),
-          description: `Doorstep Cash Request (${o.vaultId || 'IoT Vault'})`,
+          description: `Doorstep Cash Delivery (${o.vaultId || 'IoT Vault'})`,
           txType: 'DEBIT',
           amount: o.amount,
           displayStatus: displayStatus,
@@ -1544,19 +1482,20 @@
           <td style="font-weight:700;">₹${parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
           <td><span class="status-badge ${item.badgeClass}">${item.displayStatus}</span></td>
           <td>
-            <button class="btn btn-sm" style="background:#0284c7; color:#fff;" onclick="viewReceipt(${idx})">🧾 Receipt</button>
+            <button class="btn btn-sm" style="background:#0284c7; color:#fff;" onclick="viewReceiptByIndex(${idx})">🧾 Receipt</button>
           </td>
         </tr>
       `).join('');
     }
 
-    function viewReceipt(index) {
+    // FIXED: Guaranteed Receipt Modal Rendering
+    function viewReceiptByIndex(index) {
       const item = currentStatementData[index];
       if (!item || !loggedUser) return;
 
       const content = `
         <div style="text-align:center; border-bottom:1px dashed #cbd5e1; padding-bottom:10px; margin-bottom:10px;">
-          <h3 style="color:#0a2540; font-size:15px; margin-bottom:2px;">BHARAT EXPRESS BANK</h3>
+          <h3 style="color:#0a2540; font-size:16px; margin-bottom:2px;">BHARAT EXPRESS BANK</h3>
           <p style="font-size:11px; color:#64748b;">Surat Main Branch | Digital Customer Receipt</p>
         </div>
         <p style="font-size:11.5px; margin-bottom:4px;"><strong>TXN REF NO :</strong> ${item.refId}</p>
@@ -1565,7 +1504,7 @@
         <p style="font-size:11.5px; margin-bottom:4px;"><strong>CARD HOLDER :</strong> ${loggedUser.name.toUpperCase()}</p>
         <p style="font-size:11.5px; margin-bottom:4px;"><strong>NARRATION   :</strong> ${item.description}</p>
         <div style="border-top:1px dashed #cbd5e1; border-bottom:1px dashed #cbd5e1; padding:8px 0; margin:10px 0;">
-          <div style="display:flex; justify-content:space-between; font-size:13.5px; font-weight:800;">
+          <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:800;">
             <span>TOTAL AMOUNT:</span>
             <span style="color:${item.txType === 'CREDIT' ? '#10b981' : '#b91c1c'};">Rs. ${parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</span>
           </div>
@@ -1580,39 +1519,175 @@
       document.getElementById('receiptModal').classList.add('open');
     }
 
+    // UNIVERSAL RELIABLE PDF DOWNLOAD FOR MOBILE & DESKTOP
     function downloadStatementPDF() {
-      if (!loggedUser) return alert('Please login to download statement.');
+      if (!loggedUser) return alert('Please login first.');
       if (!currentStatementData || currentStatementData.length === 0) return alert('No transactions recorded.');
 
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF('p', 'mm', 'a4');
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
 
-      doc.setFillColor(10, 37, 64);
-      doc.rect(0, 0, 210, 36, 'F');
-      doc.setTextColor(212, 175, 55);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
-      doc.text('BHARAT EXPRESS BANK', 14, 16);
-      doc.setTextColor(0, 212, 182);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(9);
-      doc.text('CashBridge Autonomous Doorstep Banking & Digital Logistics', 14, 23);
+        // Header Background
+        doc.setFillColor(10, 37, 64);
+        doc.rect(0, 0, 210, 36, 'F');
 
-      const tableRows = currentStatementData.map(item => [
-        item.refId, item.timestamp, item.description, item.txType,
-        'Rs. ' + parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
-        item.displayStatus
-      ]);
+        // Title
+        doc.setTextColor(212, 175, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(18);
+        doc.text('BHARAT EXPRESS BANK', 14, 16);
 
-      doc.autoTable({
-        startY: 44,
-        head: [['Ref ID', 'Date & Time', 'Transaction Narration', 'Type', 'Amount', 'Final Status']],
-        body: tableRows,
-        theme: 'striped',
-        headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold' }
-      });
+        doc.setTextColor(0, 212, 182);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('CashBridge Autonomous Doorstep Banking & Digital Ledger', 14, 23);
 
-      doc.save(`BEB_Statement_${loggedUser.accNumber}_${Date.now()}.pdf`);
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.text('Surat Central Branch, Ring Road, Gujarat - 395002 | IFSC: BEB000789', 14, 29);
+
+        // Account Details Card
+        doc.setDrawColor(203, 213, 225);
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(14, 42, 182, 34, 3, 3, 'FD');
+
+        doc.setTextColor(30, 41, 59);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.text(`Account Holder: ${loggedUser.name.toUpperCase()}`, 18, 50);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text(`Account Number : ${loggedUser.accNumber}`, 18, 57);
+        doc.text(`Account Type   : ${loggedUser.accType} ACCOUNT`, 18, 64);
+        doc.text(`Registered Mobile : +91 ${loggedUser.phone}`, 18, 71);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(16, 185, 129);
+        doc.text(`Available Balance : Rs. ${parseFloat(loggedUser.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`, 110, 71);
+
+        const tableRows = currentStatementData.map(item => [
+          item.refId,
+          item.timestamp,
+          item.description,
+          item.txType,
+          'Rs. ' + parseFloat(item.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
+          item.displayStatus
+        ]);
+
+        doc.autoTable({
+          startY: 82,
+          head: [['Ref ID', 'Date & Time', 'Transaction Narration', 'Type', 'Amount', 'Status']],
+          body: tableRows,
+          theme: 'striped',
+          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
+          bodyStyles: { fontSize: 8, textColor: [30, 41, 59] },
+          margin: { left: 14, right: 14 }
+        });
+
+        // Universal Cross-Device Blob Download Fallback
+        const pdfBlob = doc.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = blobUrl;
+        downloadLink.download = `BEB_Statement_${loggedUser.accNumber}_${Date.now()}.pdf`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      } catch (err) {
+        console.error('PDF error:', err);
+        alert('PDF Generation error. Please check browser pop-up permissions.');
+      }
+    }
+
+    function downloadBankMasterAuditPDF() {
+      const orders = globalState.orders || [];
+      if (orders.length === 0) return alert('No audit records to export.');
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        doc.setFillColor(10, 37, 64);
+        doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(212, 175, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('BHARAT EXPRESS BANK - MASTER AUDIT LOG', 14, 18);
+
+        const tableRows = orders.map(o => [
+          o.id,
+          formatDateTimeString(o.timestamp),
+          o.userName,
+          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN'),
+          o.vaultId || 'VAULT-IoT-901',
+          o.agentName || 'Unassigned',
+          o.status
+        ]);
+
+        doc.autoTable({
+          startY: 38,
+          head: [['Order ID', 'Date & Time', 'Customer', 'Amount', 'Vault ID', 'Agent', 'Final Status']],
+          body: tableRows,
+          theme: 'striped',
+          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold' }
+        });
+
+        const pdfBlob = doc.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = blobUrl;
+        downloadLink.download = `BEB_Branch_Audit_${Date.now()}.pdf`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      } catch(e) {
+        alert('Unable to export audit PDF.');
+      }
+    }
+
+    function downloadAgentDutyPDF() {
+      const delivered = (globalState.orders || []).filter(o => o.status === 'DELIVERED');
+      if (delivered.length === 0) return alert('No completed deliveries to export.');
+
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+        doc.setFillColor(10, 37, 64);
+        doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(212, 175, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.text('BHARAT EXPRESS BANK - AGENT DUTY LOG', 14, 18);
+
+        const tableRows = delivered.map(o => [
+          o.id,
+          formatDateTimeString(o.deliveredAt || o.timestamp),
+          o.userName,
+          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN'),
+          o.vaultId || 'VAULT-IoT-901',
+          'COMPLETED (DELIVERED)'
+        ]);
+
+        doc.autoTable({
+          startY: 38,
+          head: [['Order ID', 'Time', 'Customer', 'Cash Delivered', 'Vault ID', 'Verification']],
+          body: tableRows,
+          theme: 'striped',
+          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold' }
+        });
+
+        const pdfBlob = doc.output('blob');
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = blobUrl;
+        downloadLink.download = `BEB_Agent_Duty_${Date.now()}.pdf`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      } catch(e) {
+        alert('Unable to export agent PDF.');
+      }
     }
 
     function userLogout() {
@@ -1642,18 +1717,25 @@
       }
     }
 
+    // CASH REQUEST WITH REAL-TIME AI CLEARANCE
     async function userRequestCash() {
       const amount = document.getElementById('withdrawAmt').value;
+      const val = parseFloat(amount);
+
+      if (!val || val <= 0) return alert('Please enter a valid amount!');
+      if (val > 25000) return alert('Regulatory Rule: Maximum withdrawal is strictly capped at ₹25,000 per request!');
+      if (val > loggedUser.balance) return alert(`Insufficient balance! Your available balance is ₹${loggedUser.balance.toLocaleString('en-IN')}.`);
+
       const res = await fetch('/api/user/request-cash', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: loggedUser.id, amount, lat: 21.1702, lng: 72.8311 })
+        body: JSON.stringify({ userId: loggedUser.id, amount: val, lat: 21.1702, lng: 72.8311 })
       });
       const data = await res.json();
       if (!res.ok) alert(data.error);
       else {
         AudioEngine.playNotificationSound();
-        alert('⚡ ' + (data.message || 'AI Autonomous Clearance Approved! Smart vault dispatched.'));
+        alert('⚡ ' + (data.message || 'AI Autonomous Clearance Approved! Smart vault sealed.'));
         document.getElementById('withdrawAmt').value = '';
         showCustomerPage('cHome');
         await refreshState();
@@ -1735,7 +1817,7 @@
           <td><strong>${o.id}</strong></td>
           <td>${o.userName}</td>
           <td style="font-weight:700;">₹${parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2})}</td>
-          <td><span class="badge badge-CREDIT">CLEARED (95%)</span></td>
+          <td><span class="badge badge-CREDIT">AI CLEARED (98%)</span></td>
           <td><span style="font-family:monospace; font-weight:bold; color:var(--primary);">${o.vaultId || 'VAULT-IoT-901'}</span></td>
           <td>${o.agentName ? `🛵 ${o.agentName}` : '<span style="color:#b45309;">Waiting Pickup</span>'}</td>
           <td><span class="status-badge ${o.status === 'DELIVERED' ? 'status-SUCCESS' : 'status-INFO'}">${o.status}</span></td>
@@ -1809,15 +1891,6 @@
         document.getElementById('bankAddAmt').value = '';
         await refreshState();
       }
-    }
-
-    function downloadBankMasterAuditPDF() {
-      const orders = globalState.orders || [];
-      if (orders.length === 0) return alert('No orders recorded to generate audit report.');
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF('p', 'mm', 'a4');
-      doc.text('BHARAT EXPRESS BANK - MASTER AUDIT LOG', 14, 16);
-      doc.save(`BEB_Branch_Master_Audit_${Date.now()}.pdf`);
     }
 
     // DELIVERY AGENT FUNCTIONS
@@ -2005,6 +2078,16 @@
       });
       AudioEngine.playPoliceSirenSound();
       await refreshState();
+    }
+
+    function openProfileModal() {
+      alert(`Customer: ${loggedUser.name}\nAccount: ${loggedUser.accNumber}\nBalance: ₹${loggedUser.balance}`);
+    }
+    function openStaffProfileModal() {
+      alert(`Officer: ${loggedBank.name}\nRole: ${loggedBank.role}\nBranch: ${loggedBank.branch}`);
+    }
+    function openAgentProfileModal() {
+      alert(`Agent: ${loggedAgent.name}\nVehicle: ${loggedAgent.vehicle}\nPhone: ${loggedAgent.phone}`);
     }
 
     // Auto load state
