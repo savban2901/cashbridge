@@ -6,6 +6,7 @@
   <title>BHARAT EXPRESS BANK | CashBridge</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
+  <!-- Robust PDF Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -266,7 +267,6 @@
       </div>
     </div>
 
-    <!-- Clean Portal Badge + Switch Button -->
     <div style="display: flex; align-items: center; gap: 10px;">
       <div style="font-size: 12px; font-weight: 700; color: #fff;" id="activeRoleLabel">👤 Customer Mode</div>
       <button class="switch-portal-btn" onclick="showHeroScreen()">⇄ Switch Portal</button>
@@ -679,7 +679,7 @@
                 <h3 class="card-title" style="margin-bottom: 2px;">📑 Branch Master Audit Log</h3>
                 <p style="color: var(--muted); font-size: 12px;">Full central record of all CashBridge requests.</p>
               </div>
-              <button class="btn btn-sm btn-success" onclick="downloadBankMasterAuditPDF()">📥 Download Branch Audit PDF</button>
+              <button class="btn btn-sm btn-success" onclick="downloadBankMasterAuditPDF()">📥 Download Branch Audit (PDF)</button>
             </div>
 
             <div class="table-container">
@@ -730,7 +730,7 @@
         <h3 class="card-title">Delivery Agent Logistics Gateway</h3>
         <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Sign in to access assigned smart vaults and doorstep deliveries.</p>
 
-        <!-- Testing Credentials Pre-filled ONLY for Delivery Agent -->
+        <!-- Pre-filled testing credentials -->
         <div id="agentLoginBox">
           <label>Agent Mobile Number</label>
           <input type="text" id="aPhone" value="9988776655">
@@ -796,7 +796,7 @@
                 <h3 class="card-title" style="margin-bottom: 2px;">📜 Completed Deliveries Audit</h3>
                 <p style="color: var(--muted); font-size: 12px;">Official delivery verification log with photographic proof.</p>
               </div>
-              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty PDF</button>
+              <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty Report (PDF)</button>
             </div>
 
             <div class="table-container">
@@ -850,7 +850,7 @@
     </div>
   </div>
 
-  <!-- DIGITAL RECEIPT MODAL (Fixed: Instant display) -->
+  <!-- DIGITAL RECEIPT MODAL -->
   <div class="modal-overlay" id="receiptModal">
     <div class="modal-box">
       <div class="receipt-slip" id="receiptSlipContent"></div>
@@ -900,15 +900,16 @@
         try {
           this.init();
           const now = this.ctx.currentTime;
-          const osc = this.ctx.createOscillator();
+          const osc1 = this.ctx.createOscillator();
+          const osc2 = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(587.33, now);
-          osc.frequency.setValueAtTime(880, now + 0.15);
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(587.33, now);
+          osc1.frequency.setValueAtTime(880, now + 0.15);
           gain.gain.setValueAtTime(0.2, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-          osc.connect(gain); gain.connect(this.ctx.destination);
-          osc.start(now); osc.stop(now + 0.6);
+          osc1.connect(gain); osc2.connect(gain); gain.connect(this.ctx.destination);
+          osc1.start(now); osc1.stop(now + 0.6);
         } catch(e){}
       },
       playNotificationSound() {
@@ -1519,7 +1520,9 @@
       document.getElementById('receiptModal').classList.add('open');
     }
 
-    // UNIVERSAL RELIABLE PDF DOWNLOAD FOR MOBILE & DESKTOP
+    // =========================================================================
+    // 1. CUSTOMER STATEMENT PDF (RESTORED TO FULL ROYAL NAVY/GOLD DESIGN)
+    // =========================================================================
     function downloadStatementPDF() {
       if (!loggedUser) return alert('Please login first.');
       if (!currentStatementData || currentStatementData.length === 0) return alert('No transactions recorded.');
@@ -1528,44 +1531,57 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // Header Background
+        // Top Royal Navy Header Banner
         doc.setFillColor(10, 37, 64);
-        doc.rect(0, 0, 210, 36, 'F');
+        doc.rect(0, 0, 210, 38, 'F');
 
-        // Title
+        // Gold Bank Title & Subtitles
         doc.setTextColor(212, 175, 55);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(18);
+        doc.setFontSize(19);
         doc.text('BHARAT EXPRESS BANK', 14, 16);
 
         doc.setTextColor(0, 212, 182);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
-        doc.text('CashBridge Autonomous Doorstep Banking & Digital Ledger', 14, 23);
+        doc.text('CashBridge Autonomous Doorstep Banking & Digital Ledger Core', 14, 23);
 
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(8);
         doc.text('Surat Central Branch, Ring Road, Gujarat - 395002 | IFSC: BEB000789', 14, 29);
 
-        // Account Details Card
+        // Right Header Label
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.text('OFFICIAL ACCOUNT STATEMENT', 200, 16, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(203, 213, 225);
+        doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
+
+        // Account Details Card Frame
         doc.setDrawColor(203, 213, 225);
         doc.setFillColor(248, 250, 252);
-        doc.roundedRect(14, 42, 182, 34, 3, 3, 'FD');
+        doc.roundedRect(14, 44, 182, 34, 3, 3, 'FD');
 
         doc.setTextColor(30, 41, 59);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(10);
-        doc.text(`Account Holder: ${loggedUser.name.toUpperCase()}`, 18, 50);
+        doc.text(`Account Holder: ${loggedUser.name.toUpperCase()}`, 18, 52);
 
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
-        doc.text(`Account Number : ${loggedUser.accNumber}`, 18, 57);
-        doc.text(`Account Type   : ${loggedUser.accType} ACCOUNT`, 18, 64);
-        doc.text(`Registered Mobile : +91 ${loggedUser.phone}`, 18, 71);
+        doc.text(`Account Number : ${loggedUser.accNumber}`, 18, 59);
+        doc.text(`Account Scheme : ${loggedUser.accType} ACCOUNT`, 18, 66);
+        doc.text(`Registered Mobile : +91 ${loggedUser.phone}`, 18, 73);
+
+        doc.text(`Registered Address: ${loggedUser.address || 'Surat, Gujarat'}`, 110, 52);
+        doc.text(`Branch Code       : SURAT-01`, 110, 59);
+        doc.text(`Statement Period  : ALL TRANSACTIONS TO DATE`, 110, 66);
 
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(16, 185, 129);
-        doc.text(`Available Balance : Rs. ${parseFloat(loggedUser.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`, 110, 71);
+        doc.text(`Available Balance : Rs. ${parseFloat(loggedUser.balance || 0).toLocaleString('en-IN', {minimumFractionDigits: 2})}`, 110, 73);
 
         const tableRows = currentStatementData.map(item => [
           item.refId,
@@ -1577,16 +1593,37 @@
         ]);
 
         doc.autoTable({
-          startY: 82,
-          head: [['Ref ID', 'Date & Time', 'Transaction Narration', 'Type', 'Amount', 'Status']],
+          startY: 84,
+          head: [['Ref ID', 'Date & Time', 'Transaction Narration', 'Type', 'Amount', 'Final Status']],
           body: tableRows,
           theme: 'striped',
           headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
           bodyStyles: { fontSize: 8, textColor: [30, 41, 59] },
+          columnStyles: {
+            0: { cellWidth: 24, fontStyle: 'bold' },
+            1: { cellWidth: 32 },
+            2: { cellWidth: 50 },
+            3: { cellWidth: 16 },
+            4: { cellWidth: 26, fontStyle: 'bold', halign: 'right' },
+            5: { cellWidth: 34 }
+          },
           margin: { left: 14, right: 14 }
         });
 
-        // Universal Cross-Device Blob Download Fallback
+        const finalY = doc.lastAutoTable.finalY + 14;
+        doc.setDrawColor(226, 232, 240);
+        doc.line(14, finalY, 196, finalY);
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text('* This is an authorized system-generated electronic bank statement secured by BHARAT EXPRESS BANK.', 14, finalY + 7);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(10, 37, 64);
+        doc.text('BHARAT EXPRESS BANK - AUTHORIZED ELECTRONIC SEAL', 200, finalY + 7, { align: 'right' });
+
+        // Reliable Cross-Device Stream
         const pdfBlob = doc.output('blob');
         const blobUrl = URL.createObjectURL(pdfBlob);
         const downloadLink = document.createElement('a');
@@ -1597,123 +1634,193 @@
         document.body.removeChild(downloadLink);
       } catch (err) {
         console.error('PDF error:', err);
-        alert('PDF Generation error. Please check browser pop-up permissions.');
+        alert('PDF Generation error. Please check browser permissions.');
       }
     }
 
+    // =========================================================================
+    // 2. BANK BRANCH MASTER AUDIT PDF (RESTORED TO FULL ROYAL DESIGN)
+    // =========================================================================
     function downloadBankMasterAuditPDF() {
       const orders = globalState.orders || [];
-      if (orders.length === 0) return alert('No audit records to export.');
+      if (orders.length === 0) return alert('No orders recorded to generate audit report.');
 
       try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
+
+        // Royal Navy Top Banner
         doc.setFillColor(10, 37, 64);
-        doc.rect(0, 0, 210, 30, 'F');
+        doc.rect(0, 0, 210, 38, 'F');
+
         doc.setTextColor(212, 175, 55);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
-        doc.text('BHARAT EXPRESS BANK - MASTER AUDIT LOG', 14, 18);
+        doc.setFontSize(18);
+        doc.text('BHARAT EXPRESS BANK', 14, 15);
+
+        doc.setTextColor(0, 212, 182);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('CashBridge Central Operations & Vault Logistics Audit Control', 14, 22);
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.text(`Branch: Surat Main Branch (Ring Road) | Auditing Officer: ${loggedBank ? loggedBank.name : 'Officer'}`, 14, 29);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('BRANCH MASTER AUDIT REPORT', 200, 16, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(203, 213, 225);
+        doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
 
         const tableRows = orders.map(o => [
           o.id,
           formatDateTimeString(o.timestamp),
           o.userName,
-          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN'),
+          o.accType,
+          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
           o.vaultId || 'VAULT-IoT-901',
-          o.agentName || 'Unassigned',
+          o.agentName ? `${o.agentName} (${o.agentVehicle || ''})` : 'Unassigned',
           o.status
         ]);
 
         doc.autoTable({
-          startY: 38,
-          head: [['Order ID', 'Date & Time', 'Customer', 'Amount', 'Vault ID', 'Agent', 'Final Status']],
+          startY: 44,
+          head: [['Order ID', 'Date & Time', 'Customer', 'Type', 'Amount', 'Vault ID', 'Agent In Custody', 'Final Status']],
           body: tableRows,
           theme: 'striped',
-          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold' }
+          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8 },
+          bodyStyles: { fontSize: 7.5, textColor: [30, 41, 59] },
+          columnStyles: {
+            0: { cellWidth: 20, fontStyle: 'bold' },
+            1: { cellWidth: 28 },
+            2: { cellWidth: 28 },
+            3: { cellWidth: 16 },
+            4: { cellWidth: 22, halign: 'right', fontStyle: 'bold' },
+            5: { cellWidth: 20 },
+            6: { cellWidth: 26 },
+            7: { cellWidth: 22 }
+          },
+          margin: { left: 14, right: 14 }
         });
+
+        const finalY = doc.lastAutoTable.finalY + 14;
+        doc.setDrawColor(226, 232, 240);
+        doc.line(14, finalY, 196, finalY);
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text('* Official internal audit statement generated under regulatory supervision of BHARAT EXPRESS BANK.', 14, finalY + 6);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(10, 37, 64);
+        doc.text('AUTHORIZED BRANCH CHIEF MANAGER STAMP', 200, finalY + 6, { align: 'right' });
 
         const pdfBlob = doc.output('blob');
         const blobUrl = URL.createObjectURL(pdfBlob);
         const downloadLink = document.createElement('a');
         downloadLink.href = blobUrl;
-        downloadLink.download = `BEB_Branch_Audit_${Date.now()}.pdf`;
+        downloadLink.download = `BEB_Branch_Master_Audit_${Date.now()}.pdf`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
-      } catch(e) {
+      } catch (err) {
+        console.error('Audit PDF error:', err);
         alert('Unable to export audit PDF.');
       }
     }
 
+    // =========================================================================
+    // 3. DELIVERY AGENT DUTY REPORT PDF (RESTORED TO FULL ROYAL DESIGN)
+    // =========================================================================
     function downloadAgentDutyPDF() {
       const delivered = (globalState.orders || []).filter(o => o.status === 'DELIVERED');
-      if (delivered.length === 0) return alert('No completed deliveries to export.');
+      if (delivered.length === 0) return alert('No completed deliveries available to generate report.');
 
       try {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
+
+        // Royal Navy Top Banner
         doc.setFillColor(10, 37, 64);
-        doc.rect(0, 0, 210, 30, 'F');
+        doc.rect(0, 0, 210, 36, 'F');
+
         doc.setTextColor(212, 175, 55);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
-        doc.text('BHARAT EXPRESS BANK - AGENT DUTY LOG', 14, 18);
+        doc.setFontSize(18);
+        doc.text('BHARAT EXPRESS BANK', 14, 16);
+
+        doc.setTextColor(0, 212, 182);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text('CashBridge Field Operations & Vault Transit Duty Statement', 14, 23);
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.text(`Agent Name: ${loggedAgent ? loggedAgent.name : 'Agent'} | Vehicle: ${loggedAgent ? loggedAgent.vehicle : 'GJ-05-AB-1234'}`, 14, 29);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('AGENT DUTY & DISPATCH LOG', 200, 16, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(203, 213, 225);
+        doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} ${new Date().toLocaleTimeString('en-IN')}`, 200, 23, { align: 'right' });
 
         const tableRows = delivered.map(o => [
           o.id,
           formatDateTimeString(o.deliveredAt || o.timestamp),
           o.userName,
-          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN'),
+          'Rs. ' + parseFloat(o.amount).toLocaleString('en-IN', {minimumFractionDigits: 2}),
           o.vaultId || 'VAULT-IoT-901',
           'COMPLETED (DELIVERED)'
         ]);
 
         doc.autoTable({
-          startY: 38,
-          head: [['Order ID', 'Time', 'Customer', 'Cash Delivered', 'Vault ID', 'Verification']],
+          startY: 44,
+          head: [['Order Ref', 'Delivery Time', 'Customer Name', 'Delivered Cash', 'Vault ID', 'Verification Status']],
           body: tableRows,
           theme: 'striped',
-          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold' }
+          headStyles: { fillColor: [10, 37, 64], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 8.5 },
+          bodyStyles: { fontSize: 8, textColor: [30, 41, 59] },
+          columnStyles: {
+            0: { cellWidth: 26, fontStyle: 'bold' },
+            1: { cellWidth: 38 },
+            2: { cellWidth: 38 },
+            3: { cellWidth: 28, halign: 'right', fontStyle: 'bold' },
+            4: { cellWidth: 24 },
+            5: { cellWidth: 34 }
+          },
+          margin: { left: 14, right: 14 }
         });
+
+        const finalY = doc.lastAutoTable.finalY + 14;
+        doc.setDrawColor(226, 232, 240);
+        doc.line(14, finalY, 196, finalY);
+
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text('* Verified electronic field handover certificate recorded via CashBridge Telemetry.', 14, finalY + 6);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(10, 37, 64);
+        doc.text('BHARAT EXPRESS BANK LOGISTICS SEAL', 200, finalY + 6, { align: 'right' });
 
         const pdfBlob = doc.output('blob');
         const blobUrl = URL.createObjectURL(pdfBlob);
         const downloadLink = document.createElement('a');
         downloadLink.href = blobUrl;
-        downloadLink.download = `BEB_Agent_Duty_${Date.now()}.pdf`;
+        downloadLink.download = `BEB_Agent_Duty_Report_${Date.now()}.pdf`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
-      } catch(e) {
-        alert('Unable to export agent PDF.');
-      }
-    }
-
-    function userLogout() {
-      loggedUser = null;
-      sessionStorage.removeItem('cashbridge_user');
-      document.getElementById('customerSubNav').style.display = 'none';
-      document.getElementById('userDashContent').style.display = 'none';
-      document.getElementById('userAuthCard').style.display = 'block';
-    }
-
-    async function userDeposit() {
-      const amount = document.getElementById('depositAmt').value;
-      const val = parseFloat(amount);
-      if (!val || val <= 0) return alert('Please enter a valid deposit amount!');
-
-      const res = await fetch('/api/user/deposit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: loggedUser.id, amount: val })
-      });
-      const data = await res.json();
-      if (!res.ok) alert(data.error);
-      else {
-        AudioEngine.playSuccessSound();
-        alert(`🎉 Payment of ₹${val.toLocaleString('en-IN')} Received Successfully via UPI QR!`);
-        await refreshState();
+      } catch (err) {
+        console.error('Agent PDF error:', err);
+        alert('Unable to export agent duty report.');
       }
     }
 
@@ -1738,6 +1845,25 @@
         alert('⚡ ' + (data.message || 'AI Autonomous Clearance Approved! Smart vault sealed.'));
         document.getElementById('withdrawAmt').value = '';
         showCustomerPage('cHome');
+        await refreshState();
+      }
+    }
+
+    async function userDeposit() {
+      const amount = document.getElementById('depositAmt').value;
+      const val = parseFloat(amount);
+      if (!val || val <= 0) return alert('Please enter a valid deposit amount!');
+
+      const res = await fetch('/api/user/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: loggedUser.id, amount: val })
+      });
+      const data = await res.json();
+      if (!res.ok) alert(data.error);
+      else {
+        AudioEngine.playSuccessSound();
+        alert(`🎉 Payment of ₹${val.toLocaleString('en-IN')} Received Successfully via UPI QR!`);
         await refreshState();
       }
     }
@@ -2090,7 +2216,6 @@
       alert(`Agent: ${loggedAgent.name}\nVehicle: ${loggedAgent.vehicle}\nPhone: ${loggedAgent.phone}`);
     }
 
-    // Auto load state
     if (loggedUser) {
       document.getElementById('heroIntroScreen').classList.add('hidden');
       activatePortal('userView');
