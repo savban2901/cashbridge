@@ -6,7 +6,7 @@
   <title>BHARAT EXPRESS BANK | CashBridge</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   
-  <!-- Robust PDF Libraries -->
+  <!-- Reliable PDF Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -267,6 +267,7 @@
       </div>
     </div>
 
+    <!-- Active Role Indicator + Switch Button -->
     <div style="display: flex; align-items: center; gap: 10px;">
       <div style="font-size: 12px; font-weight: 700; color: #fff;" id="activeRoleLabel">👤 Customer Mode</div>
       <button class="switch-portal-btn" onclick="showHeroScreen()">⇄ Switch Portal</button>
@@ -730,7 +731,7 @@
         <h3 class="card-title">Delivery Agent Logistics Gateway</h3>
         <p style="font-size: 12px; color: var(--muted); margin-bottom: 12px;">Sign in to access assigned smart vaults and doorstep deliveries.</p>
 
-        <!-- Pre-filled testing credentials -->
+        <!-- Testing Credentials Pre-filled ONLY for Delivery Agent -->
         <div id="agentLoginBox">
           <label>Agent Mobile Number</label>
           <input type="text" id="aPhone" value="9988776655">
@@ -793,7 +794,7 @@
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
               <div>
-                <h3 class="card-title" style="margin-bottom: 2px;">📜 Completed Deliveries Audit</h3>
+                <h3 class="card-title" style="margin-2px;">📜 Completed Deliveries Audit</h3>
                 <p style="color: var(--muted); font-size: 12px;">Official delivery verification log with photographic proof.</p>
               </div>
               <button class="btn btn-sm btn-success" onclick="downloadAgentDutyPDF()">📥 Download Duty Report (PDF)</button>
@@ -1256,7 +1257,7 @@
 
     async function refreshState() {
       try {
-        const res = await fetch('/api/state');
+        const res = await fetch('/api/state?t=' + Date.now(), { cache: 'no-store' });
         globalState = await res.json();
 
         if (loggedUser) {
@@ -1356,8 +1357,11 @@
       document.getElementById('regStep2').style.display = 'none';
     }
 
+    // GUARANTEED INSTANT SYNC ON REGISTRATION
     async function userVerifyRegOtp() {
       const otp = document.getElementById('regOtpInput').value;
+      if (!otp || otp.length < 6) return alert('Please enter the 6-digit OTP!');
+
       const res = await fetch('/api/user/verify-reg-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1375,7 +1379,10 @@
       document.getElementById('userAuthCard').style.display = 'none';
       document.getElementById('customerSubNav').style.display = 'flex';
       document.getElementById('userDashContent').style.display = 'block';
-      refreshState();
+
+      // Immediate State Sync Across All Screens
+      await refreshState();
+      if (typeof renderBankDash === 'function') renderBankDash();
     }
 
     function renderUserDash() {
@@ -1489,7 +1496,6 @@
       `).join('');
     }
 
-    // FIXED: Guaranteed Receipt Modal Rendering
     function viewReceiptByIndex(index) {
       const item = currentStatementData[index];
       if (!item || !loggedUser) return;
@@ -1520,9 +1526,7 @@
       document.getElementById('receiptModal').classList.add('open');
     }
 
-    // =========================================================================
-    // 1. CUSTOMER STATEMENT PDF (RESTORED TO FULL ROYAL NAVY/GOLD DESIGN)
-    // =========================================================================
+    // 1. CUSTOMER STATEMENT PDF (ROYAL NAVY / GOLD DESIGN)
     function downloadStatementPDF() {
       if (!loggedUser) return alert('Please login first.');
       if (!currentStatementData || currentStatementData.length === 0) return alert('No transactions recorded.');
@@ -1550,7 +1554,6 @@
         doc.setFontSize(8);
         doc.text('Surat Central Branch, Ring Road, Gujarat - 395002 | IFSC: BEB000789', 14, 29);
 
-        // Right Header Label
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(13);
         doc.text('OFFICIAL ACCOUNT STATEMENT', 200, 16, { align: 'right' });
@@ -1623,7 +1626,6 @@
         doc.setTextColor(10, 37, 64);
         doc.text('BHARAT EXPRESS BANK - AUTHORIZED ELECTRONIC SEAL', 200, finalY + 7, { align: 'right' });
 
-        // Reliable Cross-Device Stream
         const pdfBlob = doc.output('blob');
         const blobUrl = URL.createObjectURL(pdfBlob);
         const downloadLink = document.createElement('a');
@@ -1638,9 +1640,7 @@
       }
     }
 
-    // =========================================================================
-    // 2. BANK BRANCH MASTER AUDIT PDF (RESTORED TO FULL ROYAL DESIGN)
-    // =========================================================================
+    // 2. BANK BRANCH MASTER AUDIT PDF
     function downloadBankMasterAuditPDF() {
       const orders = globalState.orders || [];
       if (orders.length === 0) return alert('No orders recorded to generate audit report.');
@@ -1649,7 +1649,6 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // Royal Navy Top Banner
         doc.setFillColor(10, 37, 64);
         doc.rect(0, 0, 210, 38, 'F');
 
@@ -1733,9 +1732,7 @@
       }
     }
 
-    // =========================================================================
-    // 3. DELIVERY AGENT DUTY REPORT PDF (RESTORED TO FULL ROYAL DESIGN)
-    // =========================================================================
+    // 3. DELIVERY AGENT DUTY REPORT PDF
     function downloadAgentDutyPDF() {
       const delivered = (globalState.orders || []).filter(o => o.status === 'DELIVERED');
       if (delivered.length === 0) return alert('No completed deliveries available to generate report.');
@@ -1744,7 +1741,6 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
 
-        // Royal Navy Top Banner
         doc.setFillColor(10, 37, 64);
         doc.rect(0, 0, 210, 36, 'F');
 
@@ -2216,6 +2212,7 @@
       alert(`Agent: ${loggedAgent.name}\nVehicle: ${loggedAgent.vehicle}\nPhone: ${loggedAgent.phone}`);
     }
 
+    // Auto load state
     if (loggedUser) {
       document.getElementById('heroIntroScreen').classList.add('hidden');
       activatePortal('userView');

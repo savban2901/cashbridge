@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const DB_FILE_PATH = path.join(__dirname, 'bharat_express_db.json');
 
+// Default Seed Data
 const initialDatabaseTemplate = {
   users: [
     {
@@ -73,31 +74,41 @@ const initialDatabaseTemplate = {
   contactMessages: []
 };
 
-function loadDatabaseFromDisk() {
+// Permanent Active Database Instance
+let DB = null;
+
+function initDatabase() {
   try {
     if (fs.existsSync(DB_FILE_PATH)) {
       const fileData = fs.readFileSync(DB_FILE_PATH, 'utf8');
-      const parsed = JSON.parse(fileData);
-      if (!parsed.userNotifications) parsed.userNotifications = {};
-      if (!parsed.securityAlerts) parsed.securityAlerts = [];
-      return parsed;
+      DB = JSON.parse(fileData);
+      if (!DB.users) DB.users = [];
+      if (!DB.bankStaff) DB.bankStaff = [];
+      if (!DB.agents) DB.agents = [];
+      if (!DB.orders) DB.orders = [];
+      if (!DB.transactions) DB.transactions = [];
+      if (!DB.securityAlerts) DB.securityAlerts = [];
+      if (!DB.userNotifications) DB.userNotifications = {};
+      if (!DB.tempRegistrations) DB.tempRegistrations = {};
+      console.log(`[DATABASE] Loaded ${DB.users.length} active registered users from storage.`);
+      return;
     }
   } catch (err) {
-    console.error('DB load error, initializing default:', err.message);
+    console.error('[DATABASE LOAD ERROR]:', err.message);
   }
-  fs.writeFileSync(DB_FILE_PATH, JSON.stringify(initialDatabaseTemplate, null, 2), 'utf8');
-  return JSON.parse(JSON.stringify(initialDatabaseTemplate));
+  DB = JSON.parse(JSON.stringify(initialDatabaseTemplate));
+  saveToDisk();
 }
 
-const DB = loadDatabaseFromDisk();
-
-function commitToDisk() {
+function saveToDisk() {
   try {
     fs.writeFileSync(DB_FILE_PATH, JSON.stringify(DB, null, 2), 'utf8');
   } catch (err) {
-    console.error('Error saving DB to disk:', err.message);
+    console.error('[DATABASE WRITE ERROR]:', err.message);
   }
 }
+
+initDatabase();
 
 function getFormattedDateTime() {
   return new Date().toLocaleString('en-IN', {
@@ -125,7 +136,7 @@ function sendUserScopedSMS(phone, message) {
   };
 
   DB.userNotifications[clean].unshift(notifObj);
-  commitToDisk();
+  saveToDisk();
   broadcast('SMS_NOTIFICATION', notifObj);
 }
 
@@ -143,7 +154,7 @@ function dispatchPoliceAndBankAlert(orderId, breachType, description, lat, lng) 
 
   if (!DB.securityAlerts) DB.securityAlerts = [];
   DB.securityAlerts.unshift(incident);
-  commitToDisk();
+  saveToDisk();
 
   broadcast('SECURITY_ALARM', incident);
   broadcast('STATE_CHANGED', {});
@@ -176,29 +187,34 @@ setInterval(() => {
     }
   });
 
-  if (modified) commitToDisk();
+  if (modified) saveToDisk();
 }, 8000);
 
 // ============================================================================
-// CUSTOMER APIS
+// CUSTOMER REGISTRATION & ACTIVE USER ENDPOINTS
 // ============================================================================
 app.post('/api/user/send-reg-otp', (req, res) => {
   const { name, phone, password, accType, initialDeposit, address } = req.body;
-  if (!name || !phone || !password || !accType) return res.status(400).json({ error: 'Please fill all required fields.' });
+  if (!name || !phone || !password || !accType) {
+    return res.status(400).json({ error: 'Please fill all required registration fields.' });
+  }
 
   const cleanPhone = String(phone).trim();
   if (DB.users.some(u => String(u.phone).trim() === cleanPhone)) {
-    return res.status(400).json({ error: 'Mobile number already registered.' });
+    return res.status(400).json({ error: 'This mobile number is already registered!' });
   }
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   DB.tempRegistrations[cleanPhone] = {
-    name, phone: cleanPhone, password: String(password).trim(), accType,
+    name: name.trim(),
+    phone: cleanPhone,
+    password: String(password).trim(),
+    accType,
     initialDeposit: parseFloat(initialDeposit) || 0,
-    address: address || 'Surat, Gujarat',
+    address: address ? address.trim() : 'Surat, Gujarat',
     otp
   };
-  commitToDisk();
+  saveToDisk();
 
   sendUserScopedSMS(cleanPhone, `[BHARAT EXPRESS BANK] Your Account Registration OTP is: ${otp}. Valid for 5 minutes.`);
   res.json({ success: true, message: `OTP sent to ${cleanPhone}!`, demoOtp: otp });
@@ -209,22 +225,29 @@ app.post('/api/user/verify-reg-otp', (req, res) => {
   const pKey = String(phone || '').trim();
   const pending = DB.tempRegistrations[pKey];
 
-  if (!pending) return res.status(400).json({ error: 'No registration session found.' });
-  if (pending.otp !== String(otp).trim()) return res.status(400).json({ error: 'Incorrect OTP entered.' });
+  if (!pending) {
+    return res.status(400).json({ error: 'No pending registration found for this mobile number.' });
+  }
+  if (pending.otp !== String(otp).trim()) {
+    return res.status(400).json({ error: 'Incorrect OTP entered. Please try again.' });
+  }
 
-  const newId = 'USR-' + Math.floor(100 + Math.random() * 900);
+  const newId = 'USR-' + Math.floor(1000 + Math.random() * 9000);
+  const newAccountNo = 'BEB-' + Math.floor(100000 + Math.random() * 900000);
+
   const newUser = {
     id: newId,
     name: pending.name,
     phone: pending.phone,
     password: pending.password,
-    accNumber: 'BEB-' + Math.floor(100000 + Math.random() * 900000),
+    accNumber: newAccountNo,
     accType: pending.accType,
     balance: pending.initialDeposit,
     address: pending.address
   };
 
-  DB.users.push(newUser);
+  // Directly push to active in-memory list
+  DB.users.unshift(newUser);
 
   if (newUser.balance > 0) {
     const timeNow = getFormattedDateTime();
@@ -243,15 +266,22 @@ app.post('/api/user/verify-reg-otp', (req, res) => {
   }
 
   delete DB.tempRegistrations[pKey];
-  commitToDisk();
-  broadcast('STATE_CHANGED', {});
+  saveToDisk();
+
+  console.log(`[USER REGISTERED] User: ${newUser.name} | Acc: ${newUser.accNumber} | Total Users: ${DB.users.length}`);
+
+  // Broadcast immediate sync to all open browser windows
+  broadcast('STATE_CHANGED', { totalUsers: DB.users.length });
   res.json({ success: true, user: newUser });
 });
 
 app.post('/api/user/login', (req, res) => {
   const { phone, password } = req.body;
-  const user = DB.users.find(u => String(u.phone).trim() === String(phone).trim() && String(u.password).trim() === String(password).trim());
-  if (!user) return res.status(401).json({ error: 'Invalid phone or security password.' });
+  const cleanPhone = String(phone || '').trim();
+  const cleanPass = String(password || '').trim();
+
+  const user = DB.users.find(u => String(u.phone).trim() === cleanPhone && String(u.password).trim() === cleanPass);
+  if (!user) return res.status(401).json({ error: 'Invalid registered phone number or password.' });
   res.json({ success: true, user });
 });
 
@@ -280,12 +310,12 @@ app.post('/api/user/deposit', (req, res) => {
     status: 'SUCCESS'
   });
 
-  commitToDisk();
+  saveToDisk();
   broadcast('STATE_CHANGED', {});
   res.json({ success: true, user, txId });
 });
 
-// ROBUST AI AUTONOMOUS CLEARANCE ENGINE (Fixed: Zero false rejections)
+// CASH REQUEST WITH REAL-TIME AI CLEARANCE
 app.post('/api/user/request-cash', (req, res) => {
   const { userId, amount, lat, lng } = req.body;
   const user = DB.users.find(u => String(u.id).trim() === String(userId).trim());
@@ -294,12 +324,10 @@ app.post('/api/user/request-cash', (req, res) => {
   const val = parseFloat(amount);
   if (!val || val <= 0) return res.status(400).json({ error: 'Please enter a valid withdrawal amount.' });
 
-  // 1. Strict ₹25,000 Flat Limit
   if (val > 25000) {
     return res.status(400).json({ error: 'Regulatory Rule: Maximum doorstep cash withdrawal limit is ₹25,000 per request.' });
   }
 
-  // 2. Solvency check
   if (user.balance < val) {
     return res.status(400).json({ error: `Insufficient balance! Your current balance is ₹${user.balance.toLocaleString('en-IN')}.` });
   }
@@ -317,7 +345,7 @@ app.post('/api/user/request-cash', (req, res) => {
     accNumber: user.accNumber,
     accType: user.accType,
     amount: val,
-    status: 'ACCEPTED_BY_BANK', // AI Automatically Clears & Seals Vault
+    status: 'ACCEPTED_BY_BANK',
     aiCleared: true,
     aiConfidence: '98%',
     otp: otp,
@@ -354,7 +382,7 @@ app.post('/api/user/request-cash', (req, res) => {
     status: 'AI APPROVED (WAITING AGENT PICKUP)'
   });
 
-  commitToDisk();
+  saveToDisk();
   sendUserScopedSMS(user.phone, `[AI CLEARANCE APPROVED] CashBridge Order #${orderId} of ₹${val.toLocaleString('en-IN')} approved by Bank AI. Vault #${order.vaultId} sealed. OTP will activate on agent pickup.`);
   
   broadcast('STATE_CHANGED', {});
@@ -378,7 +406,7 @@ app.post('/api/user/clear-notifications', (req, res) => {
 
   if (DB.userNotifications && DB.userNotifications[cleanPhone]) {
     DB.userNotifications[cleanPhone] = [];
-    commitToDisk();
+    saveToDisk();
   }
 
   res.json({ success: true, message: 'All notifications have been successfully cleared from your private inbox.' });
@@ -387,7 +415,7 @@ app.post('/api/user/clear-notifications', (req, res) => {
 app.post('/api/user/contact', (req, res) => {
   const { name, phone, subject, message } = req.body;
   DB.contactMessages.unshift({ name, phone, subject, message, time: getFormattedDateTime() });
-  commitToDisk();
+  saveToDisk();
   res.json({ success: true, message: 'Inquiry received by customer helpdesk.' });
 });
 
@@ -408,7 +436,7 @@ app.post('/api/bank/approve-order', (req, res) => {
 
   order.status = 'ACCEPTED_BY_BANK';
   order.currentLocation = 'Vault Sealed at Central Bank Desk. Waiting for Delivery Agent.';
-  commitToDisk();
+  saveToDisk();
   broadcast('STATE_CHANGED', {});
   res.json({ success: true, otp: order.otp });
 });
@@ -441,7 +469,7 @@ app.post('/api/bank/adjust-balance', (req, res) => {
     status: 'SUCCESS'
   });
 
-  commitToDisk();
+  saveToDisk();
   broadcast('STATE_CHANGED', {});
   res.json({ success: true, user });
 });
@@ -468,7 +496,6 @@ app.post('/api/agent/accept-order', (req, res) => {
   order.agentVehicle = agent.vehicle;
   order.status = 'IN_TRANSIT';
 
-  // 1-HOUR TIMER STARTS RIGHT HERE ON AGENT ACCEPTANCE
   order.dispatchedAt = Date.now();
   order.expiryEpoch = Date.now() + (60 * 60 * 1000);
   order.currentLocation = 'Vault Picked Up by Agent! Moving towards Customer Location. 1-Hour Anti-Hijack Active.';
@@ -476,7 +503,7 @@ app.post('/api/agent/accept-order', (req, res) => {
   const tx = DB.transactions.find(t => t.orderId === orderId);
   if (tx) tx.status = 'IN_TRANSIT (1-HR TIMER ACTIVE)';
 
-  commitToDisk();
+  saveToDisk();
   sendUserScopedSMS(order.userPhone, `[CashBridge Dispatch] Agent ${agent.name} (Vehicle: ${agent.vehicle}) has collected your Vault! 1-Hour countdown started. Unlock OTP: ${order.otp}.`);
   broadcast('STATE_CHANGED', {});
   res.json({ success: true, expiryEpoch: order.expiryEpoch });
@@ -503,13 +530,13 @@ app.post('/api/vault/unlock', (req, res) => {
     const tx = DB.transactions.find(t => t.orderId === orderId);
     if (tx) tx.status = 'VAULT_UNLOCKED (PENDING PHOTO CONFIRMATION)';
 
-    commitToDisk();
+    saveToDisk();
     broadcast('STATE_CHANGED', {});
     return res.json({ success: true, message: 'Vault Unlocked! Take photographic proof to finalize delivery.' });
   }
 
   order.wrongOtpAttempts += 1;
-  commitToDisk();
+  saveToDisk();
 
   if (order.wrongOtpAttempts >= 3) {
     order.status = 'TAMPERED';
@@ -519,7 +546,7 @@ app.post('/api/vault/unlock', (req, res) => {
     const tx = DB.transactions.find(t => t.orderId === orderId);
     if (tx) tx.status = 'FAILED (3 WRONG PINS LOCKDOWN)';
 
-    commitToDisk();
+    saveToDisk();
     dispatchPoliceAndBankAlert(order.id, 'CRITICAL: 3 FAILED PIN ATTEMPTS', `Unauthorized PIN entered 3 times on Vault #${order.vaultId}. Forced hijack protocol triggered.`, order.lat, order.lng);
     sendUserScopedSMS(order.userPhone, `[SECURITY ALERT] 3 incorrect OTP entries detected on Vault #${order.vaultId}. Vault locked down and Surat Police Control Room dispatched. Your money is 100% safe.`);
 
@@ -559,7 +586,7 @@ app.post('/api/agent/complete-delivery', (req, res) => {
     tx.isoTime = isoTime;
   }
 
-  commitToDisk();
+  saveToDisk();
   sendUserScopedSMS(order.userPhone, `[BHARAT EXPRESS BANK] Cash of ₹${order.amount.toLocaleString()} safely delivered by ${order.agentName}. ₹${order.amount.toLocaleString()} DEBITED from Acc ${user.accNumber}. Balance: ₹${user.balance.toLocaleString()}.`);
 
   broadcast('STATE_CHANGED', {});
@@ -574,7 +601,7 @@ app.post('/api/vault/tamper', (req, res) => {
     order.currentLocation = '🚨 TAMPER BREACH DETECTED! Route Diversion / Attack Alert!';
     const tx = DB.transactions.find(t => t.orderId === orderId);
     if (tx) tx.status = 'FAILED (TAMPERED - FUNDS SAFE)';
-    commitToDisk();
+    saveToDisk();
   }
 
   dispatchPoliceAndBankAlert(
@@ -588,10 +615,13 @@ app.post('/api/vault/tamper', (req, res) => {
   res.json({ success: true });
 });
 
-app.get('/api/state', (req, res) => res.json(DB));
+// Guaranteed Live State Fetch (No Cache)
+app.get('/api/state', (req, res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.json(DB);
+});
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 BHARAT EXPRESS BANK (CashBridge) live on port ${PORT}`);
-  console.log(`🧠 AI Clearance Engine: Armed & Operational`);
+  console.log(`🚀 BHARAT EXPRESS BANK live on port ${PORT}`);
 });
